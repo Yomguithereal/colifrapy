@@ -16,4 +16,3 @@ from commander import Commander
 class Model():
 
 	log = Logger()
-	opts = Commander().opts
