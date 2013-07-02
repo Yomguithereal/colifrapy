@@ -6,7 +6,7 @@ setup(name='colifrapy',
       url='https://github.com/Yomguithereal/colifrapy.git',
       author='Yomguithereal',
       license='MIT',
-      packages=['colifrapy'],
+      packages=['colifrapy', 'colifrapy.tools'],
       install_requires=[
         'pyyaml',
       ],

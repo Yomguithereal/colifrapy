@@ -8,7 +8,7 @@
 
 # Dependancies
 #=============
-from colifrapy.logger import Logger
+from logger import Logger
 
 # Main Class
 #=============

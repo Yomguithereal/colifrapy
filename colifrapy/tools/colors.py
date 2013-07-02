@@ -4,7 +4,6 @@
 #
 #
 #   Author : PLIQUE Guillaume
-#   Organization : Medialab - Sciences-Po
 #   Version : 1.0
 
 # Colors

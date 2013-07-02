@@ -9,7 +9,7 @@
 # Dependancies
 #=============
 from argparse import ArgumentParser
-from colifrapy.logger import Logger
+from logger import Logger
 
 # Main Class
 #===========
