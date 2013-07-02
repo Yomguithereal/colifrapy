@@ -11,8 +11,8 @@
 import os
 from datetime import datetime
 import yaml
-from colifrapy.tools.colors import color
-from colifrapy.tools.decorators import singleton
+from tools.colors import color
+from tools.decorators import singleton
 
 # Main Class
 #===========
