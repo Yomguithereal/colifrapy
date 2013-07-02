@@ -8,10 +8,10 @@
 
 # Dependancies
 #=============
-from logger import Logger
+from colifrapy.logger import Logger
 
 # Main Class
 #=============
-class CLIModel():
+class Model():
 
 	logger = Logger()
