@@ -10,9 +10,11 @@
 #=============
 from argparse import ArgumentParser
 from logger import Logger
+from tools.decorators import singleton
 
 # Main Class
 #===========
+@singleton
 class Commander(ArgumentParser):
 
     # Properties

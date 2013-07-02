@@ -9,9 +9,11 @@
 # Dependancies
 #=============
 from logger import Logger
+from commander import Commander
 
 # Main Class
 #=============
 class Model():
 
-	logger = Logger()
+	log = Logger()
+	opts = Commander().opts()
