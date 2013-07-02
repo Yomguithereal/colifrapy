@@ -1,0 +1,9 @@
+#-----------------------------
+# Colifrapy String Examples
+#-----------------------------
+
+# Main Strings
+main:
+	process:
+	    start: 'Starting corpus analysis (path : {path})//INFO'
+	    end: 'Exiting//INFO'
