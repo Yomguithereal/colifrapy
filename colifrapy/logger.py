@@ -82,33 +82,29 @@ class Logger:
             level = 'DEBUG'
 
         # Retrieving message string
-        if self.strings is None:
-            ms = message
-        else:
-            try:
-                string = reduce(dict.__getitem__, message.split(':'), self.strings)
-            except KeyError:
-                raise Exception('Colifrapy::Logger::WrongMessage')
+        if self.strings is not None:
+            string = self._getString(message)
             
             # Getting string back
             string = string.split('//')
-            ms = string[0]
+            message = string[0]
             if level == 'DEBUG':
                 if len(string) > 1:
                     level = string[1]
+
         # Do we need to log?
         if level not in self.threshold:
             return False
 
         # Variable substitution
         for k in variables:
-            ms = ms.replace('{'+str(k)+'}', str(variables[k]))
+            message = message.replace('{'+str(k)+'}', str(variables[k]))
 
         # Printing to console
-        print color('['+level+']', self.levels[level]['color'])+' :: '+str(ms)
+        print color('['+level+']', self.levels[level]['color'])+' :: '+str(message)
 
         # Outputting to file if wanted
-        self._toFile(ms, level)
+        self._toFile(message, level)
 
     # Helper Methods
     def debug(self, message, variables={}):
@@ -126,6 +122,10 @@ class Logger:
     # Header printing    
     def header(self, message):
 
+        # Getting String
+        if self.strings is not None:
+            message = self._getString(message)
+
         # To terminal
         print ''
         print color(message, 'yellow')
@@ -133,6 +133,14 @@ class Logger:
 
         # To file
         self._toFile(message, 'START')
+
+    # Get string from Yaml
+    def _getString(self, path):
+        try:
+            string = reduce(dict.__getitem__, message.split(':'), self.strings)
+        except KeyError:
+            raise Exception('Colifrapy::Logger::WrongMessage')
+        return string
 
     # Writing to log file
     def _toFile(self, message, level):
