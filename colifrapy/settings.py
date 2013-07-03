@@ -32,7 +32,7 @@ class Settings():
 		self.__commander.config(version=data.get('version'), arguments=data.get('arguments', []))
 
 		# Setting Logger
-		self.__logger.load_strings(data.get('strings'))
+		self.__logger.load_strings(strings=data.get('strings'), output_path=data.get('log_path'), threshold=data.get('log_threshold'))
 
 		# Else
 		if 'settings' in data:
