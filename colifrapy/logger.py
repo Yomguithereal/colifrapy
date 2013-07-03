@@ -90,10 +90,9 @@ class Logger:
             # Getting string back
             string = string.split('//')
             ms = string[0]
-            if level != 'DEBUG':
+            if level == 'DEBUG':
                 if len(string) > 1:
                     level = string[1]
-        print level
         # Do we need to log?
         if level not in self.threshold:
             return False
