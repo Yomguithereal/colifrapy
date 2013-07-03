@@ -137,7 +137,7 @@ class Logger:
     # Get string from Yaml
     def _getString(self, path):
         try:
-            string = reduce(dict.__getitem__, message.split(':'), self.strings)
+            string = reduce(dict.__getitem__, path.split(':'), self.strings)
         except KeyError:
             raise Exception('Colifrapy::Logger::WrongMessage')
         return string
