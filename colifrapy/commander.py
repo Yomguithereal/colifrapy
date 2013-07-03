@@ -37,12 +37,12 @@ class Commander(ArgumentParser):
         if strings is not None:
             Logger().load_strings(strings)
 
-        # Parsing
-        self.opts = self.parse_args()
-
     # Configuration
     def config(self, **kwargs):
         self.__init__(**kwargs)
+        
+        # Parsing
+        self.opts = self.parse_args()
 
     # Batch adding arguments
     def _add_arguments(self, arguments):
