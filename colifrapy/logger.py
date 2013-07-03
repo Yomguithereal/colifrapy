@@ -33,7 +33,7 @@ class Logger:
         'DEBUG' : 
             {'color' : 'blue', 'importance' : 1}
     }
-    threshold = 'DEBUG'
+    threshold = ['INFO', 'ERROR', 'WARNING', 'ERROR']
 
     
     # Constructor
@@ -53,10 +53,11 @@ class Logger:
 
         # Setting level
         if threshold is not None:
-            if threshold in self.levels:
-                self.threshold = threshold
-            else:
-                raise Exception('Logger::WrongThreshold')
+            self.load_threshold(threshold)
+        
+
+    def config(self, **kwargs):
+        self.__init__(**kwargs)
 
     # Setters
     #--------
@@ -64,14 +65,22 @@ class Logger:
         with open(strings, 'r') as sf:
             self.strings = yaml.load(sf.read())
 
+    def load_threshold(self, threshold):
+        if not isinstance(threshold, list):
+            threshold = [threshold]
+        self.threshold = [i for i in threshold if i in self.levels]
 
     # Logging Method
     #---------------
-    def write(self, message, level='DEBUG', variables={}):
+    def write(self, message, level=None, variables={}):
 
         # Checking log level
-        if level not in self.levels:
+        if level not in self.levels and level is not None:
             level = 'DEBUG'
+
+        # Do we need to log?
+        if level not in self.threshold:
+            return False;
 
         # Retrieving message string
         if self.strings is None:
@@ -80,13 +89,14 @@ class Logger:
             try:
                 string = reduce(dict.__getitem__, message.split(':'), self.strings)
             except KeyError:
-                raise Exception('Logger::WrongMessage')
+                raise Exception('Colifrapy::Logger::WrongMessage')
             
             # Getting string back
             string = string.split('//')
             ms = string[0]
-            if len(string) > 1:
-                level = string[1]
+            if level is not None:
+                if len(string) > 1:
+                    level = string[1]
 
         # Variable substitution
         for k in variables:
@@ -97,8 +107,21 @@ class Logger:
 
         # Outputting to file if wanted
         self._toFile(ms, level)
-        
 
+    # Helper Methods
+    def debug(self, message, variables={}):
+        self.write(message, 'DEBUG', variables={})
+
+    def info(self, message, variables={}):
+        self.write(message, 'INFO', variables={})
+
+    def warning(self, message, variables={}):
+        self.write(message, 'WARNING', variables={})
+
+    def error(self, message, variables={}):
+        self.write(message, 'ERROR', variables={})
+    
+    # Header printing    
     def header(self, message):
 
         # To terminal
@@ -109,6 +132,7 @@ class Logger:
         # To file
         self._toFile(message, 'START')
 
+    # Writing to log file
     def _toFile(self, message, level):
         separator = '\n\n' if level == 'START' else ''
         if self.output_path is not None:
