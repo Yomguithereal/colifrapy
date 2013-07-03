@@ -9,6 +9,8 @@
 # Dependancies
 #=============
 import yaml
+from logger import Logger
+from commander import Commander
 from tools.decorators import singleton
 
 # Main Class
@@ -16,9 +18,23 @@ from tools.decorators import singleton
 @singleton
 class Settings():
 
+	__commander = Commander()
+	__logger = Logger()
+
 	# Loading external data
 	def load(self, yaml_file):
+
+		# Opening Settings Yaml File
 		with open(yaml_file, 'r') as yf:
 			data = yaml.load(yf.read())
-		for i in data:
-			setattr(self, i, data[i])
+		
+		# Setting Commander
+		self.__commander.config(version=data.get('version'), arguments=data.get('arguments', []))
+
+		# Setting Logger
+		self.__logger.load_strings(data.get('strings'))
+
+		# Else
+		if 'settings' in data:
+			for key in data['settings']:
+				setattr(self, key, data['settings'][key])

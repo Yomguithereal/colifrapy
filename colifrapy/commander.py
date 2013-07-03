@@ -9,7 +9,6 @@
 # Dependancies
 #=============
 from argparse import ArgumentParser
-from logger import Logger
 
 # Main Class
 #===========
@@ -24,7 +23,7 @@ class Commander(ArgumentParser):
     #--------
 
     # Constructor
-    def __init__(self, version='0.1', arguments=None, strings=None):
+    def __init__(self, version='0.1', arguments=None):
 
         # Calling Parent
         ArgumentParser.__init__(self, version=version);
@@ -32,10 +31,6 @@ class Commander(ArgumentParser):
         # Adding Options
         if arguments is not None:
             self._add_arguments(arguments)
-
-        # Registering Strings
-        if strings is not None:
-            Logger().load_strings(strings)
 
     # Configuration
     def config(self, **kwargs):

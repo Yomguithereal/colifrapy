@@ -33,7 +33,7 @@ class Logger:
         'DEBUG' : 
             {'color' : 'blue', 'importance' : 1}
     }
-    threshold = ['INFO', 'ERROR', 'WARNING', 'ERROR']
+    threshold = ['INFO', 'DEBUG', 'WARNING', 'ERROR']
 
     
     # Constructor
@@ -75,12 +75,8 @@ class Logger:
     def write(self, message, level=None, variables={}):
 
         # Checking log level
-        if level not in self.levels and level is not None:
+        if level not in self.levels:
             level = 'DEBUG'
-
-        # Do we need to log?
-        if level not in self.threshold:
-            return False;
 
         # Retrieving message string
         if self.strings is None:
@@ -94,9 +90,13 @@ class Logger:
             # Getting string back
             string = string.split('//')
             ms = string[0]
-            if level is not None:
+            if level != 'DEBUG':
                 if len(string) > 1:
                     level = string[1]
+        print level
+        # Do we need to log?
+        if level not in self.threshold:
+            return False
 
         # Variable substitution
         for k in variables:
