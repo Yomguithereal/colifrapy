@@ -47,9 +47,12 @@ class Logger:
         # Setting output path
         if output_path is None:
             self.output_path = os.getcwd()+'/logs/'
-            if not os.path.exists(self.output_path):
-                os.makedirs(self.output_path)
-            self.output_path += 'log.txt'
+        else:
+            self.output_path = output_path
+
+        if not os.path.exists(self.output_path):
+            os.makedirs(self.output_path)
+        self.output_path += 'log.txt'
 
         # Setting level
         if threshold is not None:
