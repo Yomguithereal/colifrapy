@@ -40,6 +40,10 @@ class Commander(ArgumentParser):
         # Parsing
         self.opts = self.parse_args()
 
+    # Configuration
+    def config(self, **kwargs):
+        self.__init__(**kwargs)
+
     # Batch adding arguments
     def _add_arguments(self, arguments):
         for argument in arguments:
