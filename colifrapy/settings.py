@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------
-# Command line tool Model
+# Command line tool Settings
 # -------------------------------------------------------------------
 #
 #
@@ -8,15 +8,14 @@
 
 # Dependancies
 #=============
-from logger import Logger
-from commander import Commander
-from settings import Settings
+from tools.decorators import singleton
 
 # Main Class
 #=============
-class Model():
+@singleton
+class Settings():
 
-	# Helper Properties
-	log = Logger()
-	opts = Commander().opts
-	settings = Settings()
+	# Loading external data
+	def load(self, data):
+		for i in data:
+			setattr(self, i, data[i])
