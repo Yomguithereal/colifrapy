@@ -8,6 +8,7 @@
 
 # Dependancies
 #=============
+import yaml
 from tools.decorators import singleton
 
 # Main Class
@@ -16,6 +17,8 @@ from tools.decorators import singleton
 class Settings():
 
 	# Loading external data
-	def load(self, data):
+	def load(self, yaml_file):
+		with open(yaml_file, 'r') as yf:
+			data = yaml.load(yf.read())
 		for i in data:
 			setattr(self, i, data[i])
