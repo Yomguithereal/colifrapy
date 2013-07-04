@@ -34,8 +34,8 @@ class Logger:
             {'color' : 'blue', 'importance' : 1}
     }
     threshold = ['INFO', 'DEBUG', 'WARNING', 'ERROR']
+  
 
-    
     # Constructor
     #------------
     def __init__(self, strings=None, output_path=None, threshold=None):
@@ -100,11 +100,16 @@ class Logger:
         for k in variables:
             message = message.replace('{'+str(k)+'}', str(variables[k]))
 
+        # Carriages
+        message = message.replace('\\n', '\n')
+        message = message.replace('\\r', '\r')
+
         # Printing to console
         print color('['+level+']', self.levels[level]['color'])+' :: '+str(message)
 
         # Outputting to file if wanted
         self._toFile(message, level)
+
 
     # Helper Methods
     def debug(self, message, variables={}):

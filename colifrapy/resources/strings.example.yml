@@ -7,4 +7,4 @@ main:
     process:
         start: 'Starting corpus analysis (path : {path})//INFO'
         end: 'Exiting//ERROR'
-        test_line_break: '\nBonjour\n//DEBUG'
+        test_line_break: 'Bonjour//DEBUG'
