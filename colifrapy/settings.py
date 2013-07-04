@@ -31,7 +31,7 @@ class Settings():
             data = yaml.load(yf.read())
 
         # Setting Commander
-        self.__commander.config(version=data.get('version', '0.1'), arguments=data.get('arguments', []), description=data.get('description', ''))
+        self.__commander.config(version=data.get('version', '0.1'), arguments=data.get('arguments', []), description=data.get('description', ''), usage=data.get('usage'))
 
         # Setting Logger
         self.__logger.config(strings=data.get('strings'), output_path=data.get('log_path'), threshold=data.get('log_threshold'))
@@ -40,7 +40,6 @@ class Settings():
         if 'settings' in data:
             for key in data['settings']:
                 setattr(self, key, data['settings'][key])
-
 
     # Helpers
     #--------------

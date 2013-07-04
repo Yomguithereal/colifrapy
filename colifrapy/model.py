@@ -14,9 +14,15 @@ from settings import Settings
 
 # Main Class
 #=============
-class Model():
+class Model(object):
 
-    # Helper Properties
+    # Helper Propertie
     log = Logger()
     settings = Settings()
-    opts = Commander().opts
+    opts = None
+
+    # New Instance
+    def __new__(cls, *args, **kwargs):
+        commander = Commander()
+        cls.opts = commander.opts
+        return object.__new__(cls)
