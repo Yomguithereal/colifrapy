@@ -16,7 +16,7 @@ from settings import Settings
 #=============
 class Model():
 
-	# Helper Properties
-	log = Logger()
-	opts = Commander().opts
-	settings = Settings()
+    # Helper Properties
+    log = Logger()
+    settings = Settings()
+    opts = Commander().opts

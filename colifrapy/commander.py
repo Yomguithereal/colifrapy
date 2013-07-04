@@ -9,9 +9,11 @@
 # Dependancies
 #=============
 from argparse import ArgumentParser
+from tools.decorators import singleton
 
 # Main Class
 #===========
+@singleton
 class Commander(ArgumentParser):
 
     # Properties
@@ -22,24 +24,41 @@ class Commander(ArgumentParser):
     # Methods
     #--------
 
-    # Constructor
-    def __init__(self, version='0.1', arguments=None):
-
-        # Calling Parent
-        ArgumentParser.__init__(self, version=version);
-
-        # Adding Options
-        if arguments is not None:
-            self._add_arguments(arguments)
-
     # Configuration
     def config(self, **kwargs):
-        self.__init__(**kwargs)
-        
+
+        # Calling Parent
+        ArgumentParser.__init__(self, version=kwargs['version'], description=kwargs['description']);
+
+        # Adding Options
+        if kwargs['arguments'] is not None:
+            self._add_arguments(kwargs['arguments'])
+
         # Parsing
         self.opts = self.parse_args()
 
     # Batch adding arguments
     def _add_arguments(self, arguments):
         for argument in arguments:
-            self.add_argument(*[argument['short'], argument['long']], **{k : v for k, v in argument.iteritems() if k not in ['short', 'long']})
+            
+            # Dispatching
+            args = argument[0]
+            kwargs = argument[1]
+
+            # Associating type to pass yaml formatting
+            if 'type' in kwargs:
+                kwargs['type'] = self._check_type(kwargs['type'])
+
+            # Adding arguments
+            self.add_argument(*args, **kwargs)
+
+    # Checking type
+    def _check_type(self, typestr):
+        if typestr == 'int':
+            return int
+        elif typestr == 'float':
+            return float
+        elif typestr == 'open':
+            return open
+        else:
+            raise Exception('Colifrapy::Commander::WrongType')
