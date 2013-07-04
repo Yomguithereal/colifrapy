@@ -1,0 +1,19 @@
+# -------------------------------------------------------------------
+# Furuikeya Settings
+# -------------------------------------------------------------------
+#
+#
+#   Author : PLIQUE Guillaume
+#   Version : 1.0
+
+# Basic Informations
+version: 'Colifrapy 0.1'
+description: 'Description of Colifrapy'
+strings: 'colifrapy/resources/strings.example.yml'
+arguments: 
+- [ ['-t', '--test'], {'help' : 'Test', 'type' : 'int'} ]
+
+# Generic Settings
+settings:
+    hello: 'world'
+    bonjour: 'test'
