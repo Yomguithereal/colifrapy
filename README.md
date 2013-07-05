@@ -14,9 +14,9 @@ pip install git+https://github.com/Yomguithereal/colifrapy.git
 ```
 
 ##Philosophy
-The goal of colifrapy is to load a yaml configuration file which
-is going to manage several settings such as your command line arguments,
-version name and if needed, your contextual settings.
+The goal of colifrapy is to load a yaml configuration file managing 
+several settings such as your command line arguments,
+version name and, if needed, your contextual settings.
 
 Once those settings are loaded, you can call upon colifrapy models to do the
 work while remaining able to access critical utilities such as argv opts, settings 
@@ -25,7 +25,7 @@ and logger.
 ##Usage
 
 ###Settings
-The Settings class is the first thing you will have to import to use Colifrapy.
+The Settings class is the first thing you will have to import in order to use Colifrapy.
 It has to load your yaml settings file to perform its magic.
 
 Example of settings.yml file:
@@ -43,7 +43,6 @@ settings:
     bonjour: 'test'
     hash: {'test' : 2}
 ```
-Arguments are to be defined like for the python [ArgParser](http://docs.python.org/dev/library/argparse.html "ArgParser") class.
 
 And this is how you setup colifrapy:
 ```python
@@ -57,7 +56,7 @@ settings.load('path/to/your/settings.yml')
 If you do not give a path to the loading function, colifrapy will assume that
 the path of your settings file is 'settings.yml'.
 
-After loading the settings, you will be able to access your generic settings anywhere
+After loading the yml file, you will be able to access your generic settings anywhere
 in you code.
 
 Example:
@@ -73,7 +72,7 @@ print settings.hash['test']
 ```
 
 ###Command
-Arguments are to be defined like for the python [ArgParser](http://docs.python.org/dev/library/argparse.html "ArgParser") class.
+Arguments are to be defined as for the python [ArgParser](http://docs.python.org/dev/library/argparse.html "ArgParser") class.
 
 Examples of argument declaration:
 ```yaml
@@ -108,6 +107,7 @@ m.test()
 ```
 
 Reserved attributes names are:
+
 	log (access to the logger described right after)
 	opts (access to the command line options)
 	settings (access to the program's settings)
@@ -118,14 +118,16 @@ The logger is the outputting class of colifrapy. It should be loaded with some s
 If no strings are given, the logger will just output normally the argument string you give it.
 
 The logger accepts four levels :
+
 	INFO (green output)
 	DEBUG (blue output)
 	WARNING (yellow ouput)
 	ERROR (red output)
+
 By default, if no level is specified for a message, DEBUG will always be taken.
 
 The fact that strings are externalized permits you to quickly modify the strings if
-needed or even translate them easily.
+needed ,or even translate them easily.
 
 Strings given must follow this yaml layout:
 ```yaml
@@ -192,7 +194,7 @@ path to the strings.
 
 Example:
 ```yaml
-# Basic Informations
+# Logger settings
 string: 'path/to/your/strings.yml'
 log_path: 'path/where/to/log/'
 log_threshold : ['DEBUG', 'ERROR']
