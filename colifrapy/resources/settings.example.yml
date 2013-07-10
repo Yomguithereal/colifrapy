@@ -10,6 +10,7 @@
 version: 'Colifrapy 0.1'
 description: 'Description of Colifrapy'
 strings: 'colifrapy/resources/strings.example.yml'
+log_path: False
 arguments: 
 - [ ['-t', '--test'], {'help' : 'Test', 'type' : 'int'} ]
 

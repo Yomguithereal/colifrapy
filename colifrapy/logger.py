@@ -50,9 +50,10 @@ class Logger:
         else:
             self.output_path = output_path
 
-        if not os.path.exists(self.output_path):
-            os.makedirs(self.output_path)
-        self.output_path += 'log.txt'
+        if self.output_path is not False:
+            if not os.path.exists(self.output_path):
+                os.makedirs(self.output_path)
+            self.output_path += 'log.txt'
 
         # Setting level
         if threshold is not None:
@@ -149,6 +150,12 @@ class Logger:
 
     # Writing to log file
     def _toFile(self, message, level):
+
+        # Not writing to file if we do not want to
+        if self.output_path is False:
+            return False
+
+        # Writing to file
         separator = '\n\n' if level == 'START' else ''
         if self.output_path is not None:
             with open(self.output_path, "a+") as lf :

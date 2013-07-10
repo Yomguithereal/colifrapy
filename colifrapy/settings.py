@@ -36,7 +36,7 @@ class Settings():
         # Setting Logger
         self.__logger.config(strings=data.get('strings'), output_path=data.get('log_path'), threshold=data.get('log_threshold'))
 
-        # Else
+        # General Settings
         if 'settings' in data:
             for key in data['settings']:
                 setattr(self, key, data['settings'][key])
