@@ -10,7 +10,7 @@ It is recommanded to use colifrapy under a python virtualenv.
 To install, just type :
 
 ```
-pip install git+https://github.com/Yomguithereal/colifrapy.git
+pip install colifrapy
 ```
 
 ##Philosophy
