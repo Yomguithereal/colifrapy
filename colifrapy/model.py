@@ -6,7 +6,7 @@
 #   Author : PLIQUE Guillaume
 #   Version : 1.0
 
-# Dependancies
+# Dependencies
 #=============
 from logger import Logger
 from commander import Commander
