@@ -24,16 +24,13 @@ class Logger:
     strings = None
     output_path = None
     levels = {
-        'INFO' : 
-            {'color' : 'green', 'importance' : 4},
-        'ERROR' : 
-            {'color' : 'red', 'importance' : 3},
-        'WARNING' : 
-            {'color' : 'yellow', 'importance' : 2}, 
-        'DEBUG' : 
-            {'color' : 'blue', 'importance' : 1}
+        'INFO'    : 'green',
+        'ERROR'   : 'red',
+        'WARNING' : 'yellow',
+        'DEBUG'   : 'blue',
+        'VERBOSE' : 'cyan'
     }
-    threshold = ['INFO', 'DEBUG', 'WARNING', 'ERROR']
+    threshold = ['INFO', 'DEBUG', 'WARNING', 'ERROR', 'VERBOSE']
   
 
     # Constructor
@@ -45,10 +42,7 @@ class Logger:
             self.load_strings(strings)
 
         # Setting output path
-        if output_path is None:
-            self.output_path = os.getcwd()+'/logs/'
-        else:
-            self.output_path = output_path
+        self.output_path = os.getcwd()+'/logs/' if output_path is None else output_path
 
         if self.output_path is not False:
             if not os.path.exists(self.output_path):
@@ -58,7 +52,6 @@ class Logger:
         # Setting level
         if threshold is not None:
             self.load_threshold(threshold)
-        
 
     def config(self, **kwargs):
         self.__init__(**kwargs)
@@ -124,6 +117,9 @@ class Logger:
 
     def error(self, message, variables={}):
         self.write(message, 'ERROR', variables={})
+
+    def verbose(self, message, variables={}):
+        self.write(message, 'VERBOSE', variables={})
     
     # Header printing    
     def header(self, message):
@@ -135,7 +131,7 @@ class Logger:
         # To terminal
         print ''
         print color(message, 'yellow')
-        print color(''.join(['-' for i in message]), 'yellow')
+        print color('-'*len(message), 'yellow')
 
         # To file
         self._toFile(message, 'START')
