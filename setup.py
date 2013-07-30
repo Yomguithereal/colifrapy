@@ -10,5 +10,6 @@ setup(name='colifrapy',
       packages=['colifrapy', 'colifrapy.tools'],
       install_requires=[
         'pyyaml',
+        'pystache'
       ],
       zip_safe=False)
