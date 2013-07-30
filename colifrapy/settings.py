@@ -6,7 +6,7 @@
 #   Author : PLIQUE Guillaume
 #   Version : 1.0
 
-# Dependancies
+# Dependencies
 #=============
 import pprint
 import yaml
@@ -31,10 +31,21 @@ class Settings():
             data = yaml.load(yf.read())
 
         # Setting Commander
-        self.__commander.config(version=data.get('version', '0.1'), arguments=data.get('arguments', []), description=data.get('description', ''), usage=data.get('usage'))
+        commander_settings = {
+            version     : data.get('version', '0.1'),
+            arguments   : data.get('arguments', []),
+            description : data.get('description', ''),
+            usage       : data.get('usage')
+        }
+        self.__commander.config(**commander_settings)
 
         # Setting Logger
-        self.__logger.config(strings=data.get('strings'), output_path=data.get('log_path'), threshold=data.get('log_threshold'))
+        logger_settings = {
+            strings     : data.get('strings'),
+            output_path : data.get('log_path'),
+            threshold   : data.get('log_threshold')
+        }
+        self.__logger.config(**logger_settings)
 
         # General Settings
         if 'settings' in data:
