@@ -40,11 +40,11 @@ class Commander(ArgumentParser):
     # Batch adding arguments
     def _add_arguments(self, arguments):
         for argument in arguments:
-            
+
             # Dispatching
             args = argument[0]
-            kwargs = argument[1]
-
+            kwargs = argument[1] if len(argument) > 1 else {}
+            
             # Associating type to pass yaml formatting
             if 'type' in kwargs:
                 kwargs['type'] = self._check_type(kwargs['type'])

@@ -32,18 +32,18 @@ class Settings():
 
         # Setting Commander
         commander_settings = {
-            version     : data.get('version', '0.1'),
-            arguments   : data.get('arguments', []),
-            description : data.get('description', ''),
-            usage       : data.get('usage')
+            "version"     : data.get('version', '0.1'),
+            "arguments"   : data.get('arguments', []),
+            "description" : data.get('description', ''),
+            "usage"       : data.get('usage')
         }
         self.__commander.config(**commander_settings)
 
         # Setting Logger
         logger_settings = {
-            strings     : data.get('strings'),
-            output_path : data.get('log_path'),
-            threshold   : data.get('log_threshold')
+            "strings"     : data.get('strings'),
+            "output_path" : data.get('log_path'),
+            "threshold"   : data.get('log_threshold')
         }
         self.__logger.config(**logger_settings)
 
