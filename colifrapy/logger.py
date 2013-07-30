@@ -99,7 +99,7 @@ class Logger:
         message = message.replace('\\r', '\r')
 
         # Printing to console
-        print color('['+level+']', self.levels[level]['color'])+' :: '+str(message)
+        print color('['+level+']', self.levels[level])+' :: '+str(message)
 
         # Outputting to file if wanted
         self._toFile(message, level)
