@@ -94,6 +94,9 @@ class Logger:
         if level not in self.threshold:
             return False
 
+        if level == 'FATAL':
+            message = message+'\n'
+
         # Variable substitution
         for k in variables:
             message = message.replace('{'+str(k)+'}', str(variables[k]))

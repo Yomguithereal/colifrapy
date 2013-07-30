@@ -8,6 +8,7 @@ main:
     start: 'Creating project *{project}*//INFO'
     directory: 'Creating directory : {directory}//DEBUG'
     file: 'Writing file : {file}//DEBUG'
+    init: 'Initializing python module : {path}//DEBUG'
     end: 'The project *{project}* is now set up.\n//INFO'
 
 errors:

@@ -34,10 +34,10 @@ class Scaffolder(Model):
         'gitignore': '.gitignore'
     }
 
-    folders = [
-        'model',
-        'config'
-    ]
+    folders = {
+        'model' : True,
+        'config' : False
+    }
 
     template_path = file_path
     template_vars = None
@@ -56,6 +56,11 @@ class Scaffolder(Model):
     def render(self, tpl):
         with codecs.open(self.template_path+tpl+'.tpl', 'r', 'utf-8') as tplf:
             return pystache.render(tplf.read(), self.template_vars)
+
+    # Create __init__.py files
+    def module_init(self, path):
+        with codecs.open(path+'/__init__.py', 'w+', 'utf-8') as i:
+            self.log.write('main:init', variables={'path':path})
     
     # File generation
     def new_project(self):
@@ -68,20 +73,24 @@ class Scaffolder(Model):
         # Creating directories
         self.log.write('main:directory', variables={'directory':project_path})
         os.mkdir(project_path)
-        for folder in self.folders:
+        self.module_init(project_path)
+        for folder, module in self.folders.iteritems():
             self.log.write('main:directory', variables={'directory':project_path+'/'+folder})
             os.mkdir(project_path+'/'+folder)
+            
+            # Initializing python module
+            if module:
+                self.module_init(project_path+'/'+folder)
 
         # Creating files
         for template, filename in self.files.iteritems():
-            with open(project_path+'/'+filename, 'w+') as f:
+            with codecs.open(project_path+'/'+filename, 'w+', 'utf-8') as f:
                 self.log.write('main:file', variables={'file':project_path+'/'+filename})
                 f.write(self.render(template))
 
-
 # Command Line Execution
 #=======================
-if __name__ == '__main__':
+def main():
 
     # Launching Colifrapy
     settings = Settings()
@@ -97,3 +106,6 @@ if __name__ == '__main__':
         logger.write('errors:action')
     else:
         scaffold = Scaffolder(commander.opts.project, commander.opts.author)
+
+if __name__ == '__main__':
+    main()
