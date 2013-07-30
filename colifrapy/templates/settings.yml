@@ -1,0 +1,16 @@
+# -------------------------------------------------------------------
+# Default Settings
+# -------------------------------------------------------------------
+#
+#
+#   Author : PLIQUE Guillaume
+#   Version : 1.0
+
+# Basic Informations
+version: 'Colifrapy Scaffolder 0.1'
+description: 'The Colifrapy Scaffolder is designed to create a new project.'
+log_path: False
+arguments: 
+- [ ['-a', '--author'], {'help' : "Author's name.", "default" : "Author"} ]
+- [ ['action'] ]
+- [ ['project'] ]

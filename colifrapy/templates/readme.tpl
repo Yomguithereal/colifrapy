@@ -1,0 +1,7 @@
+#{{project}}
+
+##Documentation
+
+##Dependencies
+
+	colifrapy

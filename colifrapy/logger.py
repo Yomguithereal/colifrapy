@@ -28,9 +28,10 @@ class Logger:
         'ERROR'   : 'red',
         'WARNING' : 'yellow',
         'DEBUG'   : 'blue',
-        'VERBOSE' : 'cyan'
+        'VERBOSE' : 'cyan',
+        'FATAL'   : 'magenta'
     }
-    threshold = ['INFO', 'DEBUG', 'WARNING', 'ERROR', 'VERBOSE']
+    threshold = ['INFO', 'DEBUG', 'WARNING', 'ERROR', 'VERBOSE', 'FATAL']
   
 
     # Constructor
@@ -66,10 +67,13 @@ class Logger:
         if not isinstance(threshold, list):
             threshold = [threshold]
         self.threshold = [i for i in threshold if i in self.levels]
+        if 'FATAL' not in self.threshold:
+            self.threshold.append('FATAL')
 
     # Logging Method
     #---------------
-    def write(self, message, level=None, variables={}):
+    def write(self, path, level=None, variables={}):
+        message = path
 
         # Checking log level
         if level not in self.levels:
@@ -104,22 +108,29 @@ class Logger:
         # Outputting to file if wanted
         self._toFile(message, level)
 
+        # Fatal Error
+        if level == 'FATAL':
+            raise Exception(path)
+
 
     # Helper Methods
-    def debug(self, message, variables={}):
-        self.write(message, 'DEBUG', variables={})
+    def debug(self, message, v={}):
+        self.write(message, 'DEBUG', variables=v)
 
-    def info(self, message, variables={}):
-        self.write(message, 'INFO', variables={})
+    def info(self, message, v={}):
+        self.write(message, 'INFO', variables=v)
 
-    def warning(self, message, variables={}):
-        self.write(message, 'WARNING', variables={})
+    def warning(self, message, v={}):
+        self.write(message, 'WARNING', variables=v)
 
-    def error(self, message, variables={}):
-        self.write(message, 'ERROR', variables={})
+    def error(self, message, v={}):
+        self.write(message, 'ERROR', variables=v)
 
-    def verbose(self, message, variables={}):
-        self.write(message, 'VERBOSE', variables={})
+    def verbose(self, message, v={}):
+        self.write(message, 'VERBOSE', variables=v)
+
+    def fatal(self, message, v={}):
+        self.write(message, 'FATAL', variables=v)
     
     # Header printing    
     def header(self, message):
@@ -141,7 +152,7 @@ class Logger:
         try:
             string = reduce(dict.__getitem__, path.split(':'), self.strings)
         except KeyError:
-            raise Exception('Colifrapy::Logger::WrongMessage')
+            return path
         return string
 
     # Writing to log file

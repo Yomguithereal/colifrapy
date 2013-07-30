@@ -1,0 +1,15 @@
+#-----------------------------
+# Colifrapy Scaffolder Strings
+#-----------------------------
+
+# Main Strings
+main:
+    title: 'Colifrapy Scaffolder'
+    start: 'Creating project *{project}*//INFO'
+    directory: 'Creating directory : {directory}//DEBUG'
+    file: 'Writing file : {file}//DEBUG'
+    end: 'The project *{project}* is now set up.\n//INFO'
+
+errors:
+    action: 'Wrong action supplied (usage : colifrapy new [project-name] (-a [author])//FATAL'
+    existing: 'A folder with the same name as your project already exists//FATAL'

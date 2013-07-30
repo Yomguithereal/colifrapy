@@ -7,7 +7,7 @@ setup(name='colifrapy',
       long_description='Colifrapy is a Command Line Framework for Python. Its aim is to provide several tools to build robust and structured command line tools very easily.',
       author='Yomguithereal',
       license='MIT',
-      packages=['colifrapy', 'colifrapy.tools'],
+      packages=['colifrapy', 'colifrapy.tools', 'colifrapy.scaffolder'],
       install_requires=[
         'pyyaml',
         'pystache'

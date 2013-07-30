@@ -8,6 +8,7 @@
 
 # Dependencies
 #=============
+import os
 import pprint
 import yaml
 from logger import Logger
@@ -24,7 +25,7 @@ class Settings():
 
     # Configuration
     #--------------
-    def load(self, yaml_file='settings.yml'):
+    def load(self, yaml_file=os.getcwd()+'/settings.yml'):
 
         # Opening Settings Yaml File
         with open(yaml_file, 'r') as yf:

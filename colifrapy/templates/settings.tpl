@@ -1,16 +1,16 @@
 # -------------------------------------------------------------------
-# Default Settings
+# {{project}} Settings
 # -------------------------------------------------------------------
 #
 #
-#   Author : PLIQUE Guillaume
+#   Author : {{author}}
 #   Version : 1.0
 
 # Basic Informations
-version: 'Colifrapy 0.1'
-description: 'Description of Colifrapy'
-strings: 'colifrapy/resources/strings.example.yml'
-log_path: False
+version: '{{project}} 0.1'
+description: 'Description of the program.'
+strings: 'config/strings.yml'
+log_path: 'logs'
 arguments: 
 - [ ['-t', '--test'], {'help' : 'Test', 'type' : 'int'} ]
 - [ ['positionnal'] ]
