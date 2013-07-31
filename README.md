@@ -139,14 +139,13 @@ Reserved attributes names are:
 The logger is the outputting class of colifrapy. It should be loaded with some strings by the settings.
 If no strings are given, the logger will just output normally the argument string you give it.
 
-The logger accepts six levels :
+The logger accepts five levels :
 
 	INFO (green output)
 	VERBOSE (cyan output)
 	DEBUG (blue output)
 	WARNING (yellow ouput)
-	ERROR (red output)
-	FATAL (purple output) --> will throw an exception for you to catch or not
+	ERROR (red output) --> will throw an exception for you to catch or not
 
 By default, if no level is specified for a message, DEBUG will always be taken.
 
@@ -216,7 +215,7 @@ class MyModel(Model):
 Additionally, the logger write to a file which is located by default in 'logs/log.txt'.
 
 You can set this path in your settings file along with the threshold of the logger and the
-path to the strings.
+path to the strings (ERROR will be included by default for logical reasons).
 
 Example:
 ```yaml

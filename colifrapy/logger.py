@@ -28,10 +28,9 @@ class Logger:
         'ERROR'   : 'red',
         'WARNING' : 'yellow',
         'DEBUG'   : 'blue',
-        'VERBOSE' : 'cyan',
-        'FATAL'   : 'magenta'
+        'VERBOSE' : 'cyan'
     }
-    threshold = ['INFO', 'DEBUG', 'WARNING', 'ERROR', 'VERBOSE', 'FATAL']
+    threshold = ['INFO', 'DEBUG', 'WARNING', 'ERROR', 'VERBOSE']
   
 
     # Constructor
@@ -45,7 +44,7 @@ class Logger:
         # Setting output path
         self.output_path = os.getcwd()+'/logs/' if output_path is None else output_path
 
-        if self.output_path is not False:
+        if self.output_path is not False and is not None:
             if not os.path.exists(self.output_path):
                 os.makedirs(self.output_path)
             self.output_path += 'log.txt'
@@ -67,8 +66,8 @@ class Logger:
         if not isinstance(threshold, list):
             threshold = [threshold]
         self.threshold = [i for i in threshold if i in self.levels]
-        if 'FATAL' not in self.threshold:
-            self.threshold.append('FATAL')
+        if 'ERROR' not in self.threshold:
+            self.threshold.append('ERROR')
 
     # Logging Method
     #---------------
@@ -94,9 +93,6 @@ class Logger:
         if level not in self.threshold:
             return False
 
-        if level == 'FATAL':
-            message = message+'\n'
-
         # Variable substitution
         for k in variables:
             message = message.replace('{'+str(k)+'}', str(variables[k]))
@@ -112,7 +108,7 @@ class Logger:
         self._toFile(message, level)
 
         # Fatal Error
-        if level == 'FATAL':
+        if level == 'ERROR':
             raise Exception(path)
 
 

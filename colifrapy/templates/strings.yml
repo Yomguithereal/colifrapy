@@ -12,5 +12,5 @@ main:
     end: 'The project *{project}* is now set up.\n//INFO'
 
 errors:
-    action: 'Wrong action supplied (usage : colifrapy new [project-name] (-a [author])//FATAL'
-    existing: 'A folder with the same name as your project already exists//FATAL'
+    action: 'Wrong action supplied (usage : colifrapy new [project-name] (-a [author])//ERROR'
+    existing: 'A folder with the same name as your project already exists//ERROR'
