@@ -44,7 +44,7 @@ class Logger:
         # Setting output path
         self.output_path = os.getcwd()+'/logs/' if output_path is None else output_path
 
-        if self.output_path is not False and is not None:
+        if self.output_path is not False and self.output_path is not None:
             if not os.path.exists(self.output_path):
                 os.makedirs(self.output_path)
             self.output_path += 'log.txt'
