@@ -19,5 +19,14 @@ setup(name='colifrapy',
       # -*- Entry points: -*-
       [console_scripts]
       colifrapy=colifrapy.scaffolder:main
-      """
-      )
+      """,
+      classifiers=[
+            'Development Status :: 4 - Beta',
+            'Environment :: Console',
+            'Intended Audience :: Developers',
+            'License :: OSI Approved :: MIT License',
+            'Programming Language :: Python',
+            'Topic :: Software Development :: Code Generators',
+            'Topic :: Software Development :: Libraries :: Application Frameworks'
+      ]
+)
