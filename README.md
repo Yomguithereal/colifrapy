@@ -29,6 +29,9 @@ Colifrapy is able to create a new blank project for you.
 
 ```sh
 colifrapy new [project]
+
+# Options
+-a/--author [name] : name of the project's author
 ```
 
 This will create the necessary files to start working immediatly. I.e. a command line hub, a base
@@ -52,10 +55,15 @@ config/settings.yml file:
 # Basic Informations
 version: 'Colifrapy 0.1'
 description: 'Description of Colifrapy'
-strings: 'colifrapy/resources/strings.example.yml'
 arguments: 
 - [ ['-t', '--test'], {'help' : 'Test', 'type' : 'int'} ]
 - [ ['positionnal_argument'] ]
+
+# Logger Settings
+logger:
+    strings: 'config/strings.yml'
+    path: 'logs'
+    threshold: ['DEBUG', 'ERROR', 'INFO', 'WARNING', 'VERBOSE']
 
 # Generic Settings needed by your program
 settings:
@@ -184,7 +192,7 @@ class MyModel(Model):
 		>>> [INFO] :: Exiting
 
 		# Passing variables
-		self.log.write('main:protocol:start', variables={'path' : 'test'})
+		self.log.write('main:protocol:start', {'path' : 'test'})
 		>>> [INFO] :: Starting corpus analysis (path : test)
 
 		# Wrong message if yml file specified
@@ -194,6 +202,10 @@ class MyModel(Model):
 		# When yml file is not specified
 		self.log.write('Test string', 'DEBUG')
 		>>> [DEBUG] :: Test string
+
+		# Arguments of write
+		variables --> hash
+		level --> log level
 
 		# Helper methods
 		#---------------
@@ -220,13 +232,15 @@ path to the strings (ERROR will be included by default for logical reasons).
 Example:
 ```yaml
 # Logger settings
-string: 'path/to/your/strings.yml'
-log_path: 'path/where/to/log/' # set to False, log won't be written to file
-log_threshold : ['DEBUG', 'ERROR']
+logger:
+	strings: 'path/to/your/strings.yml'
+	path: 'path/where/to/log/' # optional, discard the line not to log to a file
+	log_threshold : ['DEBUG', 'ERROR'] # optional, use it to specify your logger threshold
+	exceptions: False # optional (default, False), whether you want your errors to generate exceptions or not
 ```
 
 ###Bonus
-Colifrapy also gives access to a color class and a basic singleton decorator if needed.
+Colifrapy also gives access to a color class, a custom exception class and a basic singleton decorator if needed.
 
 ```python
 from colifrapy.tools.colors import color
@@ -237,6 +251,10 @@ from colifrapy.tools.decorators import singleton
 @singleton
 class MySingleton():
 	pass
+
+# Custom Exception Carrying data
+from colifrapy import DataException
+raise DataException(message, data)
 ```
 
 ##Examples
