@@ -25,6 +25,7 @@ file_path = os.path.split(os.path.abspath(__file__))[0]+'/templates/'
 class Scaffolder(Model):
 
     # Tools
+    project_name = False
     files = {
         'main' : False,
         'controller': 'model/controller.py',
@@ -43,11 +44,19 @@ class Scaffolder(Model):
     template_vars = None
 
     # Constructor
-    def __init__(self, project, author='Author'):
+    def __init__(self, project, author=None):
         self.log.write('main:start', variables={'project':project})
         
         self.files['main'] = project+'.py'
-        self.template_vars = {'project' : project, 'author' : author}
+        self.project_name = project
+
+        # Variables Assessment
+        if author is not None:
+            author = '\n#   Author : '+author
+        self.template_vars = {
+            'project' : project.title(),
+            'author_line' : author
+        }
         self.new_project()
        
         self.log.write('main:end', variables={'project':project})
@@ -66,7 +75,7 @@ class Scaffolder(Model):
     def new_project(self):
 
         # Current Directory
-        project_path = os.getcwd()+'/'+self.template_vars['project']
+        project_path = os.getcwd()+'/'+self.project_name
         if os.path.isdir(project_path):
             self.log.write('errors:existing')
 

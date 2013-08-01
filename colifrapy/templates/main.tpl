@@ -5,8 +5,7 @@
 # {{project}} Command Line Hub
 # -------------------------------------------------------------------
 #
-#
-#   Author : {{author}}
+#{{author_line}}
 #   Version : 1.0
 
 # Dependencies
