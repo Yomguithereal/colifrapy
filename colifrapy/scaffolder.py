@@ -96,7 +96,7 @@ def main():
     settings = Settings()
     settings.load(file_path+'settings.yml')
     logger = Logger()
-    logger.load_strings(file_path+'strings.yml')
+    logger.load_strings('templates/strings.yml')
     commander = Commander()
 
     # Launching Scaffolder

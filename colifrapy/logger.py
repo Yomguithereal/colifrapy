@@ -9,6 +9,7 @@
 # Dependancies
 #=============
 import os
+import __main__
 from datetime import datetime
 import yaml
 from tools.colors import color
@@ -23,6 +24,8 @@ class Logger:
     #-----------
     strings = None
     output_path = None
+    triggers_exceptions = True
+    app_path = os.path.split(os.path.abspath(__main__.__file__))[0]+'/'
     levels = {
         'INFO'    : 'green',
         'ERROR'   : 'red',
@@ -35,31 +38,30 @@ class Logger:
 
     # Constructor
     #------------
-    def __init__(self, strings=None, output_path=None, threshold=None):
-
+    def config(self, strings=None, output_path=None, threshold=None, triggers_exceptions=True):
+        
         # Loading strings
         if strings is not None:
             self.load_strings(strings)
 
         # Setting output path
-        self.output_path = os.getcwd()+'/logs/' if output_path is None else output_path
-
-        if self.output_path is not False and self.output_path is not None:
+        if output_path is not None:
+            self.output_path = self.app_path+output_path.strip('/')
             if not os.path.exists(self.output_path):
                 os.makedirs(self.output_path)
-            self.output_path += 'log.txt'
+            self.output_path += '/log.txt'
 
         # Setting level
         if threshold is not None:
             self.load_threshold(threshold)
 
-    def config(self, **kwargs):
-        self.__init__(**kwargs)
+        # Exceptions ?
+        self.triggers_exceptions = triggers_exceptions
 
     # Setters
     #--------
     def load_strings(self, strings):
-        with open(strings, 'r') as sf:
+        with open(self.app_path+strings.strip('/'), 'r') as sf:
             self.strings = yaml.load(sf.read())
 
     def load_threshold(self, threshold):
@@ -71,7 +73,7 @@ class Logger:
 
     # Logging Method
     #---------------
-    def write(self, path, level=None, variables={}):
+    def write(self, path, variables={}, level=None):
         message = path
 
         # Checking log level
@@ -108,7 +110,7 @@ class Logger:
         self._toFile(message, level)
 
         # Fatal Error
-        if level == 'ERROR':
+        if level == 'ERROR' and self.triggers_exceptions is True:
             raise Exception(path)
 
 
@@ -127,9 +129,6 @@ class Logger:
 
     def verbose(self, message, v={}):
         self.write(message, 'VERBOSE', variables=v)
-
-    def fatal(self, message, v={}):
-        self.write(message, 'FATAL', variables=v)
     
     # Header printing    
     def header(self, message):
@@ -158,7 +157,7 @@ class Logger:
     def _toFile(self, message, level):
 
         # Not writing to file if we do not want to
-        if self.output_path is False:
+        if self.output_path is None:
             return False
 
         # Writing to file

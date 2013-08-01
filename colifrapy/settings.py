@@ -41,10 +41,12 @@ class Settings():
         self.__commander.config(**commander_settings)
 
         # Setting Logger
+        logger_data = data.get('logger', {})
         logger_settings = {
-            "strings"     : data.get('strings'),
-            "output_path" : data.get('log_path'),
-            "threshold"   : data.get('log_threshold')
+            "strings"     : logger_data.get('strings'),
+            "output_path" : logger_data.get('path'),
+            "threshold"   : logger_data.get('threshold'),
+            "triggers_exceptions" : logger_data.get('exceptions', True)
         }
         self.__logger.config(**logger_settings)
 
