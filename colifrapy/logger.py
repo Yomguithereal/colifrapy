@@ -6,14 +6,16 @@
 #   Author : PLIQUE Guillaume
 #   Version : 1.0
 
-# Dependancies
+# Dependencies
 #=============
 import os
-import __main__
 from datetime import datetime
 import yaml
-from tools.colors import color
+import pystache
+from tools.colorize import colorize
 from tools.decorators import singleton
+from tools.flavors import TextFlavor
+from tools.flavors import TitleFlavor
 
 # Main Class
 #===========
@@ -24,21 +26,26 @@ class Logger:
     #-----------
     strings = None
     output_path = None
+    text_flavor = None
+    title_flavor = None
     triggers_exceptions = True
-    app_path = os.path.split(os.path.abspath(__main__.__file__))[0]+'/'
-    levels = {
-        'INFO'    : 'green',
-        'ERROR'   : 'red',
-        'WARNING' : 'yellow',
-        'DEBUG'   : 'blue',
-        'VERBOSE' : 'cyan'
-    }
-    threshold = ['INFO', 'DEBUG', 'WARNING', 'ERROR', 'VERBOSE']
+    levels = [
+        'INFO',
+        'ERROR',
+        'WARNING',
+        'DEBUG',
+        'VERBOSE',
+        'COLIFRAPY'
+    ]
+    threshold = set(['INFO', 'DEBUG', 'WARNING', 'ERROR', 'VERBOSE', 'COLIFRAPY'])
+    necessary_levels = set(['ERROR', 'COLIFRAPY'])
   
 
-    # Constructor
-    #------------
-    def config(self, strings=None, output_path=None, threshold=None, triggers_exceptions=True):
+    # Configuration
+    #--------------
+    def config(self, strings=None, output_path=None,
+        threshold=None, triggers_exceptions=True, 
+        flavor='default', title_flavor='default'):
         
         # Loading strings
         if strings is not None:
@@ -46,7 +53,7 @@ class Logger:
 
         # Setting output path
         if output_path is not None:
-            self.output_path = self.app_path+output_path.strip('/')
+            self.output_path = output_path.rstrip('/')
             if not os.path.exists(self.output_path):
                 os.makedirs(self.output_path)
             self.output_path += '/log.txt'
@@ -58,18 +65,23 @@ class Logger:
         # Exceptions ?
         self.triggers_exceptions = triggers_exceptions
 
+        # Flavor
+        self.text_flavor = TextFlavor(flavor)
+        self.title_flavor = TitleFlavor(title_flavor)
+
     # Setters
     #--------
     def load_strings(self, strings):
-        with open(self.app_path+strings.strip('/'), 'r') as sf:
-            self.strings = yaml.load(sf.read())
+        try:
+            with open(strings, 'r') as sf:
+                self.strings = yaml.load(sf.read())
+        except Exception, e:
+            self.write('The string file : {path} does not exist.', {'path' : strings}, 'COLIFRAPY')
+            raise e
 
     def load_threshold(self, threshold):
-        if not isinstance(threshold, list):
-            threshold = [threshold]
-        self.threshold = [i for i in threshold if i in self.levels]
-        if 'ERROR' not in self.threshold:
-            self.threshold.append('ERROR')
+        self.threshold = (set(threshold) & self.threshold) | self.necessary_levels
+
 
     # Logging Method
     #---------------
@@ -95,16 +107,18 @@ class Logger:
         if level not in self.threshold:
             return False
 
-        # Variable substitution
-        for k in variables:
-            message = message.replace('{'+str(k)+'}', str(variables[k]))
+        # Rendering
+        output = self.text_flavor.format(pystache.render(message, variables), level)
 
-        # Carriages
-        message = message.replace('\\n', '\n')
-        message = message.replace('\\r', '\r')
+        # Carriage returns
+        output = output.replace('\\n', '\n')
+
+        # If Colifrapy Message
+        if level == 'COLIFRAPY':
+            output = '\n'+output+'\n'
 
         # Printing to console
-        print color('['+level+']', self.levels[level])+' :: '+str(message)
+        print output
 
         # Outputting to file if wanted
         self._toFile(message, level)
@@ -116,34 +130,34 @@ class Logger:
 
     # Helper Methods
     def debug(self, message, v={}):
-        self.write(message, 'DEBUG', variables=v)
+        self.write(message, level='DEBUG', variables=v)
 
     def info(self, message, v={}):
-        self.write(message, 'INFO', variables=v)
+        self.write(message, level='INFO', variables=v)
 
     def warning(self, message, v={}):
-        self.write(message, 'WARNING', variables=v)
+        self.write(message, level='WARNING', variables=v)
 
     def error(self, message, v={}):
-        self.write(message, 'ERROR', variables=v)
+        self.write(message, level='ERROR', variables=v)
 
     def verbose(self, message, v={}):
-        self.write(message, 'VERBOSE', variables=v)
-    
+        self.write(message, level='VERBOSE', variables=v)
+ 
+
     # Header printing    
-    def header(self, message):
+    def header(self, message, color='yellow'):
 
         # Getting String
         if self.strings is not None:
             message = self._getString(message)
 
         # To terminal
-        print ''
-        print color(message, 'yellow')
-        print color('-'*len(message), 'yellow')
+        print self.title_flavor.format(message, color)
 
         # To file
         self._toFile(message, 'START')
+
 
     # Get string from Yaml
     def _getString(self, path):

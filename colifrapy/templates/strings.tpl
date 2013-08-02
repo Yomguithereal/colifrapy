@@ -5,4 +5,5 @@
 # Main Strings
 main:
     title: '{{project}}'
-    test: 'Test of string with a {variable}//DEBUG'
+    test: 'The command line tool is ready to go!//INFO'
+    var_test: 'Put variables like this : {{var}}//DEBUG'

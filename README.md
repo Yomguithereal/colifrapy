@@ -40,7 +40,7 @@ controller, a config file and a string file.
 To test if the scaffolding has worked :
 ```sh
 cd [project]
-python [project].py anything
+python [project].py test
 ```
 
 It should output a header display your project's title.

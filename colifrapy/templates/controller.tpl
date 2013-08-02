@@ -12,5 +12,7 @@ from colifrapy import Model
 # Main Class
 #=============
 class Controller(Model):
-    def __init__(self):
-        self.log.header('main:title')
+
+    # Example of controller action
+    def test(self):
+        self.log.write('main:test')

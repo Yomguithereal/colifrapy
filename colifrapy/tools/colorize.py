@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------
-# Colors Tool
+# Colorizing Tool
 # -------------------------------------------------------------------
 #
 #
@@ -20,5 +20,5 @@ __colorCodes = {
 }
 
 # Color Printing
-def color(string, color='blue'):
-	return "\033["+__colorCodes.get(color, '0')+"m"+str(string)+"\033[0m"
+def colorize(string, color='blue'):
+    return "\033["+__colorCodes.get(color, '0')+"m"+str(string)+"\033[0m"

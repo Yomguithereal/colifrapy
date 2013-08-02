@@ -25,7 +25,11 @@ class Settings():
 
     # Configuration
     #--------------
-    def load(self, yaml_file=os.getcwd()+'/config/settings.yml'):
+    def load(self, yaml_file=None):
+
+        # Default value
+        if yaml_file is None:
+            yaml_file = os.getcwd()+'/config/settings.yml'
 
         # Opening Settings Yaml File
         with open(yaml_file, 'r') as yf:
@@ -46,7 +50,9 @@ class Settings():
             "strings"     : logger_data.get('strings'),
             "output_path" : logger_data.get('path'),
             "threshold"   : logger_data.get('threshold'),
-            "triggers_exceptions" : logger_data.get('exceptions', True)
+            "triggers_exceptions" : logger_data.get('exceptions', True),
+            "flavor" : logger_data.get('flavor', 'default'),
+            "title_flavor" : logger_data.get('title_flavor', 'default')
         }
         self.__logger.config(**logger_settings)
 

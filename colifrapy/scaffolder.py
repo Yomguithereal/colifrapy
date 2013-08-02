@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*- 
+
 # -------------------------------------------------------------------
 # Scaffolder Tool
 # -------------------------------------------------------------------
@@ -12,9 +15,7 @@ import os
 import sys
 import codecs
 import pystache
-from logger import Logger
-from settings import Settings
-from commander import Commander
+from hub import Colifrapy
 from model import Model
 
 # Working Path
@@ -44,7 +45,7 @@ class Scaffolder(Model):
     template_vars = None
 
     # Constructor
-    def __init__(self, project, author=None):
+    def build(self, project, author=None):
         self.log.write('main:start', variables={'project':project})
         
         self.files['main'] = project+'.py'
@@ -55,7 +56,8 @@ class Scaffolder(Model):
             author = '\n#   Author : '+author
         self.template_vars = {
             'project' : project.title(),
-            'author_line' : author
+            'author_line' : author,
+            'var' : '{{var}}'
         }
         self.new_project()
        
@@ -99,22 +101,21 @@ class Scaffolder(Model):
 
 # Command Line Execution
 #=======================
-def main():
-
-    # Launching Colifrapy
-    settings = Settings()
-    settings.load(file_path+'settings.yml')
-    logger = Logger()
-    logger.load_strings('templates/strings.yml')
-    commander = Commander()
+class Hub(Colifrapy):
 
     # Launching Scaffolder
-    logger.header('main:title')
+    def launch(self):
+        self.log.load_strings(file_path+'strings.yml')
+        self.log.header('main:title')
 
-    if commander.opts.action != "new":
-        logger.write('errors:action')
-    else:
-        scaffold = Scaffolder(commander.opts.project, commander.opts.author)
+        if self.opts.action != "new":
+            self.log.write('errors:action')
+        else:
+            self.controller.build(self.opts.project, self.opts.author)
+
+def main():
+    hub = Hub(Scaffolder, file_path+'settings.yml')
+    hub.launch()
 
 if __name__ == '__main__':
     main()

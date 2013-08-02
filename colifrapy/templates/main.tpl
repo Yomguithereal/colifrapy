@@ -10,13 +10,23 @@
 
 # Dependencies
 #=============
-from colifrapy import Settings, Commander
+from colifrapy import Colifrapy
 from model.controller import Controller
 
-# Loading Colifrapy
-settings = Settings()
-settings.load()
-command = Commander()
+# Hub
+#======
+class {{project}}(Colifrapy):
+    
+    def launch(self):
 
-# Launching Controller
-controller = Controller()
+        # Welcoming visitors
+        self.log.header('main:title')
+
+        # Calling upon the controller
+        self.controller.test()
+
+# Launching
+#===========
+if __name__ == '__main__':
+    hub = {{project}}(Controller)
+    hub.launch()
