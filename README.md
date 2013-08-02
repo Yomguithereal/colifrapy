@@ -5,10 +5,11 @@ Colifrapy is a Command Line Framework for Python.
 Its aim is to provide several tools to build robust and
 structured command line tools very easily.
 
-Its logic is very similar to a MVC framework and will is therefore easy to use.
+Its logic is very similar to a MVC framework and is therefore easy to use.
 
 ##Installation
 It is recommanded to use colifrapy under a python virtualenv.
+
 Install it with pip :
 
 ```
@@ -37,7 +38,7 @@ colifrapy new [project]
 ```
 
 This will create the necessary files to start working immediatly. I.e. a command line hub, a base
-controller, a config file and a string file.
+controller, an example model, a config file and a string file.
 
 To test if the scaffolding has worked :
 ```sh
@@ -98,7 +99,7 @@ config/settings.yml file:
 
 ```yaml
 # Basic Informations
-version: '{{project}} 0.1.0'
+version: '[project-name] 0.1.0'
 description: 'Description of the program.'
 arguments: 
 - [ ['-t', '--test'], {'help' : 'Test', 'type' : 'int'} ]
