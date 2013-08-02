@@ -16,6 +16,7 @@ arguments:
 logger:
     strings: 'config/strings.yml'
     flavor: 'default'
+    title_default: 'default'
     # Delete the path line not to write the log to a file
     path: 'logs'
     threshold: ['DEBUG', 'ERROR', 'INFO', 'WARNING', 'VERBOSE']

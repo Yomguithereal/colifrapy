@@ -21,7 +21,7 @@ class Colifrapy:
     controller = None
     settings = None
 
-    def __init__(self, controller, settings_path=None):
+    def __init__(self, controller=None, settings_path=None):
 
         # Loading Settings
         self.settings = Settings()
@@ -35,4 +35,5 @@ class Colifrapy:
         self.log = Logger()
 
         # Loading Controller
-        self.controller = controller()
+        if controller is not None:
+            self.controller = controller()

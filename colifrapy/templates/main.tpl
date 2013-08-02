@@ -16,6 +16,12 @@ from model.controller import Controller
 # Hub
 #======
 class {{project}}(Colifrapy):
+
+	# From this hub, you can access several things :
+	#    self.settings (Settings Instance)
+	#    self.log (Logger Instance)
+	#    self.opts (Options passed to your hub)
+	#    self.controller (Your Controller)
     
     def launch(self):
 
