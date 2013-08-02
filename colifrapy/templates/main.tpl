@@ -27,6 +27,7 @@ class {{project}}(Colifrapy):
 
         # Welcoming visitors
         self.log.header('main:title')
+        self.log.write('main:hub')
 
         # Calling upon the controller
         self.controller.test()

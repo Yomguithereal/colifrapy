@@ -30,6 +30,7 @@ class Scaffolder(Model):
     files = {
         'main' : False,
         'controller': 'model/controller.py',
+        'model' : 'model/example_model.py',
         'settings' : 'config/settings.yml',
         'strings'  : 'config/strings.yml',
         'readme'   : 'README.md',
@@ -44,7 +45,7 @@ class Scaffolder(Model):
     template_path = file_path
     template_vars = None
 
-    # Constructor
+    # New Project
     def build(self, project, author=None):
         self.log.write('main:start', variables={'project':project})
         
