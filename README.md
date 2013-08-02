@@ -1,4 +1,4 @@
-#Colifrapy
+#Colifrapy 0.3.0
 
 ##Description
 Colifrapy is a Command Line Framework for Python.
@@ -89,7 +89,7 @@ if __name__ == '__main__':
 ```
 
 ###Controller
-The controller (which is totally optionnal, if you don't want to follow this logic, just don't pass a controller to your hub instance), is a class that will call upon your models to perform actions. (The controller is in fact a colifrapy Model instance, but this must not perturb you).
+The controller (which is totally optionnal, if you don't want to follow this logic, just don't pass a controller to your hub instance), is a class that will call upon your models to perform actions. (The controller is in fact a colifrapy Model instance, but this must not disturb you).
 
 ###Settings
 The Settings class is the first class loaded by colifrapy to perform its magic. It will parse your settings.yml file and configure your logger, arguments and every other configuration you want for your application.
@@ -172,6 +172,8 @@ self.opts . However, even if those are accessible in models for commodity, only 
 ###Model
 Models are the bulk of Colifrapy. You can extend them to acces your settings and commands easily.
 
+An example model is generated for you by the Scaffolder when you create a new project.
+
 Example:
 ```python
 from colifrapy import Model
@@ -226,7 +228,8 @@ other_string_category:
 	test: 'Hello everyone//INFO'
 	you:
 		can:
-			make: 'any levels that you want so you can organize your strings however you need.'
+			make: 'any levels that you want'
+			so: 'you can organize your strings however you need.'
 ```
 And this is how you use the logger:
 ```python
@@ -255,7 +258,7 @@ class MyModel(Model):
 		>>> Exception Colifrapy::Logger::WrongMessage
 
 		# When yml file is not specified
-		self.log.write('Test string', 'DEBUG')
+		self.log.write('Test string', level='DEBUG')
 		>>> [DEBUG] :: Test string
 
 		# Arguments of write
@@ -293,7 +296,7 @@ logger:
 	# ERROR will always be kept whatsoever for obvious reasons, even if you drop it
 	log_threshold : ['DEBUG', 'ERROR']
 	
-	# optional (default, False), whether you want your errors to generate exceptions or not
+	# optional (default, False), whether you want your errors to raise exceptions
 	exceptions: False
 
 	# flavors (see Eyecandy) you can drop those lines if you want default
@@ -308,7 +311,7 @@ from colifrapy import Logger
 
 log = Logger()
 
-# If you haven't configured it before in your code and you use it outside colifrapy's layout
+# If you haven't configured it before in your code and you use it outside colifrapy
 # Pass kwargs to it corresponding to the logger options in settings.yml
 log.config(**kwargs)
 
