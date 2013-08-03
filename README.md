@@ -288,7 +288,7 @@ Reserved attributes names are:
 
 ---
 
-###Logger and strings
+###Logger
 
 ####Basic
 The logger is the outputting class of colifrapy. It should be loaded with some strings by the settings.
@@ -355,7 +355,7 @@ class MyModel(Model):
 
 		# When yml file is not specified or if message does not match
 		self.log.write('Test string', level='DEBUG')
-		>>> [DEBUG] :: Test string
+		>>> '[DEBUG] :: Test string'
 
 		# Named arguments of write
 		# variables --> hash
