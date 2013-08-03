@@ -8,22 +8,22 @@ structured command line tools very easily.
 Its logic is very similar to a MVC framework and is therefore easy to use.
 
 ##Summary
-* [Installation](#Installation)
-* [Philosophy](#Philosophy)
-* [Concept](#Concept)
-* [Usage](#Usage)
-	1. [Scaffolding](#Scaffolding)
-	2. [Command Line Hub](#Command-Line-Hub)
-	3. [Controller](#Controller)
-	4. [Settings](#Settings)
-	5. [Arguments](#Arguments)
-	6. [Model](#Model)
-	7. [Logger](#Logger)
-	8. [Eye Candy](#Eye-Candy)
-	9. [Bonus](#Bonus)
-* [Example](#Example)
-* [Dependencies](#Dependencies)
-* [License](#License)
+* [Installation](#installation)
+* [Philosophy](#philosophy)
+* [Concept](#concept)
+* [Usage](#usage)
+	1. [Scaffolding](#scaffolding)
+	2. [Command Line Hub](#command-line-hub)
+	3. [Controller](#controller)
+	4. [Settings](#settings)
+	5. [Arguments](#arguments)
+	6. [Model](#model)
+	7. [Logger](#logger)
+	8. [Eye Candy](#eye-candy)
+	9. [Bonus](#bonus)
+* [Example](#example)
+* [Dependencies](#dependencies)
+* [License](#license)
 
 ##Installation
 It is recommanded to use colifrapy under a python virtualenv.
