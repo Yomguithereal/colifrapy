@@ -21,7 +21,7 @@ Its logic is very similar to a MVC framework and is therefore easy to use.
 	7. [Logger](#logger)
 	8. [Eye Candy](#eye-candy)
 	9. [Bonus](#bonus)
-* [Example](#example)
+* [Examples](#examples)
 * [Dependencies](#dependencies)
 * [License](#license)
 
@@ -459,7 +459,7 @@ raise DataException(message, data)
 My project [furuikeya](https://github.com/Yomguithereal/furuikeya) is a good example of the usage
 of colifrapy since colifrapy was originally designed to help me doing it.
 
-##Dependancies
+##Dependencies
 
 	pyyaml
 	pystache
