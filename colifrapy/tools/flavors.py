@@ -15,8 +15,11 @@ from colorize import colorize
 #============
 class TextFlavor:
 
-    # Styles definitions
+    # Operational variables
     flavor = 'default'
+    formats = None
+
+    # Styles definitions
     styles = {
         'default' : {
             'tpl' : '[{{level}}]',
@@ -26,7 +29,9 @@ class TextFlavor:
         'flat' : {
             'tpl' : '{{level}}',
             'separator' : ' : ',
-            'options' : ['lowercase']
+            'options' : [
+                lambda x: x.lower()
+            ]
         }
     }
 
@@ -41,15 +46,23 @@ class TextFlavor:
     }
 
     def __init__(self, flavor):
+
+        # Keeping trace of flavor
         if flavor in self.styles:
             self.flavor = flavor
 
+        # Caching string format
+        self.formats = {level : colorize(pystache.render(self.styles[self.flavor]['tpl'], {'level' : self.__options(level)}), self.level_colors[level])+self.styles[self.flavor]['separator'] for level in self.level_colors}
+
+    # Option application
+    def __options(self, level):
+        for func in self.styles[self.flavor]['options']:
+            level = func(level)
+        return level
+
     # Style formatting
     def format(self, string, level):
-        color = self.level_colors[level]
-        if 'lowercase' in self.styles[self.flavor]['options']:
-            level = level.lower()
-        return colorize(pystache.render(self.styles[self.flavor]['tpl'], {'level' : level}), color)+self.styles[self.flavor]['separator']+string
+        return self.formats[level]+string
 
 
 # Logger Title
