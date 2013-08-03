@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 
 # -------------------------------------------------------------------
 # Scaffolder Tool
@@ -34,7 +34,8 @@ class Scaffolder(Model):
         'settings' : 'config/settings.yml',
         'strings'  : 'config/strings.yml',
         'readme'   : 'README.md',
-        'gitignore': '.gitignore'
+        'gitignore': '.gitignore',
+        'requirements' : 'requirements.txt'
     }
 
     folders = {
@@ -48,7 +49,7 @@ class Scaffolder(Model):
     # New Project
     def build(self, project, author=None):
         self.log.write('main:start', variables={'project':project})
-        
+
         self.files['main'] = project+'.py'
         self.project_name = project
 
@@ -61,7 +62,7 @@ class Scaffolder(Model):
             'var' : '{{var}}'
         }
         self.new_project()
-       
+
         self.log.write('main:end', variables={'project':project})
 
     # Utilities
@@ -73,7 +74,7 @@ class Scaffolder(Model):
     def module_init(self, path):
         with codecs.open(path+'/__init__.py', 'w+', 'utf-8') as i:
             self.log.write('main:init', variables={'path':path})
-    
+
     # File generation
     def new_project(self):
 
@@ -89,7 +90,7 @@ class Scaffolder(Model):
         for folder, module in self.folders.iteritems():
             self.log.write('main:directory', variables={'directory':project_path+'/'+folder})
             os.mkdir(project_path+'/'+folder)
-            
+
             # Initializing python module
             if module:
                 self.module_init(project_path+'/'+folder)
