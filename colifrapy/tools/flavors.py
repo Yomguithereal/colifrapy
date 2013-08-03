@@ -42,7 +42,8 @@ class TextFlavor:
         'WARNING' : 'yellow',
         'DEBUG'   : 'blue',
         'VERBOSE' : 'cyan',
-        'COLIFRAPY' : 'magenta'
+        'COLIFRAPY' : 'magenta',
+        'CONFIRM' : 'magenta'
     }
 
     def __init__(self, flavor):

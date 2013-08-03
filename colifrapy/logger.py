@@ -39,14 +39,14 @@ class Logger:
     ]
     threshold = set(['INFO', 'DEBUG', 'WARNING', 'ERROR', 'VERBOSE', 'COLIFRAPY'])
     necessary_levels = set(['ERROR', 'COLIFRAPY'])
-  
+
 
     # Configuration
     #--------------
     def config(self, strings=None, output_path=None,
-        threshold=None, triggers_exceptions=True, 
+        threshold=None, triggers_exceptions=True,
         flavor='default', title_flavor='default'):
-        
+
         # Loading strings
         if strings is not None:
             self.load_strings(strings)
@@ -95,7 +95,7 @@ class Logger:
         # Retrieving message string
         if self.strings is not None:
             string = self._getString(message)
-            
+
             # Getting string back
             string = string.split('//')
             message = string[0]
@@ -143,14 +143,13 @@ class Logger:
 
     def verbose(self, message, v={}):
         self.write(message, level='VERBOSE', variables=v)
- 
 
-    # Header printing    
+
+    # Header printing
     def header(self, message, color='yellow'):
 
         # Getting String
-        if self.strings is not None:
-            message = self._getString(message)
+        message = self._getString(message)
 
         # To terminal
         print self.title_flavor.format(message, color)
@@ -159,8 +158,24 @@ class Logger:
         self._toFile(message, 'START')
 
 
+    # Confirmation asking method
+    def confirm(self, message, default='y'):
+        text = ('Y/n') if default == 'y' else ('y/N')
+
+        output = self.text_flavor.format(self._getString(message), 'CONFIRM')
+        response = raw_input(output+' '+text+'\n').lower()
+        response = default if response.strip() == '' else response
+
+        return response == 'y'
+
+
+    # Utilities
+    #----------
+
     # Get string from Yaml
     def _getString(self, path):
+        if self.strings is None:
+            return path
         try:
             string = reduce(dict.__getitem__, path.split(':'), self.strings)
         except KeyError:
