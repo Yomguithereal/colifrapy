@@ -7,6 +7,8 @@ structured command line tools very easily.
 
 Its logic is very similar to a MVC framework and is therefore easy to use.
 
+A more visually appealing documentation is available [there](http://yomguithereal.github.io/colifrapy/)
+
 ##Summary
 * [Installation](#installation)
 * [Philosophy](#philosophy)
