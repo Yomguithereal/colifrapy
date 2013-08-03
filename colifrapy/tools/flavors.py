@@ -14,16 +14,18 @@ from colorize import colorize
 # Logger Text
 #============
 class TextFlavor:
-    
+
     # Styles definitions
     flavor = 'default'
     styles = {
         'default' : {
-            'tpl' : '[{{level}}] :: ',
+            'tpl' : '[{{level}}]',
+            'separator' : ' :: ',
             'options' : []
         },
         'flat' : {
-            'tpl' : '{{level}} : ',
+            'tpl' : '{{level}}',
+            'separator' : ' : ',
             'options' : ['lowercase']
         }
     }
@@ -47,7 +49,7 @@ class TextFlavor:
         color = self.level_colors[level]
         if 'lowercase' in self.styles[self.flavor]['options']:
             level = level.lower()
-        return colorize(pystache.render(self.styles[self.flavor]['tpl'], {'level' : level}), color)+string
+        return colorize(pystache.render(self.styles[self.flavor]['tpl'], {'level' : level}), color)+self.styles[self.flavor]['separator']+string
 
 
 # Logger Title
