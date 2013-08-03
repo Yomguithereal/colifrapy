@@ -15,14 +15,20 @@ Install it with pip :
 ```
 pip install colifrapy
 ```
+Warning :: the colifrapy version available through pip is the 0.2 one.
+If you want to use the last one which is still in development :
+
+```
+pip install git+https://github.com/Yomguithereal/colifrapy.git
+```
 
 ##Philosophy
-The goal of colifrapy is to load a yaml configuration file managing 
+The goal of colifrapy is to load a yaml configuration file managing
 several settings such as your command line arguments,
 version name and, if needed, your contextual settings.
 
 Once those settings are loaded, you can call upon colifrapy models to do the
-work while remaining able to access critical utilities such as argv opts, settings 
+work while remaining able to access critical utilities such as argv opts, settings
 and logger.
 
 ##Usage
@@ -66,7 +72,7 @@ from model.controller import Controller
 # Hub
 #======
 class NameOfYourProject(Colifrapy):
-    
+
     # From this hub, you can access several things :
 	#    self.settings (Settings Instance)
 	#    self.log (Logger Instance)
@@ -101,7 +107,7 @@ config/settings.yml file:
 # Basic Informations
 version: '[project-name] 0.1.0'
 description: 'Description of the program.'
-arguments: 
+arguments:
 - [ ['-t', '--test'], {'help' : 'Test', 'type' : 'int'} ]
 - [ ['positionnal'] ]
 
@@ -122,7 +128,7 @@ settings:
 ```
 
 The settings are loaded automatically by colifrapy but you still can use its logic elsewhere if
-you need it. 
+you need it.
 
 An example of external use :
 
@@ -151,7 +157,7 @@ Arguments are to be defined as for the python [ArgParser](http://docs.python.org
 
 Examples of argument declaration:
 ```yaml
-arguments: 
+arguments:
 - [ ['-t', '--test'], {'help' : 'Test', 'type' : 'int', 'default' : 5} ]
 - [ ['-b', '--blue'], {'help' : 'Blue option', 'type' : 'int', 'required' : 'True'} ]
 - [ ['some_positionnal_argument'] ]
@@ -296,7 +302,7 @@ logger:
 	# optional, use it to specify your logger threshold
 	# ERROR will always be kept whatsoever for obvious reasons, even if you drop it
 	log_threshold : ['DEBUG', 'ERROR']
-	
+
 	# optional (default, False), whether you want your errors to raise exceptions
 	exceptions: False
 
@@ -321,7 +327,7 @@ log.debug('test')
 ```
 
 ###Eye Candy
-Colifrapy comes with visual alternatives (two for the moment, but more will come). They are called 
+Colifrapy comes with visual alternatives (two for the moment, but more will come). They are called
 'flavors' and can be set in the Logger's settings.
 
 Flavors :
