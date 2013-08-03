@@ -49,8 +49,8 @@ Moreover, colifrapy is not a tyrant and does not force you to go its way. As suc
 be used on its own and you are free to code however you want to.
 
 ##Concept
-Using colifrapy, your tool is called through a command line hub which which act more or less like a router and
-will call upon a controller that will use one or several models to perform the job.
+Using colifrapy, your tool is called through a command line hub which acts more or less like a router and
+calls upon a controller that will use one or several models to perform the job.
 
 Your hub will therefore have the task to load a yaml configuration file containing your command line
 arguments, name, version and even contextual settings if you need to.
@@ -91,6 +91,8 @@ python [project].py test
 
 It should output a header displaying your project's title, some string outputs, and a short line telling you
 all is going to be fine.
+
+
 
 ###Command Line Hub
 A colifrapy project relies on a command line hub which extends Colifrapy base class and which must
@@ -133,6 +135,8 @@ if __name__ == '__main__':
     hub.launch()
 ```
 
+
+
 ###Controller
 The controller (which is totally optionnal, if you don't want to follow this logic, just don't pass a controller to your hub instance), is a class that will call upon your models to perform actions. (The controller is in fact a colifrapy Model instance, but this must not disturb you).
 
@@ -159,6 +163,8 @@ class Controller(Model):
         self.log.write('main:controller')
         self.example_model.hello()
 ```
+
+
 
 ###Settings
 The Settings class is the first class loaded by colifrapy to perform its magic. It will parse your settings.yml file and configure your logger, arguments and every other configuration you want for your application.
@@ -214,6 +220,8 @@ print settings.hash['test']
 
 The Settings class is a singleton. You can therefore use it everywhere without having to reload the data.
 
+
+
 ###Arguments
 Arguments are to be defined as for the python [ArgParser](http://docs.python.org/dev/library/argparse.html "ArgParser") class. In fact,
 the colifrapy Commander class extends the ArgParser one, so, if you need complicated things not handled by colifrapy, just use the Commander class like the ArgParser one.
@@ -243,6 +251,9 @@ As for the Settings class, the Commander class is a singleton and its state won'
 In the command hub and in your models, you can access the options passed to your commander through
 self.opts . However, even if those are accessible in models for commodity, only the main hub should use them and one should restrain their usage in models.
 
+
+
+
 ###Model
 Models are the bulk of Colifrapy. You can extend them to acces your settings and commands easily.
 
@@ -266,6 +277,8 @@ Reserved attributes names are:
 	log (access to the logger described right after)
 	opts (access to the command line options)
 	settings (access to the program's settings)
+
+
 
 
 ###Logger and strings
@@ -406,6 +419,8 @@ log.debug('test')
 >> [DEBUG] :: test
 ```
 
+
+
 ###Eye Candy
 Colifrapy comes with visual alternatives (two for the moment, but more will come). They are called
 'flavors' and can be set in the Logger's settings.
@@ -436,6 +451,8 @@ Title
 ```
 debug : text
 ```
+
+
 
 ###Bonus
 Colifrapy also gives access to a colorization function, a custom exception class and a basic singleton decorator if needed.
