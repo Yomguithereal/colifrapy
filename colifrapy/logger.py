@@ -8,6 +8,11 @@
 
 # Dependencies
 #=============
+
+# Back to the Future !
+from __future__ import print_function
+
+# Standard
 import os
 from datetime import datetime
 import yaml
@@ -94,7 +99,7 @@ class Logger:
 
         # Retrieving message string
         if self.strings is not None:
-            string = self._getString(message)
+            string = self.__getString(message)
 
             # Getting string back
             string = string.split('//')
@@ -118,10 +123,10 @@ class Logger:
             output = '\n'+output+'\n'
 
         # Printing to console
-        print output
+        self.__toConsole(output)
 
         # Outputting to file if wanted
-        self._toFile(message, level)
+        self.__toFile(message, level)
 
         # Fatal Error
         if level == 'ERROR' and self.triggers_exceptions is True:
@@ -149,20 +154,20 @@ class Logger:
     def header(self, message, color='yellow'):
 
         # Getting String
-        message = self._getString(message)
+        message = self.__getString(message)
 
         # To terminal
-        print self.title_flavor.format(message, color)
+        self.__toConsole(self.title_flavor.format(message, color))
 
         # To file
-        self._toFile(message, 'START')
+        self.__toFile(message, 'START')
 
 
     # Confirmation asking method
     def confirm(self, message, default='y'):
         text = ('Y/n') if default == 'y' else ('y/N')
 
-        output = self.text_flavor.format(self._getString(message), 'CONFIRM')
+        output = self.text_flavor.format(self.__getString(message), 'CONFIRM')
         response = raw_input(output+' '+text+'\n').lower()
         response = default if response.strip() == '' else response
 
@@ -173,7 +178,7 @@ class Logger:
     #----------
 
     # Get string from Yaml
-    def _getString(self, path):
+    def __getString(self, path):
         if self.strings is None:
             return path
         try:
@@ -182,8 +187,12 @@ class Logger:
             return path
         return string
 
+    # Outputting to console
+    def __toConsole(self, message):
+        print(message)
+
     # Writing to log file
-    def _toFile(self, message, level):
+    def __toFile(self, message, level):
 
         # Not writing to file if we do not want to
         if self.output_path is None:
