@@ -80,6 +80,7 @@ colifrapy new [project]
 
 # Options
 #    -a/--author [name] : name of the project's author
+#    -o/--organization [name] : name of the author's organization
 ```
 
 This will create the necessary files to start working immediatly. I.e. a command line hub, a base

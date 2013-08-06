@@ -47,7 +47,7 @@ class Scaffolder(Model):
     template_vars = None
 
     # New Project
-    def build(self, project, author=None):
+    def build(self, project, author=None, organization=None):
         self.log.write('main:start', variables={'project':project})
 
         self.files['main'] = project+'.py'
@@ -56,9 +56,13 @@ class Scaffolder(Model):
         # Variables Assessment
         if author is not None:
             author = '\n#   Author : '+author
+        if organization is not None:
+            organization = '\n#   Organization : '+organization
+
         self.template_vars = {
             'project' : project.title(),
             'author_line' : author,
+            'organization_line' : organization,
             'var' : '{{var}}'
         }
         self.new_project()
@@ -113,7 +117,7 @@ class Hub(Colifrapy):
         if self.opts.action != "new":
             self.log.write('errors:action')
         else:
-            self.controller.build(self.opts.project, self.opts.author)
+            self.controller.build(self.opts.project, self.opts.author, self.opts.organization)
 
 def main():
     hub = Hub(Scaffolder, file_path+'settings.yml')

@@ -10,6 +10,7 @@
 version: 'Colifrapy Scaffolder 0.2'
 description: 'The Colifrapy Scaffolder is designed to create a new project.'
 arguments: 
-- [ ['-a', '--author'], {'help' : "Author's name.", "default" : "Author"} ]
+- [ ['-a', '--author'], {'help' : "Author's name."} ]
+- [ ['-o', '--organization'], {'help' : "Organization's name."} ]
 - [ ['action'] ]
 - [ ['project'] ]
