@@ -9,11 +9,7 @@
 def titler(string):
 
     # String cases
-    cases = [
-        ' ',
-        '-',
-        '_'
-    ]
+    cases = [' ', '-', '_']
 
     # Fixing
     for case in cases:
