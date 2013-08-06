@@ -16,15 +16,20 @@ try:
 except NameError:
     pass
 
+try:
+    from functools import reduce
+except ImportError:
+    pass
+
 # Standard
 import os
 from datetime import datetime
 import yaml
 import pystache
-from tools.colorize import colorize
-from tools.decorators import singleton
-from tools.flavors import TextFlavor
-from tools.flavors import TitleFlavor
+from .tools.colorize import colorize
+from .tools.decorators import singleton
+from .tools.flavors import TextFlavor
+from .tools.flavors import TitleFlavor
 
 # Main Class
 #===========
@@ -56,6 +61,10 @@ class Logger:
         threshold=None, triggers_exceptions=True,
         flavor='default', title_flavor='default'):
 
+        # Flavor
+        self.text_flavor = TextFlavor(flavor)
+        self.title_flavor = TitleFlavor(title_flavor)
+
         # Loading strings
         if strings is not None:
             self.load_strings(strings)
@@ -74,9 +83,6 @@ class Logger:
         # Exceptions ?
         self.triggers_exceptions = triggers_exceptions
 
-        # Flavor
-        self.text_flavor = TextFlavor(flavor)
-        self.title_flavor = TitleFlavor(title_flavor)
 
     # Setters
     #--------
@@ -84,7 +90,7 @@ class Logger:
         try:
             with open(strings, 'r') as sf:
                 self.strings = yaml.load(sf.read())
-        except Exception, e:
+        except Exception as e:
             self.write('The string file : {path} does not exist.', {'path' : strings}, 'COLIFRAPY')
             raise e
 
