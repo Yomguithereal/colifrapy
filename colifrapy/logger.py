@@ -11,6 +11,10 @@
 
 # Back to the Future !
 from __future__ import print_function
+try:
+    input = raw_input
+except NameError:
+    pass
 
 # Standard
 import os
@@ -168,7 +172,7 @@ class Logger:
         text = ('Y/n') if default == 'y' else ('y/N')
 
         output = self.text_flavor.format(self.__getString(message), 'CONFIRM')
-        response = raw_input(output+' '+text+'\n').lower()
+        response = input(output+' '+text+'\n').lower()
         response = default if response.strip() == '' else response
 
         return response == 'y'
