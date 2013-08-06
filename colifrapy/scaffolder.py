@@ -55,17 +55,17 @@ class Scaffolder(Model):
         self.project_name = project
 
         # Variables Assessment
-        if author is not None:
-            author = '\n#   Author : '+author
-        if organization is not None:
-            organization = '\n#   Organization : '+organization
-
         self.template_vars = {
             'project' : titler(project),
-            'author_line' : author,
-            'organization_line' : organization,
             'var' : '{{var}}'
         }
+
+        # Options
+        if author is not None:
+            self.template_vars['author_line'] = '\n#   Author : '+author
+        if organization is not None:
+            self.template_vars['organization_line'] = '\n#   Organization : '+organization
+
         self.new_project()
 
         self.log.write('main:end', variables={'project':project})
