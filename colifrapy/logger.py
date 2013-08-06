@@ -38,6 +38,7 @@ class Logger:
 
     # Properties
     #-----------
+    activated = True
     strings = None
     output_path = None
     text_flavor = None
@@ -60,7 +61,7 @@ class Logger:
     #--------------
     def config(self, strings=None, output_path=None,
         threshold=None, triggers_exceptions=True,
-        flavor='default', title_flavor='default'):
+        flavor='default', title_flavor='default', activated=True):
 
         # Flavor
         self.text_flavor = TextFlavor(flavor)
@@ -83,6 +84,9 @@ class Logger:
 
         # Exceptions ?
         self.triggers_exceptions = triggers_exceptions
+
+        # Activated
+        self.activated = activated
 
 
     # Setters
@@ -200,7 +204,8 @@ class Logger:
 
     # Outputting to console
     def __toConsole(self, message):
-        print(message)
+        if self.activated:
+            print(message)
 
     # Writing to log file
     def __toFile(self, message, level):

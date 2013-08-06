@@ -47,6 +47,7 @@ class Settings():
         # Setting Logger
         logger_data = data.get('logger', {})
         logger_settings = {
+            "activated"   : logger_data.get('activated', True)
             "strings"     : logger_data.get('strings'),
             "output_path" : logger_data.get('path'),
             "threshold"   : logger_data.get('threshold'),

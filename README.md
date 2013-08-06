@@ -394,6 +394,12 @@ Example:
 ```yaml
 # Logger settings
 logger:
+
+    # Activation. Whether it will output to console?
+    # defaults to True
+    activated: True
+
+    # Path to strings.
 	strings: 'path/to/your/strings.yml'
 
 	# optional, discard the line not to log to a file
