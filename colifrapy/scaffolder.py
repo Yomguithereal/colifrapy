@@ -92,7 +92,7 @@ class Scaffolder(Model):
         self.log.write('main:directory', variables={'directory':project_path})
         os.mkdir(project_path)
         self.module_init(project_path)
-        for folder, module in self.folders.iteritems():
+        for folder, module in list(self.folders.items()):
             self.log.write('main:directory', variables={'directory':project_path+'/'+folder})
             os.mkdir(project_path+'/'+folder)
 
@@ -101,7 +101,7 @@ class Scaffolder(Model):
                 self.module_init(project_path+'/'+folder)
 
         # Creating files
-        for template, filename in self.files.iteritems():
+        for template, filename in list(self.files.items()):
             with codecs.open(project_path+'/'+filename, 'w+', 'utf-8') as f:
                 self.log.write('main:file', variables={'file':project_path+'/'+filename})
                 f.write(self.render(template))
