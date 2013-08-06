@@ -8,7 +8,7 @@
 
 # Dependencies
 #=============
-import pystache
+from .renderer import Renderer
 from .colorize import colorize
 
 # Logger Text
@@ -18,6 +18,7 @@ class TextFlavor:
     # Operational variables
     flavor = 'default'
     formats = None
+    renderer = Renderer()
 
     # Styles definitions
     styles = {
@@ -53,7 +54,7 @@ class TextFlavor:
             self.flavor = flavor
 
         # Caching string format
-        self.formats = {level : colorize(pystache.render(self.styles[self.flavor]['tpl'], {'level' : self.__options(level)}), self.level_colors[level])+self.styles[self.flavor]['separator'] for level in self.level_colors}
+        self.formats = {level : colorize(self.renderer.render(self.styles[self.flavor]['tpl'], self.__options(level)), self.level_colors[level])+self.styles[self.flavor]['separator'] for level in self.level_colors}
 
     # Option application
     def __options(self, level):

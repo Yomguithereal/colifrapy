@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='colifrapy',
-      version='0.3.0',
+      version='0.3.2',
       description='Command Line Framework for Python',
       url='http://yomguithereal.github.io/colifrapy/',
       long_description="Colifrapy is a Command Line Framework for Python. Its aim is to provide several tools to build robust and structured command line tools very easily.",
@@ -9,8 +9,7 @@ setup(name='colifrapy',
       license='MIT',
       packages=['colifrapy', 'colifrapy.tools'],
       install_requires=[
-        'pyyaml',
-        'pystache'
+        'pyyaml'
       ],
       package_data={'colifrapy' : ['colifrapy/templates/*']},
       include_package_data=True,

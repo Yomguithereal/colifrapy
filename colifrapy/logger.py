@@ -25,11 +25,11 @@ except ImportError:
 import os
 from datetime import datetime
 import yaml
-import pystache
 from .tools.colorize import colorize
 from .tools.decorators import singleton
 from .tools.flavors import TextFlavor
 from .tools.flavors import TitleFlavor
+from .tools.renderer import Renderer
 
 # Main Class
 #===========
@@ -40,6 +40,7 @@ class Logger:
     #-----------
     activated = True
     strings = None
+    renderer = Renderer()
     output_path = None
     text_flavor = None
     title_flavor = None
@@ -128,10 +129,11 @@ class Logger:
             return False
 
         # Rendering
-        output = self.text_flavor.format(pystache.render(message, variables), level)
+        output = self.text_flavor.format(self.renderer.render(message, variables), level)
 
-        # Carriage returns
+        # Carriage returns and tabulations
         output = output.replace('\\n', '\n')
+        output = output.replace('\\t', '\t')
 
         # If Colifrapy Message
         if level == 'COLIFRAPY':
