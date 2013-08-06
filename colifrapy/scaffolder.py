@@ -15,8 +15,8 @@ import os
 import sys
 import codecs
 import pystache
-from hub import Colifrapy
-from model import Model
+from .hub import Colifrapy
+from .model import Model
 
 # Working Path
 file_path = os.path.split(os.path.abspath(__file__))[0]+'/templates/'

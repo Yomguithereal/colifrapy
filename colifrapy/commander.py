@@ -9,7 +9,7 @@
 # Dependancies
 #=============
 from argparse import ArgumentParser
-from tools.decorators import singleton
+from .tools.decorators import singleton
 
 # Main Class
 #===========

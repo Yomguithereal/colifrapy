@@ -9,7 +9,7 @@
 # Dependencies
 #=============
 import pystache
-from colorize import colorize
+from .colorize import colorize
 
 # Logger Text
 #============

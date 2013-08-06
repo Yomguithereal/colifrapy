@@ -8,9 +8,9 @@
 
 # Dependencies
 #=============
-from settings import Settings
-from commander import Commander
-from logger import Logger
+from .settings import Settings
+from .commander import Commander
+from .logger import Logger
 
 # Main Class
 #=============
