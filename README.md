@@ -483,7 +483,9 @@ Colifrapy also gives access to a colorization function, a custom exception class
 
 ```python
 from colifrapy.tools.colorize import colorize
-print colorize('hello', 'blue')
+print colorize('hello', fore_color, background_color, bright(True or False))
+
+# Availables colors : black, red, green, yellow, blue, magenta, cyan, white
 
 from colifrapy.tools.decorators import singleton
 
