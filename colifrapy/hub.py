@@ -15,7 +15,7 @@ from logger import Logger
 # Main Class
 #=============
 class Colifrapy:
-    
+
     log = None
     opts = None
     controller = None

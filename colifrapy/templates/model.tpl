@@ -15,5 +15,5 @@ class ExampleModel(Model):
     
     # Example of model action
     def hello(self):
-    	self.log.write('main:model')
+        self.log.write('main:model')
         self.log.write('main:test')

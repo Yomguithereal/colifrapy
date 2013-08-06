@@ -17,11 +17,11 @@ from model.controller import Controller
 #======
 class {{project}}(Colifrapy):
 
-	# From this hub, you can access several things :
-	#    self.settings (Settings Instance)
-	#    self.log (Logger Instance)
-	#    self.opts (Options passed to your hub)
-	#    self.controller (Your Controller)
+    # From this hub, you can access several things :
+    #    self.settings (Settings Instance)
+    #    self.log (Logger Instance)
+    #    self.opts (Options passed to your hub)
+    #    self.controller (Your Controller)
 
     # If you really want to use a constructor for this class,
     # do not forget to call the parent's one
