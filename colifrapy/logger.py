@@ -43,6 +43,7 @@ class Logger:
     text_flavor = None
     title_flavor = None
     triggers_exceptions = True
+    firt_output = True
     levels = [
         'INFO',
         'ERROR',
@@ -170,7 +171,7 @@ class Logger:
         self.__toConsole(self.title_flavor.format(message, color))
 
         # To file
-        self.__toFile(message, 'START')
+        self.__toFile(message)
 
 
     # Confirmation asking method
@@ -209,7 +210,11 @@ class Logger:
             return False
 
         # Writing to file
-        separator = '\n\n' if level == 'START' else ''
-        if self.output_path is not None:
-            with open(self.output_path, "a+") as lf :
-                lf.write(separator+datetime.now().strftime("%Y-%m-%d %H:%M")+' -- ['+level+'] :: '+str(message)+'\n')
+        if self.firt_output:
+            separator = '\n\nSTART\n'
+            self.firt_output = False
+        else:
+            separator = ''
+
+        with open(self.output_path, "a+") as lf :
+            lf.write(separator+datetime.now().strftime("%Y-%m-%d %H:%M")+' -- ['+level+'] :: '+str(message)+'\n')
