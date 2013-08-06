@@ -17,6 +17,7 @@ import codecs
 import pystache
 from .hub import Colifrapy
 from .model import Model
+from .tools.titler import titler
 
 # Working Path
 file_path = os.path.split(os.path.abspath(__file__))[0]+'/templates/'
@@ -60,7 +61,7 @@ class Scaffolder(Model):
             organization = '\n#   Organization : '+organization
 
         self.template_vars = {
-            'project' : project.title(),
+            'project' : titler(project),
             'author_line' : author,
             'organization_line' : organization,
             'var' : '{{var}}'
