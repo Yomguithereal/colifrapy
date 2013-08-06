@@ -171,7 +171,7 @@ class Logger:
         self.__toConsole(self.title_flavor.format(message, color))
 
         # To file
-        self.__toFile(message)
+        self.__toFile(message, 'HEADER')
 
 
     # Confirmation asking method
