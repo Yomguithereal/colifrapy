@@ -6,10 +6,16 @@
 #   Author : PLIQUE Guillaume
 #   Version : 1.0
 
+# Strings
+try:
+    unistring = unicode
+except NameError:
+    unistring = str
+
 # Colors
 # 1 for bright 2 for dim
 # 3 for fore 4 for background
-__colorCodes = {
+__colors = {
     'black':   '0',
     'red':     '1',
     'green':   '2',
@@ -20,16 +26,35 @@ __colorCodes = {
     'white':   '7'
 }
 
+__styles = {
+    'reset' : '0',
+    'bold' : '1',
+    'dim' : '2',
+    'underline' : '4',
+    'blink' : '5',
+    'reverse' : '7',
+    'hidden' : '8'
+}
+
+# TODO :: array behaviour
+
 # Color Printing
-def colorize(string, color='black', background=None, bright=False):
+def colorize(string, color='black', background=None, style=None):
     
-    # Options
-    background_option = '' if background is None else '4'+__colorCodes.get(background, '0')+';'
-    bright_option = ';22' if bright is False else ';1'
+    # Background
+    background_option = '' if background is None else '4'+__colors.get(background, '0')+';'
+
+    # Style
+    if isinstance(style, list) or isinstance(style, tuple):
+        style_option = "".join([";"+__styles.get(i, '0') for i in style])
+    elif isinstance(style, unistring):
+        style_option = style
+    else:
+        style_option = ';22'
 
     return "\033[%s3%s%sm%s\033[0m" % (
         background_option,
-        __colorCodes.get(color, '0'),
-        bright_option,
+        __colors.get(color, '0'),
+        style_option,
         str(string)
     )

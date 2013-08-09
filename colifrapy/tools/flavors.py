@@ -25,7 +25,6 @@ class TextFlavor:
         'default' : {
             'tpl' : '[{{level}}]',
             'separator' : ' :: ',
-            'options' : []
         },
         'flat' : {
             'tpl' : '{{level}}',
@@ -33,6 +32,11 @@ class TextFlavor:
             'options' : [
                 lambda x: x.lower()
             ]
+        },
+        'reverse' : {
+            'tpl' : '[{{level}}]',
+            'separator' : ' :: ',
+            'background' : True
         }
     }
 
@@ -54,11 +58,14 @@ class TextFlavor:
             self.flavor = flavor
 
         # Caching string format
-        self.formats = {level : colorize(self.renderer.render(self.styles[self.flavor]['tpl'], self.__options(level)), self.level_colors[level])+self.styles[self.flavor]['separator'] for level in self.level_colors}
+        if self.styles[self.flavor].get('background', False):
+             self.formats = {level : colorize(self.renderer.render(self.styles[self.flavor]['tpl'], self.__options(level)), 'white',self.level_colors[level])+self.styles[self.flavor]['separator'] for level in self.level_colors}
+        else:
+            self.formats = {level : colorize(self.renderer.render(self.styles[self.flavor]['tpl'], self.__options(level)), self.level_colors[level])+self.styles[self.flavor]['separator'] for level in self.level_colors}
 
     # Option application
     def __options(self, level):
-        for func in self.styles[self.flavor]['options']:
+        for func in self.styles[self.flavor].get('options', []):
             level = func(level)
         return level
 
