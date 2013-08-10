@@ -40,7 +40,7 @@ __styles = {
 
 # Color Printing
 def colorize(string, color='black', background=None, style=None):
-    
+
     # Background
     background_option = '' if background is None else '4'+__colors.get(background, '0')+';'
 
@@ -48,7 +48,7 @@ def colorize(string, color='black', background=None, style=None):
     if isinstance(style, list) or isinstance(style, tuple):
         style_option = "".join([";"+__styles.get(i, '0') for i in style])
     elif isinstance(style, unistring):
-        style_option = style
+        style_option = __styles.get(style, '0')
     else:
         style_option = ';22'
 

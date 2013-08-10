@@ -48,7 +48,8 @@ class TextFlavor:
         'DEBUG'   : 'blue',
         'VERBOSE' : 'cyan',
         'COLIFRAPY' : 'magenta',
-        'CONFIRM' : 'magenta'
+        'CONFIRM' : 'magenta',
+        'INPUT' : 'magenta'
     }
 
     def __init__(self, flavor):

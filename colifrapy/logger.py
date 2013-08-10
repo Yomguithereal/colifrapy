@@ -190,6 +190,10 @@ class Logger:
 
         return response == 'y'
 
+    # Input taking method
+    def input(self, message, filter_func=lambda x: x):
+        output = self.text_flavor.format(self.__getString(message), 'INPUT')
+        return filter_func(input(output+'\n'))
 
     # Utilities
     #----------

@@ -347,7 +347,7 @@ class MyModel(Model):
 		self.log.write('main:process:end', 'INFO')
 		>>> '[INFO] :: Exiting'
 
-        
+
 
 		# Passing variables
 		self.log.write('main:protocol:start', {'path' : 'test'})
@@ -381,21 +381,41 @@ class MyModel(Model):
 		>>> Colifrapy
 		>>> ---------
 
-		# Asking for confirmation (purple color)
-		# 'y' will be taken by default in arg 2
-		# will return True for y and False for n
-		self.log.confirm('Are you sure you want to continue?')
-		>>> '[CONFIRM] :: Are you sure you want to continue? (Y/n)'
-
-		self.log.confirm('Are you sure you want to continue?', 'n')
-		>>> '[CONFIRM] :: Are you sure you want to continue? (y/N)'
-
 		# Write methods shorteners
 		self.log.error(message, vars)
 		self.log.warning(...)
 		self.log.info(...)
 		self.log.debug(...)
 		self.log.verbose(...)
+
+
+		# Confirmation
+		#---------------
+
+		# 'y' will be taken by default in arg 2
+		# will return True for y and False for n
+		response = self.log.confirm('Are you sure you want to continue?')
+		>>> '[CONFIRM] :: Are you sure you want to continue? (Y/n)'
+		>>> y --> True
+
+		response = self.log.confirm('Are you sure you want to continue?', 'n')
+		>>> '[CONFIRM] :: Are you sure you want to continue? (y/N)'
+		>>> n --> False
+
+
+		# User Input
+		#---------------
+
+		response = self.log.input('What up ?')
+		>>> '[INPUT] :: What up ?'
+		>>> 'feeling fine' --> 'feeling fine'
+
+		# You can also provide a lambda to the function as second argument
+		# This lambda will affect the input given
+		response = self.log.input('What up ?', lambda x: x.upper())
+		>>> '[INPUT] :: What up ?'
+		>>> 'feeling fine' --> 'FEELING FINE'
+
 ```
 
 ####Configuration
