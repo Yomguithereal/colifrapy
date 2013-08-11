@@ -19,20 +19,21 @@ class Commander(ArgumentParser):
     # Properties
     #-----------
     opts = None
+    __hasVerbose = False
 
 
     # Methods
     #--------
 
     # Configuration
-    def config(self, **kwargs):
+    def config(self, version='0.1', description='Description Here', arguments=None, usage=None):
 
         # Calling Parent
-        ArgumentParser.__init__(self, version=kwargs['version'], description=kwargs['description']);
+        ArgumentParser.__init__(self, version=version, description=description, usage=usage);
 
         # Adding Options
-        if kwargs['arguments'] is not None:
-            self._add_arguments(kwargs['arguments'])
+        if arguments is not None and len(arguments) > 0:
+            self._add_arguments(arguments)
 
         # Parsing
         self.opts = self.parse_args()
@@ -43,14 +44,22 @@ class Commander(ArgumentParser):
 
             # Dispatching
             args = argument[0]
-            kwargs = argument[1] if len(argument) > 1 else {}
-            
+            kwargs = argument[1] if isinstance(argument[1], dict) else {}
+
+            # Checking verbose
+            if args[1] == '--verbose':
+                self.__hasVerbose = True
+
             # Associating type to pass yaml formatting
             if 'type' in kwargs:
                 kwargs['type'] = self._check_type(kwargs['type'])
 
             # Adding arguments
             self.add_argument(*args, **kwargs)
+
+        # Verbose is not overriden, we add it
+        if not self.__hasVerbose:
+            self.add_argument(*['-V', '--verbose'], **{'action' : 'store_true'})
 
     # Checking type
     def _check_type(self, typestr):

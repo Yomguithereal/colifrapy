@@ -37,20 +37,23 @@ class Settings():
 
         # Setting Commander
         commander_settings = {
-            "version"     : data.get('version', '0.1'),
-            "arguments"   : data.get('arguments', []),
-            "description" : data.get('description', ''),
+            "version"     : data.get('version'),
+            "arguments"   : data.get('arguments'),
+            "description" : data.get('description'),
             "usage"       : data.get('usage')
         }
         self.__commander.config(**commander_settings)
 
         # Setting Logger
         logger_data = data.get('logger', {})
+
+        # Threshold verbose override
+        logger_threshold = None if self.__commander.opts.verbose else logger_data.get('threshold')
         logger_settings = {
             "activated"   : logger_data.get('activated', True),
             "strings"     : logger_data.get('strings'),
             "output_path" : logger_data.get('path'),
-            "threshold"   : logger_data.get('threshold'),
+            "threshold"   : logger_threshold,
             "triggers_exceptions" : logger_data.get('exceptions', True),
             "flavor" : logger_data.get('flavor', 'default'),
             "title_flavor" : logger_data.get('title_flavor', 'default')
