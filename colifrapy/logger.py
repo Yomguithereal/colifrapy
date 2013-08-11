@@ -146,7 +146,7 @@ class Logger:
         self.__toFile(message, level)
 
         # Fatal Error
-        if level == 'ERROR' and self.triggers_exceptions is True:
+        if level == 'ERROR' and self.triggers_exceptions:
             raise Exception(path)
 
 

@@ -471,8 +471,10 @@ log.debug('test')
 ---
 
 ###Eye Candy
-Colifrapy comes with visual alternatives (two for the moment, but more will come). They are called
+Colifrapy logged messages come with visual alternatives. They are called
 'flavors' and can be set in the Logger's settings.
+
+Colors are enabled by default, even if I cannot show them there.
 
 ####Title Flavors:
 
@@ -501,6 +503,30 @@ Title
 debug : text
 ```
 
+#####colorblind
+```
+[DEBUG] :: text
+# Without colors, obviously
+```
+
+#####reverse
+```
+ DEBUG  :: text
+# With reverse colors, obviously
+```
+
+#####elegant
+```
+Debug - text
+```
+
+#####underline
+```
+DEBUG -- text
+-----
+```
+
+
 ---
 
 ###Bonus
@@ -508,9 +534,10 @@ Colifrapy also gives access to a colorization function, a custom exception class
 
 ```python
 from colifrapy.tools.colorize import colorize
-print colorize('hello', fore_color, background_color, bright(True or False))
+print colorize('hello', fore_color, background_color, style=list or string)
 
-# Availables colors : black, red, green, yellow, blue, magenta, cyan, white
+# Available colors : black, red, green, yellow, blue, magenta, cyan, white
+# Available styles : reset, bold, dim, underline, blink, reverse, hidden
 
 from colifrapy.tools.decorators import singleton
 

@@ -36,8 +36,6 @@ __styles = {
     'hidden' : '8'
 }
 
-# TODO :: array behaviour
-
 # Color Printing
 def colorize(string, color='black', background=None, style=None):
 
@@ -47,8 +45,8 @@ def colorize(string, color='black', background=None, style=None):
     # Style
     if isinstance(style, list) or isinstance(style, tuple):
         style_option = "".join([";"+__styles.get(i, '0') for i in style])
-    elif isinstance(style, unistring):
-        style_option = __styles.get(style, '0')
+    elif (isinstance(style, unistring)) | (isinstance(style, str)):
+        style_option = ";"+__styles.get(style, '0')
     else:
         style_option = ';22'
 

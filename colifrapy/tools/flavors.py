@@ -24,20 +24,37 @@ class TextFlavor:
     styles = {
         'default' : {
             'tpl' : '[{{level}}]',
-            'separator' : ' :: ',
+            'separator' : ' :: '
         },
         'flat' : {
             'tpl' : '{{level}}',
             'separator' : ' : ',
-            'options' : [
+            'filters' : [
                 lambda x: x.lower()
             ]
         },
         'reverse' : {
+            'tpl' : ' {{level}} ',
+            'separator' : ' :: ',
+            'styles' : 'reverse'
+        },
+        'colorblind' : {
             'tpl' : '[{{level}}]',
             'separator' : ' :: ',
-            'background' : True
-        }
+            'styles' : 'reset'
+        },
+        'underline' : {
+            'tpl' : '{{level}}',
+            'separator' : ' -- ',
+            'styles' : 'underline'
+        },
+        'elegant' : {
+            'tpl' : '{{level}}',
+            'separator' : ' - ',
+            'filters' : [
+                lambda x: x.title()
+            ]
+        },
     }
 
     # Colors
@@ -58,15 +75,11 @@ class TextFlavor:
         if flavor in self.styles:
             self.flavor = flavor
 
-        # Caching string format
-        if self.styles[self.flavor].get('background', False):
-             self.formats = {level : colorize(self.renderer.render(self.styles[self.flavor]['tpl'], self.__options(level)), 'white',self.level_colors[level])+self.styles[self.flavor]['separator'] for level in self.level_colors}
-        else:
-            self.formats = {level : colorize(self.renderer.render(self.styles[self.flavor]['tpl'], self.__options(level)), self.level_colors[level])+self.styles[self.flavor]['separator'] for level in self.level_colors}
+        self.formats = {level : colorize(self.renderer.render(self.styles[self.flavor]['tpl'], self.__options(level)), self.level_colors[level], style=self.styles[self.flavor].get('styles'))+self.styles[self.flavor]['separator'] for level in self.level_colors}
 
     # Option application
     def __options(self, level):
-        for func in self.styles[self.flavor].get('options', []):
+        for func in self.styles[self.flavor].get('filters', []):
             level = func(level)
         return level
 
