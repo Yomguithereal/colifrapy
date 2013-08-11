@@ -15,6 +15,23 @@ from .tools.decorators import singleton
 
 # Main Class
 #=============
-@singleton
 class Cacher:
-    pass
+
+    # Generic properties
+    cache = None
+    path = 'config'
+
+    def __init__(self, path=None):
+
+        # Initializing directory in case it does not exists
+        if self.path is not None:
+            self.path = path.rstrip('/')
+
+        if not os.path.exists(self.output_path):
+            os.makedirs(self.output_path)
+
+
+# Line Cacher
+#=============
+class LineCacher(Cacher):
+    # get write set stream etc.

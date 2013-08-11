@@ -5,4 +5,4 @@ from .commander import Commander
 from .model import Model
 from .settings import Settings
 from .exception import DataException
-from .cacher import Cacher
+from .cacher import LineCacher
