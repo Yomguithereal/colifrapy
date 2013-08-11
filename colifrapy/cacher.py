@@ -16,22 +16,95 @@ from .tools.decorators import singleton
 # Main Class
 #=============
 class Cacher:
+    ''' The Cacher class is the main abstraction that rules all the following ones.
+    It contains therefore every general methods and properties that every child
+    one could use. '''
 
     # Generic properties
-    cache = None
-    path = 'config'
+    __cache = None
+    auto_write = False
+    directory = 'config'
+    loaded = False
 
-    def __init__(self, path=None):
+    def __init__(self, directory=None, auto_write=False):
 
-        # Initializing directory in case it does not exists
-        if self.path is not None:
-            self.path = path.rstrip('/')
+        # Registering directory
+        if self.directory is not None:
+            self.directory = directory.rstrip('/')
 
-        if not os.path.exists(self.output_path):
-            os.makedirs(self.output_path)
+        # Auto writing
+        self.auto_write = auto_write is True
+
+    # Loading the cache only when we use it
+    def lazyLoad(self):
+        if not self.loaded:
+
+            # Checking Directory
+            if not os.path.exists(self.directory):
+                os.makedirs(self.directory)
+
+            # Reading if relevant
+            if self.exists:
+                self.read()
+
+            # Affecting object state
+            self.loaded = True
+
+    # Checking existence of cache file
+    def exists(self):
+        return os.path.exists(self.filepath)
+
+    # Writing cache
+    def write(self):
+        with open(self.filepath, 'w') as cf:
+            cf.write(self.__cache)
 
 
 # Line Cacher
 #=============
+@singleton
 class LineCacher(Cacher):
-    # get write set stream etc.
+    ''' The Line Cacher is a standard mono-line cache. It can be read,
+    overwritten and serves simple purposes. '''
+
+    # Properties
+    filename = 'cache.txt'
+    filepath = None
+    filter_func = lambda x: x
+
+    # Completing parent's constructor
+    def __init__(self, path, filename=None):
+        Cacher.__init__(self, path)
+
+        # Setting filename
+        if filename is not None:
+            self.filename = filename
+
+        # Setting filepath
+        self.filepath = self.directory+'/'+self.filename
+
+    # Set reading filter
+    def setReadingFilter(self, func):
+        self.filter_func = func
+
+    # Reading current cache
+    def read(self):
+
+        # Checking Existence
+        if self.exists():
+            with open(self.filepath, 'r') as cf:
+                self.cache = self.filter_func(cf.read().strip())
+
+    # Getting cache
+    def get(self):
+        self.lazyLoad()
+        return self.__cache
+
+    # Setting cache
+    def set(self, value):
+        self.lazyLoad()
+        self.__cache = value
+
+        # Auto-writing
+        if self.auto_write:
+            self.write()
