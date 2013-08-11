@@ -44,11 +44,15 @@ class Commander(ArgumentParser):
 
             # Dispatching
             args = argument[0]
-            kwargs = argument[1] if isinstance(argument[1], dict) else {}
+            if len(argument) > 1:
+                kwargs = argument[1]
+            else:
+                kwargs = {}
 
             # Checking verbose
-            if args[1] == '--verbose':
-                self.__hasVerbose = True
+            if len(args) > 1:
+                if args[1] == '--verbose':
+                    self.__hasVerbose = True
 
             # Associating type to pass yaml formatting
             if 'type' in kwargs:

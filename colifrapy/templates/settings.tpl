@@ -11,7 +11,7 @@ description: 'Description of the program.'
 usage: 'How to deal with your program'
 arguments:
 - [ ['-t', '--test'], {'help' : 'Test', 'type' : 'int'} ]
-- [ ['positionnal'] ]
+- [ ['positionnal'], {'choices' : ['test']}]
 
 # Logger Settings
 logger:

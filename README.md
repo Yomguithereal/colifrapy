@@ -248,7 +248,8 @@ command = Commander()
 print command.opts.test
 >>> 5
 
-As for standard python command line tool, yours will accept three default arguments you should not try to override. Those are
+As for standard python command line tool, yours will accept three default arguments you should not try to override (verbose is the only one
+you can override because it is not one of ArgumentParser defaults). Those are
 -v/--version (outputting your program's version), -h/--help (displaying your program's help) and -V/--verbose (overriding settings to
 enable the logger to display every messages).
 

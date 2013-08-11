@@ -12,5 +12,5 @@ description: 'The Colifrapy Scaffolder is designed to create a new project.'
 arguments:
 - [ ['-a', '--author'], {'help' : "Author's name."} ]
 - [ ['-o', '--organization'], {'help' : "Organization's name."} ]
-- [ ['action'] ]
+- [ ['action'], {'choices' : ['new']}]
 - [ ['project'] ]

@@ -106,6 +106,7 @@ class Scaffolder(Model):
                 self.log.write('main:file', variables={'file':project_path+'/'+filename})
                 f.write(self.render(template))
 
+
 # Command Line Execution
 #=======================
 class Hub(Colifrapy):
@@ -115,10 +116,7 @@ class Hub(Colifrapy):
         self.log.load_strings(file_path+'strings.yml')
         self.log.header('main:title')
 
-        if self.opts.action != "new":
-            self.log.write('errors:action')
-        else:
-            self.controller.build(self.opts.project, self.opts.author, self.opts.organization)
+        self.controller.build(self.opts.project, self.opts.author, self.opts.organization)
 
 def main():
     hub = Hub(Scaffolder, file_path+'settings.yml')

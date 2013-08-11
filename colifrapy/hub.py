@@ -37,3 +37,12 @@ class Colifrapy:
         # Loading Controller
         if controller is not None:
             self.controller = controller()
+
+            # Triggering default action
+            try:
+                self.opts.colifrapy_action
+            except AttributeError:
+                pass
+            else:
+                if hasattr(self.controller, self.opts.colifrapy_action):
+                    getattr(self.controller, self.opts.colifrapy_action)()
