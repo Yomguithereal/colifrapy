@@ -17,12 +17,19 @@ from .settings import Settings
 class Model(object):
 
     # Helper Propertie
-    log = Logger()
-    settings = Settings()
+    log = None
+    settings = None
     opts = None
+    cache = None
 
     # New Instance
     def __new__(cls, *args, **kwargs):
+
+    	# Loading every necessary piece
         commander = Commander()
+        settings = Settings()
         cls.opts = commander.opts
+        cls.settings = settings
+        cls.log = Logger()
+        cls.cache = settings._cache
         return object.__new__(cls)

@@ -21,7 +21,7 @@ class Cacher:
     one could use. '''
 
     # Generic properties
-    __cache = None
+    _cache = None
     auto_write = False
     directory = 'config'
     loaded = False
@@ -39,10 +39,6 @@ class Cacher:
     def lazyLoad(self):
         if not self.loaded:
 
-            # Checking Directory
-            if not os.path.exists(self.directory):
-                os.makedirs(self.directory)
-
             # Reading if relevant
             if self.exists:
                 self.read()
@@ -56,8 +52,14 @@ class Cacher:
 
     # Writing cache
     def write(self):
+
+        # Checking Directory
+        if not os.path.exists(self.directory):
+            os.makedirs(self.directory)
+
+        # Writing
         with open(self.filepath, 'w') as cf:
-            cf.write(self.__cache)
+            cf.write(self._cache)
 
 
 # Line Cacher
@@ -73,8 +75,8 @@ class LineCacher(Cacher):
     filter_func = lambda x: x
 
     # Completing parent's constructor
-    def __init__(self, path, filename=None):
-        Cacher.__init__(self, path)
+    def __init__(self, directory=None, filename=None, auto_write=False):
+        Cacher.__init__(self, directory, auto_write)
 
         # Setting filename
         if filename is not None:
@@ -98,12 +100,12 @@ class LineCacher(Cacher):
     # Getting cache
     def get(self):
         self.lazyLoad()
-        return self.__cache
+        return self._cache
 
     # Setting cache
     def set(self, value):
         self.lazyLoad()
-        self.__cache = value
+        self._cache = value
 
         # Auto-writing
         if self.auto_write:

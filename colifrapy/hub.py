@@ -20,6 +20,7 @@ class Colifrapy:
     opts = None
     controller = None
     settings = None
+    cache = None
 
     def __init__(self, controller=None, settings_path=None):
 
@@ -33,6 +34,9 @@ class Colifrapy:
 
         # Logger just in case
         self.log = Logger()
+
+        # Cache just in case
+        self.cache = self.settings._cache()
 
         # Loading Controller
         if controller is not None:

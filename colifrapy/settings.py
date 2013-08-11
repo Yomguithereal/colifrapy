@@ -14,6 +14,7 @@ import yaml
 from .logger import Logger
 from .commander import Commander
 from .tools.decorators import singleton
+from .cacher import LineCacher
 
 # Main Class
 #=============
@@ -22,6 +23,7 @@ class Settings():
 
     __commander = Commander()
     __logger = Logger()
+    _cache = None
 
     # Configuration
     #--------------
@@ -36,6 +38,7 @@ class Settings():
             data = yaml.load(yf.read())
 
         # Setting Commander
+        #------------------
         commander_settings = {
             "version"     : data.get('version'),
             "arguments"   : data.get('arguments'),
@@ -45,9 +48,8 @@ class Settings():
         self.__commander.config(**commander_settings)
 
         # Setting Logger
+        #---------------
         logger_data = data.get('logger', {})
-
-        # Threshold verbose override
         logger_threshold = None if self.__commander.opts.verbose else logger_data.get('threshold')
         logger_settings = {
             "activated"   : logger_data.get('activated', True),
@@ -60,7 +62,25 @@ class Settings():
         }
         self.__logger.config(**logger_settings)
 
+        # Setting Cache
+        #--------------
+        cache_data = data.get('cache')
+        if cache_data is not None:
+
+            # Checking if type of cache is valid
+            possible_types = {'line' : LineCacher}
+            cache_type = cache_data.get('type', 'line')
+            if cache_type not in possible_types:
+                self.__logger.write('Wrong type of cache supplied. ("line")', 'COLIFRAPY')
+                raise Exception('Colifrapy::Settings::WrongCacheTypeSupplied')
+            else:
+
+                # Initializing cache
+                self._cache = possible_types[cache_type](cache_data.get('directory'), cache_data.get('filename'), cache_data.get('auto_write'))
+
+
         # General Settings
+        #-----------------
         if 'settings' in data:
             for key in data['settings']:
                 setattr(self, key, data['settings'][key])
