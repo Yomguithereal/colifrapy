@@ -51,15 +51,11 @@ class Cacher:
         return os.path.exists(self.filepath)
 
     # Writing cache
-    def write(self):
+    def checkDirectory(self):
 
         # Checking Directory
         if not os.path.exists(self.directory):
             os.makedirs(self.directory)
-
-        # Writing
-        with open(self.filepath, 'w') as cf:
-            cf.write(self._cache)
 
 
 # Line Cacher
@@ -72,7 +68,8 @@ class LineCacher(Cacher):
     # Properties
     filename = 'cache.txt'
     filepath = None
-    filter_func = lambda x: x
+    reading_func = lambda x: x
+    writing_func = lambda x: x
 
     # Completing parent's constructor
     def __init__(self, directory=None, filename=None, auto_write=False):
@@ -87,7 +84,7 @@ class LineCacher(Cacher):
 
     # Set reading filter
     def setReadingFilter(self, func):
-        self.filter_func = func
+        self.reading_func = func
 
     # Reading current cache
     def read(self):
@@ -95,7 +92,7 @@ class LineCacher(Cacher):
         # Checking Existence
         if self.exists():
             with open(self.filepath, 'r') as cf:
-                self.cache = self.filter_func(cf.read().strip())
+                self.cache = self.reading_func(cf.read().strip())
 
     # Getting cache
     def get(self):
@@ -110,3 +107,13 @@ class LineCacher(Cacher):
         # Auto-writing
         if self.auto_write:
             self.write()
+
+    # Writing cache
+    def write(self):
+
+        # Checking Directory
+        self.checkDirectory()
+
+        # To file
+        with open(self.filepath, 'w') as cf:
+            cf.write(self.writing_func(self._cache))
