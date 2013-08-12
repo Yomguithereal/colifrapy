@@ -86,6 +86,10 @@ class LineCacher(Cacher):
     def setReadingFilter(self, func):
         self.reading_func = func
 
+    # Set writing filter
+    def setWritingFilter(self, func):
+        self.writing_func = func
+
     # Reading current cache
     def read(self):
 
