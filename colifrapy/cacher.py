@@ -92,11 +92,9 @@ class LineCacher(Cacher):
 
     # Reading current cache
     def read(self):
-
-        # Checking Existence
-        if self.exists():
-            with open(self.filepath, 'r') as cf:
-                self.cache = self.reading_func(cf.read().strip())
+        
+        with open(self.filepath, 'r') as cf:
+            self._cache = self.reading_func(cf.read().strip())
 
     # Getting cache
     def get(self):
