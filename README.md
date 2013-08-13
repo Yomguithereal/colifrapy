@@ -352,7 +352,7 @@ class MyModel(Model):
 		>>> '[WARNING] :: Exiting'
 
 		# Overriding the message level
-		self.log.write('main:process:end', 'INFO')
+		self.log.write('main:process:end', level='INFO')
 		>>> '[INFO] :: Exiting'
 
 
@@ -374,7 +374,7 @@ class MyModel(Model):
 
 
 		# When yml file is not specified or if message does not match
-		self.log.write('Test string', level='DEBUG')
+		self.log.write('Test string')
 		>>> '[DEBUG] :: Test string'
 
 		# Named arguments of write
