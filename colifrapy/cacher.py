@@ -22,9 +22,11 @@ class Cacher:
 
     # Generic properties
     _cache = None
+    _loaded = False
+
     auto_write = False
     directory = 'config'
-    loaded = False
+    filepath = None
 
     def __init__(self, directory=None, auto_write=False):
 
@@ -37,14 +39,14 @@ class Cacher:
 
     # Loading the cache only when we use it
     def lazyLoad(self):
-        if not self.loaded:
+        if not self._loaded:
 
             # Reading if relevant
-            if self.exists:
+            if self.exists():
                 self.read()
 
             # Affecting object state
-            self.loaded = True
+            self._loaded = True
 
     # Checking existence of cache file
     def exists(self):
@@ -67,9 +69,10 @@ class LineCacher(Cacher):
 
     # Properties
     filename = 'cache.txt'
-    filepath = None
-    reading_func = lambda x: x
-    writing_func = lambda x: x
+    __filters = [
+        lambda x: x,
+        lambda x: x
+    ]
 
     # Completing parent's constructor
     def __init__(self, directory=None, filename=None, auto_write=False):
@@ -84,17 +87,17 @@ class LineCacher(Cacher):
 
     # Set reading filter
     def setReadingFilter(self, func):
-        self.reading_func = func
+        self.__filters[0] = func
 
     # Set writing filter
     def setWritingFilter(self, func):
-        self.writing_func = func
+        self.__filters[1] = func
 
     # Reading current cache
     def read(self):
-        
+
         with open(self.filepath, 'r') as cf:
-            self._cache = self.reading_func(cf.read().strip())
+            self._cache = self.__filters[0](cf.read().strip())
 
     # Getting cache
     def get(self):
@@ -103,7 +106,6 @@ class LineCacher(Cacher):
 
     # Setting cache
     def set(self, value):
-        self.lazyLoad()
         self._cache = value
 
         # Auto-writing
@@ -118,4 +120,4 @@ class LineCacher(Cacher):
 
         # To file
         with open(self.filepath, 'w') as cf:
-            cf.write(self.writing_func(self._cache))
+            cf.write(self.__filters[1](self._cache))

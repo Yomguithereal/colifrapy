@@ -8,3 +8,4 @@ logs/
 TODO.txt
 test.py
 test.yml
+cache/
