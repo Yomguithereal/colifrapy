@@ -250,16 +250,16 @@ command = Commander()
 print command.opts.test
 >>> 5
 
-As for standard python command line tool, yours will accept three default arguments you should not try to override (verbose is the only one
-you can override because it is not one of ArgumentParser defaults). Those are
--v/--version (outputting your program's version), -h/--help (displaying your program's help) and -V/--verbose (overriding settings to
-enable the logger to display every messages).
-
 # Or from a hub/model
 print self.opts.test
 >>> 5
 ```
-As for the Settings class, the Commander class is a singleton and its state won't change if you load it elsewhere.
+
+As for standard python command line tool, yours will accept three default arguments you should not try to override (verbose is the only one you can override because it is not one of ArgumentParser defaults). Those are
+-v/--version (outputting your program's version), -h/--help (displaying your program's help) and -V/--verbose (overriding settings to
+enable the logger to display every messages).
+
+Like Settings class, the Commander class is a singleton and its state won't change if you load it elsewhere.
 
 In the command hub and in your models, you can access the options passed to your commander through
 self.opts . However, even if those are accessible in models for commodity, only the main hub should use them and one should restrain their usage in models.
