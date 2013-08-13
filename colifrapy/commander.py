@@ -63,7 +63,7 @@ class Commander(ArgumentParser):
 
         # Verbose is not overriden, we add it
         if not self.__hasVerbose:
-            self.add_argument(*['-V', '--verbose'], **{'action' : 'store_true'})
+            self.add_argument(*['-V', '--verbose'], **{'action' : 'store_true', 'help' : 'Verbose mode'})
 
     # Checking type
     def _check_type(self, typestr):
