@@ -55,6 +55,7 @@ class Settings():
             "activated"   : logger_data.get('activated', True),
             "strings"     : logger_data.get('strings'),
             "output_path" : logger_data.get('path'),
+            "output_mode" : logger_data.get('mode'),
             "threshold"   : logger_threshold,
             "triggers_exceptions" : logger_data.get('exceptions', True),
             "flavor" : logger_data.get('flavor', 'default'),

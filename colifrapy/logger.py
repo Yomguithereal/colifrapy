@@ -56,13 +56,15 @@ class Logger:
     ]
     threshold = set(['INFO', 'DEBUG', 'WARNING', 'ERROR', 'VERBOSE', 'COLIFRAPY'])
     necessary_levels = set(['ERROR', 'COLIFRAPY'])
+    possible_modes = set(['simple', 'overwrite'])
+    output_mode = 'simple'
 
 
     # Configuration
     #--------------
     def config(self, strings=None, output_path=None,
         threshold=None, triggers_exceptions=True,
-        flavor='default', title_flavor='default', activated=True):
+        flavor='default', title_flavor='default', activated=True, output_mode='simple'):
 
         # Flavor
         self.text_flavor = TextFlavor(flavor)
@@ -88,6 +90,9 @@ class Logger:
 
         # Activated
         self.activated = activated
+
+        # Setting Output mode
+        self.output_mode = output_mode if output_mode in self.possible_modes else 'simple'
 
 
     # Setters
@@ -223,6 +228,9 @@ class Logger:
         if self.output_path is None:
             return False
 
+        # Overwrite ?
+        write_mode = 'a+' if self.output_mode == 'simple' else 'w'
+
         # Writing to file
         if self.firt_output:
             separator = '\n\nSTART\n'
@@ -230,5 +238,5 @@ class Logger:
         else:
             separator = ''
 
-        with open(self.output_path, "a+") as lf :
+        with open(self.output_path, write_mode) as lf :
             lf.write(separator+datetime.now().strftime("%Y-%m-%d %H:%M")+' -- ['+level+'] :: '+str(message)+'\n')
