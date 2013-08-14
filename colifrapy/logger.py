@@ -129,11 +129,14 @@ class Logger:
             return False
 
         # Rendering
-        output = self.text_flavor.format(self.renderer.render(message, variables), level)
+        message = self.renderer.render(message, variables)
 
         # Carriage returns and tabulations
-        output = output.replace('\\n', '\n')
-        output = output.replace('\\t', '\t')
+        message = message.replace('\\n', '\n')
+        message = message.replace('\\t', '\t')
+
+        # Flavoring
+        output = self.text_flavor.format(message, level)
 
         # If Colifrapy Message
         if level == 'COLIFRAPY':

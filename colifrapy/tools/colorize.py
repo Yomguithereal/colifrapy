@@ -13,8 +13,6 @@ except NameError:
     unistring = str
 
 # Colors
-# 1 for bright 2 for dim
-# 3 for fore 4 for background
 __colors = {
     'black':   '0',
     'red':     '1',
@@ -26,6 +24,7 @@ __colors = {
     'white':   '7'
 }
 
+# Styles
 __styles = {
     'reset' : '0',
     'bold' : '1',
