@@ -20,6 +20,8 @@ logger:
     title_default: 'default'
     # Delete the path line not to write the log to a file
     path: 'logs'
+    # Logging mode to file (simple or overwrite)
+    mode: 'simple'
     threshold: ['DEBUG', 'ERROR', 'INFO', 'WARNING', 'VERBOSE']
 
 # Generic Settings

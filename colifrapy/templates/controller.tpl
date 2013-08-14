@@ -11,7 +11,7 @@ from colifrapy import Model
 from example_model import ExampleModel
 
 # Main Class
-#=============
+#===========
 class Controller(Model):
     
     # Properties

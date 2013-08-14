@@ -14,7 +14,7 @@ from colifrapy import Colifrapy
 from model.controller import Controller
 
 # Hub
-#======
+#====
 class {{project}}(Colifrapy):
 
     # From this hub, you can access several things :
