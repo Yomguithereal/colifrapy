@@ -443,6 +443,12 @@ logger:
 	# optional, discard the line not to log to a file
 	path: 'path/where/to/log/'
 
+    # optional, log writing mode
+    # defaults to simple.
+    # 'simple' : basic log to file, endless and may be heavy if used on a long run
+    # 'overwrite' : log overwritten each time, keeps only last log therefores
+    mode: 'simple'
+
 	# optional, use it to specify your logger threshold
 	# ERROR will always be kept whatsoever for obvious reasons, even if you drop it
 	log_threshold : ['DEBUG', 'ERROR']
