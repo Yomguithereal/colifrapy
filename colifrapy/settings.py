@@ -8,7 +8,7 @@
 
 # Dependencies
 #=============
-import os
+import os, sys
 import pprint
 import yaml
 from .logger import Logger
@@ -109,4 +109,8 @@ class Settings():
         if os.path.isabs(path):
             return path
         else:
-            return os.getcwd()+'/'+path
+            try:
+                sFile = os.path.abspath(sys.modules['__main__'].__file__)
+            except:
+                sFile = sys.executable
+            return os.path.dirname(sFile)+'/'+path
