@@ -259,4 +259,4 @@ class Logger:
                     self.line_count += 1
 
             # Writing
-            lf.write(separator+datetime.now().strftime("%Y-%m-%d %H:%M")+' -- ['+level+'] :: '+str(message)+'\n')
+            lf.write(separator+datetime.now().strftime("%Y-%m-%d %H:%M:%S")+' -- ['+level+'] :: '+str(message)+'\n')
