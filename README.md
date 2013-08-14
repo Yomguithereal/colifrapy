@@ -136,9 +136,13 @@ class NameOfYourProject(Colifrapy):
 #===========
 if __name__ == '__main__':
 	# By default, the hub will load config/settings.yml
-    hub = NameOfYourProject(Controller, [optional]'path/to/your/settings.yml')
+    hub = NameOfYourProject(controller=Controller, settings_path=[optional]'path/to/your/settings.yml')
     hub.launch()
 ```
+
+However, if you just want to use colifrapy features but don't want to be tied to its architecture,
+you can just use this hub which can access any critical utilities as well as any colifrapy Model 
+would.
 
 ---
 
@@ -232,6 +236,8 @@ The Settings class is a singleton. You can therefore use it everywhere without h
 ---
 
 ###Arguments
+
+####Settings Usage
 Arguments are to be defined as for the python [ArgParser](http://docs.python.org/dev/library/argparse.html "ArgParser") class. In fact,
 the colifrapy Commander class extends the ArgParser one, so, if you need complicated things not handled by colifrapy, just use the Commander class like the ArgParser one.
 
@@ -255,15 +261,52 @@ print self.opts.test
 >>> 5
 ```
 
-As for standard python command line tool, yours will accept three default arguments you should not try to override (verbose is the only one you can override because it is not one of ArgumentParser defaults). Those are
--v/--version (outputting your program's version), -h/--help (displaying your program's help) and -V/--verbose (overriding settings to
-enable the logger to display every messages).
-
 Like Settings class, the Commander class is a singleton and its state won't change if you load it elsewhere.
 
 In the command hub and in your models, you can access the options passed to your commander through
 self.opts . However, even if those are accessible in models for commodity, only the main hub should use them and one should restrain their usage in models.
 
+####Special Arguments
+
+#####Help, Version and Verbose
+As for standard python command line tool, yours will accept three default arguments you should not try to override (verbose is the only one you can override because it is not one of ArgumentParser defaults). Those are
+-v/--version (outputting your program's version), -h/--help (displaying your program's help) and -V/--verbose (overriding settings to
+enable the logger to display every messages).
+
+######Colifrapy Action
+Moreover, if you give to your program a positionnal argument named colifrapy_action, with a set of 
+choices, your hub will automatically launch your controller's actions name identically.
+
+In settings
+```yaml
+arguments:
+- [ ['colifrapy_action'], {'choices' : ['test', 'hello']} ]
+```
+
+Your Hub
+```python
+from colifrapy import Colifrapy
+from model.controller import Controller
+
+class AimeSolr(Colifrapy):
+    pass
+
+if __name__ == '__main__':
+    hub = AimeSolr(Controller)
+```
+Your Controller
+```python
+from colifrapy import Model
+
+class Controller(Model):
+    
+    def test(self):
+        self.log.write('Testing...')
+
+    def hello(self):
+        self.log.write('Hello World !')
+
+```
 
 ---
 
