@@ -38,14 +38,26 @@ class Logger:
 
     # Properties
     #-----------
+
+    # State
     activated = True
-    strings = None
-    renderer = Renderer()
-    output_path = None
-    text_flavor = None
-    title_flavor = None
     triggers_exceptions = True
     firt_output = True
+    line_count = 0
+
+    # Rendering
+    renderer = Renderer()
+    strings = None
+    text_flavor = None
+    title_flavor = None
+
+    # Output
+    output_path = None
+    possible_modes = set(['simple', 'overwrite', 'rotation'])
+    output_mode = 'simple'
+    max_lines_per_log = 5000  
+    
+    # Levels
     levels = [
         'INFO',
         'ERROR',
@@ -56,8 +68,7 @@ class Logger:
     ]
     threshold = set(['INFO', 'DEBUG', 'WARNING', 'ERROR', 'VERBOSE', 'COLIFRAPY'])
     necessary_levels = set(['ERROR', 'COLIFRAPY'])
-    possible_modes = set(['simple', 'overwrite'])
-    output_mode = 'simple'
+    
 
 
     # Configuration
@@ -229,7 +240,7 @@ class Logger:
             return False
 
         # Overwrite ?
-        write_mode = 'a+' if self.output_mode == 'simple' else 'w'
+        write_mode = 'w' if self.output_mode == 'overwrite' else 'a+'
 
         # Writing to file
         if self.firt_output:
@@ -239,4 +250,13 @@ class Logger:
             separator = ''
 
         with open(self.output_path, write_mode) as lf :
+
+            # Counting lines ?
+            if self.output_mode == 'rotation':
+                if self.line_count == 0:
+                    self.line_count = len(lf.readlines())
+                else:
+                    self.line_count += 1
+
+            # Writing
             lf.write(separator+datetime.now().strftime("%Y-%m-%d %H:%M")+' -- ['+level+'] :: '+str(message)+'\n')
