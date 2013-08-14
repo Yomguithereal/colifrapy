@@ -14,7 +14,7 @@
 import os
 import sys
 import codecs
-import pystache
+from .tools.renderer import Renderer
 from .hub import Colifrapy
 from .model import Model
 from .tools.titler import titler
@@ -27,6 +27,7 @@ file_path = os.path.split(os.path.abspath(__file__))[0]+'/templates/'
 class Scaffolder(Model):
 
     # Tools
+    renderer = Renderer(ignore=False)
     project_name = False
     files = {
         'main' : False,
@@ -73,7 +74,7 @@ class Scaffolder(Model):
     # Utilities
     def render(self, tpl):
         with codecs.open(self.template_path+tpl+'.tpl', 'r', 'utf-8') as tplf:
-            return pystache.render(tplf.read(), self.template_vars)
+            return self.renderer.render(tplf.read(), self.template_vars)
 
     # Create __init__.py files
     def module_init(self, path):

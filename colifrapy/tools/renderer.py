@@ -18,6 +18,13 @@ except NameError:
 #===========
 class Renderer:
 
+    # Propertie
+    ignore = True
+
+    # Methods
+    def __init__(self, ignore=True):
+        self.ignore = bool(ignore)
+
     def render(self, text, variables):
 
         # Integers
@@ -42,6 +49,8 @@ class Renderer:
     def __apply_dict(self, text, variables):
         for key, value in list(variables.items()):
             text = re.sub('\{\{'+key+'\}\}', str(value), text)
+        if not self.ignore:
+            text = re.sub('\{\{[^}]+\}\}', '', text)
         return text
 
     def __apply_list(self, text, variables):
