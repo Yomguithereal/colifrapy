@@ -42,7 +42,7 @@ class Logger:
     # State
     activated = True
     triggers_exceptions = True
-    firt_output = True
+    first_output = True
     line_count = 0
 
     # Rendering
@@ -240,12 +240,12 @@ class Logger:
             return False
 
         # Overwrite ?
-        write_mode = 'w' if self.output_mode == 'overwrite' else 'a+'
+        write_mode = 'w' if self.output_mode == 'overwrite' and self.first_output else 'a+'
 
         # Writing to file
-        if self.firt_output:
+        if self.first_output:
             separator = '\n\nSTART\n'
-            self.firt_output = False
+            self.first_output = False
         else:
             separator = ''
 
