@@ -21,6 +21,7 @@ from .cacher import LineCacher
 @singleton
 class Settings():
 
+    # Sibling Instances
     __commander = Commander()
     __logger = Logger()
     _cache = None
@@ -31,7 +32,7 @@ class Settings():
 
         # Default value
         if yaml_file is None:
-            yaml_file = os.getcwd()+'/config/settings.yml'
+            yaml_file = self.__getPath('config/settings.yml')
 
         # Opening Settings Yaml File
         with open(yaml_file, 'r') as yf:
@@ -50,11 +51,24 @@ class Settings():
         # Setting Logger
         #---------------
         logger_data = data.get('logger', {})
+
+        # Threshold
         logger_threshold = None if self.__commander.opts.verbose else logger_data.get('threshold')
+
+        # Strings
+        logger_strings = logger_data.get('strings')
+        if logger_strings is not None:
+            logger_strings = self.__getPath(logger_strings)
+
+        # Output path
+        logger_path = logger_data.get('path')
+        if logger_path is not None:
+            logger_path = self.__getPath(logger_path.rstrip('/'))
+
         logger_settings = {
             "activated"   : logger_data.get('activated', True),
-            "strings"     : logger_data.get('strings'),
-            "output_path" : logger_data.get('path'),
+            "strings"     : logger_strings,
+            "output_path" : logger_path,
             "output_mode" : logger_data.get('mode'),
             "threshold"   : logger_threshold,
             "triggers_exceptions" : logger_data.get('exceptions', True),
@@ -90,3 +104,9 @@ class Settings():
     #--------------
     def __repr__(self):
         return pprint.pformat(self.__dict__)
+
+    def __getPath(self, path):
+        if os.path.isabs(path):
+            return path
+        else:
+            return os.getcwd()+'/'+path
