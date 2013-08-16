@@ -17,10 +17,12 @@ arguments:
 logger:
     strings: 'config/strings.yml'
     flavor: 'default'
-    title_default: 'default'
+    title_flavor: 'default'
     # Delete the path line not to write the log to a file
-    path: 'logs'
-    # Logging mode to file (simple or overwrite)
+    directory: 'logs'
+    # Log filename, defaults to 'log.txt'
+    filename: 'archive.log'
+    # Logging mode to file (simple, overwrite or rotation)
     mode: 'simple'
     threshold: ['DEBUG', 'ERROR', 'INFO', 'WARNING', 'VERBOSE']
 
