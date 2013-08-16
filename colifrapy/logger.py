@@ -268,7 +268,7 @@ class Logger:
                     self.line_count += 1
 
             # Do we have to perform rotation ?
-            if self.line_count > self.max_lines and self.output_mode == 'rotation':
+            if self.line_count >= self.max_lines and self.output_mode == 'rotation':
                 self.__performRotation()
 
             # Writing
@@ -283,3 +283,6 @@ class Logger:
             self.output_directory+'/'+self.output_filename, 
             self.output_directory+'/'+self.output_filename+'.'+datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
         )
+
+        # Reinitialize line count
+        self.line_count = 0
