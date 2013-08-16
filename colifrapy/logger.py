@@ -52,10 +52,11 @@ class Logger:
     title_flavor = None
 
     # Output
-    output_path = None
+    output_directory = None
+    output_filename = 'log.txt'
     possible_modes = set(['simple', 'overwrite', 'rotation'])
     output_mode = 'simple'
-    max_lines_per_log = 5000  
+    max_lines = 5000  
     
     # Levels
     levels = [
@@ -73,9 +74,10 @@ class Logger:
 
     # Configuration
     #--------------
-    def config(self, strings=None, output_path=None,
+    def config(self, strings=None, output_directory=None,
         threshold=None, triggers_exceptions=True,
-        flavor='default', title_flavor='default', activated=True, output_mode='simple'):
+        flavor='default', title_flavor='default', activated=True, 
+        output_mode='simple', output_filename=None, max_lines=None):
 
         # Flavor
         self.text_flavor = TextFlavor(flavor)
@@ -86,11 +88,13 @@ class Logger:
             self.load_strings(strings)
 
         # Setting output path
-        if output_path is not None:
-            self.output_path = output_path.rstrip('/')
-            if not os.path.exists(self.output_path):
-                os.makedirs(self.output_path)
-            self.output_path += '/log.txt'
+        if output_directory is not None:
+            self.output_directory = output_directory.rstrip('/')
+            if not os.path.exists(self.output_directory):
+                os.makedirs(self.output_directory)
+
+        if output_filename is not None:
+            self.output_filename = output_filename
 
         # Setting level
         if threshold is not None:
@@ -104,6 +108,10 @@ class Logger:
 
         # Setting Output mode
         self.output_mode = output_mode if output_mode in self.possible_modes else 'simple'
+
+        # Max Lines
+        if max_lines is not None:
+            self.max_lines = int(max_lines)
 
 
     # Setters
@@ -236,7 +244,7 @@ class Logger:
     def __toFile(self, message, level):
 
         # Not writing to file if we do not want to
-        if self.output_path is None:
+        if self.output_directory is None:
             return False
 
         # Overwrite ?
@@ -250,7 +258,7 @@ class Logger:
             separator = ''
 
         # Opening File
-        with open(self.output_path, write_mode) as lf :
+        with open(self.output_directory+'/'+self.output_filename, write_mode) as lf :
 
             # Counting lines ?
             if self.output_mode == 'rotation':
@@ -259,5 +267,19 @@ class Logger:
                 else:
                     self.line_count += 1
 
+            # Do we have to perform rotation ?
+            if self.line_count > self.max_lines and self.output_mode == 'rotation':
+                self.__performRotation()
+
             # Writing
             lf.write(separator+datetime.now().strftime("%Y-%m-%d %H:%M:%S")+' -- ['+level+'] :: '+str(message)+'\n')
+
+
+    # Rotate the log file
+    def __performRotation(self):
+        
+        # Renaming the file
+        os.rename(
+            self.output_directory+'/'+self.output_filename, 
+            self.output_directory+'/'+self.output_filename+'.'+datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
+        )

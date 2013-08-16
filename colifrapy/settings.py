@@ -66,15 +66,17 @@ class Settings():
             logger_strings = self.__getPath(logger_strings)
 
         # Output path
-        logger_path = logger_data.get('path')
+        logger_path = logger_data.get('directory')
         if logger_path is not None:
             logger_path = self.__getPath(logger_path.rstrip('/'))
 
         logger_settings = {
             "activated"   : logger_data.get('activated', True),
             "strings"     : logger_strings,
-            "output_path" : logger_path,
+            "output_directory" : logger_path,
             "output_mode" : logger_data.get('mode'),
+            "output_filename": logger_data.get('filename'),
+            "max_lines": logger_data.get('max_lines'),
             "threshold"   : logger_threshold,
             "triggers_exceptions" : logger_data.get('exceptions', True),
             "flavor" : logger_data.get('flavor', 'default'),

@@ -18,7 +18,7 @@ except NameError:
 #===========
 class Renderer:
 
-    # Propertie
+    # Properties
     ignore = True
 
     # Methods
