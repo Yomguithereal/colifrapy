@@ -11,6 +11,7 @@
 import os, sys
 import pprint
 import yaml
+from argparse import ArgumentParser
 from .logger import Logger
 from .commander import Commander
 from .tools.decorators import singleton
@@ -29,6 +30,10 @@ class Settings():
     # Configuration
     #--------------
     def load(self, yaml_file=None):
+
+        # Settings override
+        if '--settings' in sys.argv:
+            yaml_file = sys.argv[sys.argv.index('--settings')+1]
 
         # Default value
         if yaml_file is None:

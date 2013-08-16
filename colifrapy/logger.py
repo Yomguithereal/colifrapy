@@ -249,6 +249,7 @@ class Logger:
         else:
             separator = ''
 
+        # Opening File
         with open(self.output_path, write_mode) as lf :
 
             # Counting lines ?
