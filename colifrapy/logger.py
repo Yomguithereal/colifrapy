@@ -278,10 +278,12 @@ class Logger:
     # Rotate the log file
     def __performRotation(self):
         
+        filename, fileext = os.path.splitext(self.output_filename)
+
         # Renaming the file
         os.rename(
             self.output_directory+'/'+self.output_filename, 
-            self.output_directory+'/'+self.output_filename+'.'+datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
+            self.output_directory+'/'+filename+'_'+datetime.now().strftime("%Y-%m-%d_%H:%M:%S")+fileext
         )
 
         # Reinitialize line count
