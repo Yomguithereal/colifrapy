@@ -9,7 +9,7 @@ setup(name='colifrapy',
       license='MIT',
       packages=['colifrapy', 'colifrapy.tools'],
       install_requires=[
-        'pyyaml'
+        'pyyaml', 'argparse'
       ],
       package_data={'colifrapy' : ['colifrapy/templates/*']},
       include_package_data=True,
