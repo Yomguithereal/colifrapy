@@ -268,14 +268,17 @@ self.opts . However, even if those are accessible in models for commodity, only 
 
 ####Special Arguments
 
-#####Help, Version and Verbose
+#####Help, Version, Verbose and Settings
 As for standard python command line tool, yours will accept three default arguments you should not try to override (verbose is the only one you can override because it is not one of ArgumentParser defaults). Those are
 -v/--version (outputting your program's version), -h/--help (displaying your program's help) and -V/--verbose (overriding settings to
 enable the logger to display every messages).
 
+Finally, a --settings option is added automatically and enables you to override the settings file
+if needed.
+
 ######Colifrapy Action
-Moreover, if you give to your program a positionnal argument named colifrapy_action, with a set of 
-choices, your hub will automatically launch your controller's actions name identically.
+If your program is given a positionnal argument named colifrapy_action, with a set of 
+choices, your hub will automatically launch your controller's methods with the same name.
 
 In settings
 ```yaml
