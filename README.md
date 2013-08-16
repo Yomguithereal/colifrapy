@@ -198,9 +198,9 @@ arguments:
 logger:
     strings: 'config/strings.yml'
     flavor: 'default'
-    title_default: 'default'
+    title_flavor: 'default'
     # Delete the path line not to write the log to a file
-    path: 'logs'
+    directory: 'logs'
     threshold: ['DEBUG', 'ERROR', 'INFO', 'WARNING', 'VERBOSE']
 
 # Generic Settings needed by your program
@@ -233,6 +233,8 @@ print settings.hash['test']
 
 The Settings class is a singleton. You can therefore use it everywhere without having to reload the data.
 
+Also, note that paths are automatically considered by colifrapy either as relative 
+or absolute ones.
 ---
 
 ###Arguments
@@ -487,13 +489,21 @@ logger:
 	strings: 'path/to/your/strings.yml'
 
 	# optional, discard the line not to log to a file
-	path: 'path/where/to/log/'
+	directory: 'path/where/to/log/'
+    # log filename
+    filename: 'example.log'
 
     # optional, log writing mode
     # defaults to simple.
     # 'simple' : basic log to file, endless and may be heavy if used on a long run
     # 'overwrite' : log overwritten each time, keeps only last log therefores
+    # 'rotation' : log will create a new file and keep the old ones whenever the max number
+    # of line is reached.
     mode: 'simple'
+
+    # optional max number of lines when log is in rotation mode
+    # defaults to 5000
+    max_lines: 3000
 
 	# optional, use it to specify your logger threshold
 	# ERROR will always be kept whatsoever for obvious reasons, even if you drop it
