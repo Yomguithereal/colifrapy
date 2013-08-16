@@ -76,7 +76,9 @@ class TextFlavor:
         if flavor in self.styles:
             self.flavor = flavor
 
-        self.formats = {level : colorize(self.renderer.render(self.styles[self.flavor]['tpl'], self.__options(level)), self.level_colors[level], style=self.styles[self.flavor].get('styles'))+self.styles[self.flavor]['separator'] for level in self.level_colors}
+        self.formats = {}
+        for level in self.level_colors:
+            self.formats[level] = colorize(self.renderer.render(self.styles[self.flavor]['tpl'], self.__options(level)), self.level_colors[level], style=self.styles[self.flavor].get('styles')) + self.styles[self.flavor]['separator']
 
     # Option application
     def __options(self, level):
