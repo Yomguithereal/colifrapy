@@ -97,8 +97,13 @@ class Settings():
                 raise Exception('Colifrapy::Settings::WrongCacheTypeSupplied')
             else:
 
+                # Directory
+                cache_directory = cache_data.get('directory')
+                if cache_directory is not None:
+                    cache_directory = self.__getPath(cache_directory.rstrip('/'))
+
                 # Initializing cache
-                self._cache = possible_types[cache_type](cache_data.get('directory'), cache_data.get('filename'), cache_data.get('auto_write'))
+                self._cache = possible_types[cache_type](cache_directory, cache_data.get('filename'), cache_data.get('auto_write'))
 
 
         # General Settings

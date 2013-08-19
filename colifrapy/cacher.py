@@ -25,7 +25,7 @@ class Cacher:
     _loaded = False
 
     auto_write = False
-    directory = 'config'
+    directory = 'cache'
     filepath = None
 
     def __init__(self, directory=None, auto_write=False):
