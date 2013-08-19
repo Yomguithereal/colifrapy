@@ -37,10 +37,10 @@ class Settings():
 
         # Default value
         if yaml_file is None:
-            yaml_file = self.__getPath('config/settings.yml')
+            yaml_file = 'config/settings.yml'
 
         # Opening Settings Yaml File
-        with open(yaml_file, 'r') as yf:
+        with open(self.__getPath(yaml_file), 'r') as yf:
             data = yaml.load(yf.read())
 
         # Setting Commander
