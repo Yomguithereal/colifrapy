@@ -16,9 +16,9 @@ from .tools.decorators import singleton
 # Main Class
 #=============
 class Cacher:
-    ''' The Cacher class is the main abstraction that rules all the following ones.
+    """ The Cacher class is the main abstraction that rules all the following ones.
     It contains therefore every general methods and properties that every child
-    one could use. '''
+    one could use. """
 
     # Generic properties
     _cache = None
@@ -64,8 +64,8 @@ class Cacher:
 #=============
 @singleton
 class LineCacher(Cacher):
-    ''' The Line Cacher is a standard mono-line cache. It can be read,
-    overwritten and serves simple purposes. '''
+    """ The Line Cacher is a standard mono-line cache. It can be read,
+    overwritten and serves simple purposes. """
 
     # Properties
     filename = 'cache.txt'

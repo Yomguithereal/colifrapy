@@ -6,6 +6,9 @@
 #   Author : PLIQUE Guillaume
 #   Version : 1.0
 
+""" The colorize module proposes a simple function to
+style and give some color to console output. """
+
 # Strings
 try:
     unistring = unicode

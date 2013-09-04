@@ -21,6 +21,9 @@ from .cacher import LineCacher
 #=============
 @singleton
 class Settings():
+    """ The Settings Class' goal is to read the 'settings.yml' file of the project
+    in order to set up the tool with Colifrapy utilities such as the logger,
+    the commander and the cacher. """
 
     # Sibling Instances
     __commander = Commander()

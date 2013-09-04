@@ -17,6 +17,8 @@ except NameError:
 # Main Class
 #===========
 class Renderer:
+    """ The Renderer take Mustache-styled strings and compute their
+    variables. """
 
     # Properties
     ignore = True

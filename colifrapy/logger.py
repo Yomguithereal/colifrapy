@@ -35,6 +35,10 @@ from .tools.renderer import Renderer
 #===========
 @singleton
 class Logger:
+    """ The Logger class represents the voice of Colifrapy and has to
+    inform the user. It therefore outputs to console and to file in order
+    to keep the code flow clear. """
+
 
     # Properties
     #-----------

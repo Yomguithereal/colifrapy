@@ -14,7 +14,7 @@ from .colorize import colorize
 # Logger Text
 #============
 class TextFlavor:
-    ''' The TextFlavor class renders and style the logger's output '''
+    """ The TextFlavor class renders and style the logger's output """
 
     # Operational variables
     flavor = 'default'
@@ -94,7 +94,7 @@ class TextFlavor:
 # Logger Title
 #=============
 class TitleFlavor:
-    ''' The TitleFlavor class provides an abstraction use to output some elegant headers '''
+    """ The TitleFlavor class provides an abstraction use to output some elegant headers """
 
     flavor = 'default'
     styles = [

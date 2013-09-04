@@ -15,6 +15,8 @@ from .settings import Settings
 # Main Class
 #=============
 class Model(object):
+    """ The Models are the core of Colifrapy. They are to be extended to
+    grant access to Colifrapy core utilities. """
 
     # Helper Propertie
     log = None

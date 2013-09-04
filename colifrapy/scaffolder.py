@@ -25,6 +25,8 @@ file_path = os.path.split(os.path.abspath(__file__))[0]+'/templates/'
 # Main Class
 #===========
 class Scaffolder(Model):
+    """ The Scaffolder is the base class that creates projects, model and generate
+    necessary files to get going from the templates. """
 
     # Tools
     renderer = Renderer(ignore=False)

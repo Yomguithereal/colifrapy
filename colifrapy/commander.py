@@ -15,6 +15,9 @@ from .tools.decorators import singleton
 #===========
 @singleton
 class Commander(ArgumentParser):
+    """ The Commander class extends ArgumentParser and has to
+    compute the arguments passed to the tool. """
+
 
     # Properties
     #-----------
