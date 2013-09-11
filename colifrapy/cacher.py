@@ -12,6 +12,11 @@ import os
 import yaml
 from .tools.decorators import singleton
 
+try:
+    from functools import reduce
+except ImportError:
+    pass
+
 
 # Main Class
 #=============
@@ -21,18 +26,24 @@ class Cacher:
     one could use. """
 
     # Generic properties
-    _cache = None
     _loaded = False
 
     auto_write = False
     directory = 'cache'
     filepath = None
 
-    def __init__(self, directory=None, auto_write=False):
+    def __init__(self, filename=None, directory=None, auto_write=False):
 
         # Registering directory
-        if self.directory is not None:
+        if directory is not None:
             self.directory = directory.rstrip('/')
+
+        # Setting filename
+        if filename is not None:
+            self.filename = filename
+
+        # Setting filepath
+        self.filepath = self.directory+'/'+self.filename
 
         # Auto writing
         self.auto_write = auto_write is True
@@ -69,21 +80,11 @@ class LineCacher(Cacher):
 
     # Properties
     filename = 'cache.txt'
+    _cache = None
     __filters = [
         lambda x: x,
         lambda x: x
     ]
-
-    # Completing parent's constructor
-    def __init__(self, directory=None, filename=None, auto_write=False):
-        Cacher.__init__(self, directory, auto_write)
-
-        # Setting filename
-        if filename is not None:
-            self.filename = filename
-
-        # Setting filepath
-        self.filepath = self.directory+'/'+self.filename
 
     # Set reading filter
     def setReadingFilter(self, func):
@@ -99,6 +100,16 @@ class LineCacher(Cacher):
         with open(self.filepath, 'r') as cf:
             self._cache = self.__filters[0](cf.read().strip())
 
+    # Writing cache
+    def write(self):
+
+        # Checking Directory
+        self.checkDirectory()
+
+        # To file
+        with open(self.filepath, 'w') as cf:
+            cf.write(self.__filters[1](self._cache))
+
     # Getting cache
     def get(self):
         self.lazyLoad()
@@ -112,12 +123,62 @@ class LineCacher(Cacher):
         if self.auto_write:
             self.write()
 
+
+# YAML Cacher
+#=============
+class YAMLCacher(Cacher):
+    """ The YAML Cacher is basically a small key-value file database
+    that one may use to access organized data without having to
+    deploy a server """
+
+    # Properties
+    filename = "cache.yml"
+    delimiter = ":"
+    _cache = {}
+
+    # Reading current cache
+    def read(self):
+
+        with open(self.filepath, 'r') as cf:
+            self._cache = yaml.load(cf.read())
+
     # Writing cache
     def write(self):
 
         # Checking Directory
         self.checkDirectory()
 
-        # To file
+        # To File
         with open(self.filepath, 'w') as cf:
-            cf.write(self.__filters[1](self._cache))
+            cf.write(yaml.dump(self._cache, default_flow_style=False, indent=4))
+
+    # Getting cache
+    def get(self, key=None):
+        self.lazyLoad()
+
+        if key is None:
+            return self._cache
+        else:
+            try:
+                value = reduce(dict.__getitem__, key.split(self.delimiter), self._cache)
+            except KeyError:
+                return None
+            return value
+
+    # Setting cache
+    def set(self, key, value):
+        self.lazyLoad()
+
+        # Setting according to path
+        path = key.split(self.delimiter)
+        json = self._cache
+
+        # Iterating through path
+        for step in path[0:-1]:
+            json.update({step: {}})
+            json = json[step]
+        json[path[-1]] = value
+
+        # Auto-writing
+        if self.auto_write:
+            self.write()

@@ -15,7 +15,7 @@ from argparse import ArgumentParser
 from .logger import Logger
 from .commander import Commander
 from .tools.decorators import singleton
-from .cacher import LineCacher
+from .cacher import LineCacher, YAMLCacher
 
 # Main Class
 #=============
@@ -93,7 +93,7 @@ class Settings():
         if cache_data is not None:
 
             # Checking if type of cache is valid
-            possible_types = {'line' : LineCacher}
+            possible_types = {'line' : LineCacher, 'yaml' : YAMLCacher}
             cache_type = cache_data.get('type', 'line')
             if cache_type not in possible_types:
                 self.__logger.write('Wrong type of cache supplied. ("line")', 'COLIFRAPY')
