@@ -10,3 +10,6 @@ test.py
 test.yml
 test2.yml
 cache/
+
+# Documentation
+docs/_*
