@@ -37,17 +37,16 @@ class Commander(ArgumentParser):
 
         # Adding Options
         if arguments is not None and len(arguments) > 0:
-            self._add_arguments(arguments)
+            self.__addArguments(arguments)
 
-        # Verbose is not overriden, we add it
-        if not self.__hasVerbose:
-            self.add_argument(*['-V', '--verbose'], **{'action' : 'store_true', 'help' : 'verbose mode'})
+        # Default Arguments
+        self.__defaultArguments()
 
         # Parsing
         self.opts = self.parse_args()
 
     # Batch adding arguments
-    def _add_arguments(self, arguments):
+    def __addArguments(self, arguments):
         for argument in arguments:
 
             # Dispatching
@@ -64,14 +63,22 @@ class Commander(ArgumentParser):
 
             # Associating type to pass yaml formatting
             if 'type' in kwargs:
-                kwargs['type'] = self._check_type(kwargs['type'])
+                kwargs['type'] = self.__checkType(kwargs['type'])
 
             # Adding arguments
             self.add_argument(*args, **kwargs)
+
+    # Default Arguments
+    def __defaultArguments(self):
+
+        # Verbose is not overriden, we add it
+        if not self.__hasVerbose:
+            self.add_argument(*['-V', '--verbose'], **{'action' : 'store_true', 'help' : 'verbose mode'})
+
 
         # Settings override
         self.add_argument('--settings', **{'type': str, 'help': 'settings file override'})
 
     # Checking type
-    def _check_type(self, typestr):
+    def __checkType(self, typestr):
         return self.__acceptableTypes.get(typestr, typestr)

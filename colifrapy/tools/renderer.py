@@ -35,27 +35,27 @@ class Renderer:
 
         # If vars are dict
         if isinstance(variables, dict):
-            return self.__apply_dict(text, variables)
+            return self.__applyDict(text, variables)
 
         # If vars are tuple or array
         if isinstance(variables, tuple) | isinstance(variables, list):
-            return self.__apply_list(text, variables)
+            return self.__applyList(text, variables)
 
         # If vars are strings
         if isinstance(variables, str) | isinstance(variables, unistring):
-            return self.__apply_string(text, variables)
+            return self.__applyString(text, variables)
 
         return text
 
         
-    def __apply_dict(self, text, variables):
+    def __applyDict(self, text, variables):
         for key, value in list(variables.items()):
             text = re.sub('\{\{'+key+'\}\}', str(value), text)
         if not self.ignore:
             text = re.sub('\{\{[^}]+\}\}', '', text)
         return text
 
-    def __apply_list(self, text, variables):
+    def __applyList(self, text, variables):
         search = re.findall('\{\{([^}]+)\}\}', text)
         for i in range(0, len(variables)):
             try:
@@ -64,5 +64,5 @@ class Renderer:
                 pass
         return text
 
-    def __apply_string(self, text, variable):
+    def __applyString(self, text, variable):
         return re.sub('\{\{[^}]+\}\}', variable, text)
