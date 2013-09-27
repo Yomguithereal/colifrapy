@@ -23,6 +23,7 @@ class Commander(ArgumentParser):
     #-----------
     opts = None
     __hasVerbose = False
+    __acceptableTypes = {'int': int, 'float': float, 'open': open}
 
 
     # Methods
@@ -73,11 +74,4 @@ class Commander(ArgumentParser):
 
     # Checking type
     def _check_type(self, typestr):
-        if typestr == 'int':
-            return int
-        elif typestr == 'float':
-            return float
-        elif typestr == 'open':
-            return open
-        else:
-            raise Exception('Colifrapy::Commander::WrongType')
+        return self.__acceptableTypes.get(typestr, typestr)
