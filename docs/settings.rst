@@ -69,7 +69,7 @@ As every colifrapy class, it is possible to use the Settings one as a standalone
     print s.hello
     >>> "world"
 
-Once loaded, you can use it anywhere in your code and even, reinstanciate it if convenient and it will keep the same state.
+Once loaded, you can use it anywhere in your code and even reinstanciate it if convenient and it will keep the same state.
 
 Options
 -------
