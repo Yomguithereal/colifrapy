@@ -12,6 +12,27 @@ structured command line tools very easily.
 
 Its logic is very similar to a MVC framework and is therefore easy to use.
 
+Summary
+=======
+
+.. toctree::
+    :maxdepth: 2
+
+    quickstart
+
+Installation
+============
+It is recommanded to use colifrapy under a python virtualenv. (Use the excellent virtualenvwrapper to spare you some painful operations with classic virtualenvs).
+
+Install colifrapy with pip (version up to 0.4.0)::
+
+    pip install colifrapy
+
+If you want to use the latest one which is still in development and hosted on github::
+
+    pip install git+https://github.com/Yomguithereal/colifrapy.git
+
+
 Philosophy
 ==========
 As every framework, colifrapy aims at enable you to work immediately on critical and intersting parts of
@@ -26,14 +47,13 @@ Concept
 When using colifrapy, your tool is called through a command line hub which acts more or less like a router which will call upon a controller using one or several models to perform the job.
 
 Your hub has therefore the task to load a yaml configuration file containing your command line
-arguments, name, version and even contextual settings if you need to.
+arguments, name, version and other contextual settings.
 
-Once those settings are loaded, every part of your application (mainly models) will remain able to access critical
+Once those settings are loaded, every part of your application will remain able to access critical
 utilities such as argv opts, settings and make use of colifrapy's logger to ouptut nicely to the console and to log files.
 
-So, schematically colifrapy is:
-
-    Settings --> Command Line Hub --> Controller --> Model + Model + Model etc...
+So, schematically colifrapy is a YAML configuration file loaded by a command line hub that will call upon 
+a controller and other models.
 
 Every bit of colifrapy can be used as a standalone.
 
@@ -42,11 +62,21 @@ Every bit of colifrapy can be used as a standalone.
     - Commander (deals with argv)
     - Cacher (saves data to file)
 
+Examples
+========
+My project furuikeya_ is a good example of the usage
+of colifrapy since the framework was originally designed for it.
 
-Summary
+.. _furuikeya: https://github.com/Yomguithereal/furuikeya
+
+
+Dependencies
+============
+
+    - pyyaml
+    - argparse
+
+
+License
 =======
-
-.. toctree::
-   :maxdepth: 2
-
-   installation
+Colifrapy is under a MIT license.
