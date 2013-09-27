@@ -39,6 +39,10 @@ class Commander(ArgumentParser):
         if arguments is not None and len(arguments) > 0:
             self._add_arguments(arguments)
 
+        # Verbose is not overriden, we add it
+        if not self.__hasVerbose:
+            self.add_argument(*['-V', '--verbose'], **{'action' : 'store_true', 'help' : 'verbose mode'})
+
         # Parsing
         self.opts = self.parse_args()
 
@@ -64,10 +68,6 @@ class Commander(ArgumentParser):
 
             # Adding arguments
             self.add_argument(*args, **kwargs)
-
-        # Verbose is not overriden, we add it
-        if not self.__hasVerbose:
-            self.add_argument(*['-V', '--verbose'], **{'action' : 'store_true', 'help' : 'verbose mode'})
 
         # Settings override
         self.add_argument('--settings', **{'type': str, 'help': 'settings file override'})
