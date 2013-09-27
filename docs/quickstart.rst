@@ -101,6 +101,8 @@ The Settings class is the first class loaded by colifrapy to perform its magic. 
 
 Also, note that paths are automatically considered by colifrapy either as relative (config/test.yml) or absolute ones (/var/usr/test.yml).
 
+For further information see :ref:`settings`.
+
 
 Arguments
 ---------
