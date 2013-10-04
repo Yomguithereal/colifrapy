@@ -175,7 +175,7 @@ Model
 -----
 **model/example_model.py**
 
-Models are the bulk of Colifrapy. You can extend them to acces your settings and commands easily.
+Models are the bulk of Colifrapy. You can extend them to access your settings and commands easily.
 
 A standard model is generated for you by the Scaffolder when you create a new project.
 
