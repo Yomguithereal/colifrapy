@@ -57,6 +57,7 @@ Example::
     python my-program.py action
 
 Your settings yaml file
+
 .. code-block:: yaml
 
     version: 'Basic action program'
@@ -68,16 +69,45 @@ Once this argument setup, just write a simplistic colifrapy hub that will automa
 
 Command line hub
 
-..code-block:: python
+.. code-block:: python
 
-    from
+    from colifrapy import Colifrapy
+    from model.controller import Controller
+
+    # Hub
+    class MyProject(Colifrapy):
+        pass
+
+    # Launching
+    if __name__ == '__main__':
+        hub = MyProject(Controller)
 
 Controller
 
-..code-block:: python
+.. code-block:: python
 
-    from
+    from colifrapy import Model
+
+    class Controller(Model):
+
+        def test(self):
+            self.log.write('test')
+
+        def hello(self):
+            self.log.write('Hello World!')
+
+        def delete(self):
+            self.log.write('Deleting...')
 
 Usage
 
-..code-block:: bash
+.. code-block:: bash
+
+    python my-program.py test
+    >>> '[DEBUG] :: 'test'
+
+    python my-program.py hello
+    >>> '[DEBUG] :: 'Hello World!'
+
+    python my-program.py delete
+    >>> '[DEBUG] :: 'Deleting...'
