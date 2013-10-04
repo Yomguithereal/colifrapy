@@ -7,7 +7,7 @@
 #   Version : 1.0
 
 # Basic Informations
-version: 'Colifrapy Scaffolder 0.2'
+version: 'Colifrapy Scaffolder 0.4'
 description: 'The Colifrapy Scaffolder is designed to create a new project.'
 arguments:
 - [ ['-a', '--author'], {'help' : "Author's name."} ]

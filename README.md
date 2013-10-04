@@ -141,7 +141,7 @@ if __name__ == '__main__':
 ```
 
 However, if you just want to use colifrapy features but don't want to be tied to its architecture,
-you can just use this hub which can access any critical utilities as well as any colifrapy Model 
+you can just use this hub which can access any critical utilities as well as any colifrapy Model
 would.
 
 ---
@@ -233,7 +233,7 @@ print settings.hash['test']
 
 The Settings class is a singleton. You can therefore use it everywhere without having to reload the data.
 
-Also, note that paths are automatically considered by colifrapy either as relative 
+Also, note that paths are automatically considered by colifrapy either as relative
 or absolute ones.
 ---
 
@@ -279,7 +279,7 @@ Finally, a --settings option is added automatically and enables you to override 
 if needed.
 
 ######Colifrapy Action
-If your program is given a positionnal argument named colifrapy_action, with a set of 
+If your program is given a positionnal argument named colifrapy_action, with a set of
 choices, your hub will automatically launch your controller's methods with the same name.
 
 In settings
@@ -304,7 +304,7 @@ Your Controller
 from colifrapy import Model
 
 class Controller(Model):
-    
+
     def test(self):
         self.log.write('Testing...')
 
