@@ -1,7 +1,4 @@
-.. colifrapy documentation master file, created by
-   sphinx-quickstart on Thu Sep 19 17:27:11 2013.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+.. Make Sphinx includes to avoid repetitions between logger and quickstart
 
 Colifrapy
 =========
@@ -20,6 +17,11 @@ Summary
 
     quickstart
     settings
+    logger
+    models
+    cacher
+    scaffolder
+    goodies
 
 Installation
 ============
@@ -53,7 +55,7 @@ arguments, name, version and other contextual settings.
 Once those settings are loaded, every part of your application will remain able to access critical
 utilities such as argv opts, settings and make use of colifrapy's logger to ouptut nicely to the console and to log files.
 
-So, schematically colifrapy is a YAML configuration file loaded by a command line hub that will call upon 
+So, schematically colifrapy is a YAML configuration file loaded by a command line hub that will call upon
 a controller and other models.
 
 Every bit of colifrapy can be used as a standalone.

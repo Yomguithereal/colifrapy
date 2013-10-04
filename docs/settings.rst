@@ -106,7 +106,9 @@ Logger
 
 The Logger class can be given some options through settings. If none are supplied, logger will still be initialized with its default values.
 
-For more precise information see Logger. TODOLINK
+For more precise information see :ref:`logger`.
+
+For more precise information about the logger's styles see :ref:`styles`.
 
 .. code-block:: yaml
 
