@@ -46,6 +46,7 @@ class Settings():
         with open(self.__getPath(yaml_file), 'r') as yf:
             data = yaml.load(yf.read())
 
+
         # Setting Commander
         #------------------
         commander_settings = {
@@ -55,6 +56,7 @@ class Settings():
             "usage"       : data.get('usage')
         }
         self.__commander.config(**commander_settings)
+
 
         # Setting Logger
         #---------------
@@ -87,6 +89,7 @@ class Settings():
         }
         self.__logger.config(**logger_settings)
 
+
         # Setting Cache
         #--------------
         cache_data = data.get('cache')
@@ -94,10 +97,10 @@ class Settings():
 
             # Checking if type of cache is valid
             possible_types = {'line' : LineCacher, 'yaml' : YAMLCacher}
-            cache_type = cache_data.get('type', 'line')
+            cache_type = cache_data.get('type', False)
             if cache_type not in possible_types:
-                self.__logger.write('Wrong type of cache supplied. ("line")', 'COLIFRAPY')
-                raise Exception('Colifrapy::Settings::WrongCacheTypeSupplied')
+                self.__logger.write('Wrong type of cache supplied.', 'COLIFRAPY')
+                raise Exception('Colifrapy::Settings::WrongCacheType')
             else:
 
                 # Directory
@@ -106,7 +109,11 @@ class Settings():
                     cache_directory = self.__getPath(cache_directory.rstrip('/'))
 
                 # Initializing cache
-                self._cache = possible_types[cache_type](cache_directory, cache_data.get('filename'), cache_data.get('auto_write'))
+                self._cache = possible_types[cache_type](
+                    cache_directory,
+                    cache_data.get('filename'),
+                    cache_data.get('auto_write')
+                )
 
 
         # General Settings
@@ -114,6 +121,7 @@ class Settings():
         if 'settings' in data:
             for key in data['settings']:
                 setattr(self, key, data['settings'][key])
+
 
     # Helpers
     #--------------
