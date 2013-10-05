@@ -60,10 +60,10 @@ a controller and other models.
 
 Every bit of colifrapy can be used as a standalone.
 
-    - Logger (outputs to console)
-    - Settings (deals with your yml settings)
-    - Commander (deals with argv)
-    - Cacher (saves data to file)
+    - **Logger** (outputs to console)
+    - **Settings** (deals with your yml settings)
+    - **Commander** (deals with argv)
+    - **Cacher** (saves data to file)
 
 Examples
 ========

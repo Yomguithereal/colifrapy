@@ -102,6 +102,8 @@ The options you may pass to the constructor of the logger (those options are aut
         when in rotation mode, number of lines before changing the log file. |br|
         *default*: 5000
 
+Note that if you want to change one of those options on the fly you can always run the config method one more time with the changed options.
+
 Levels
 ------
 The logger accepts five levels :

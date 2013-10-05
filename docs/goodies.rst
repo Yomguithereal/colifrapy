@@ -67,7 +67,7 @@ Your settings yaml file
 
 Once this argument setup, just write a simplistic colifrapy hub that will automatically trigger the relevant controller method named after a choice that the use can make.
 
-Command line hub
+**Command line hub**
 
 .. code-block:: python
 
@@ -82,7 +82,7 @@ Command line hub
     if __name__ == '__main__':
         hub = MyProject(Controller)
 
-Controller
+**Controller**
 
 .. code-block:: python
 
@@ -99,7 +99,7 @@ Controller
         def delete(self):
             self.log.write('Deleting...')
 
-Usage
+**Usage**
 
 .. code-block:: bash
 

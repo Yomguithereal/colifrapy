@@ -426,25 +426,4 @@ Then in your model
 
 Note that the path separator for deep levels in yaml is always ":" in Colifrapy.
 
-Bonus
------
-
-Colifrapy also gives access to a colorization function, a custom exception class and a basic singleton decorator if needed.
-
-.. code-block:: python
-
-    from colifrapy.tools.colorize import colorize
-    print colorize('hello', fore_color, background_color, style=list or string)
-
-    # Available colors : black, red, green, yellow, blue, magenta, cyan, white
-    # Available styles : reset, bold, dim, underline, blink, reverse, hidden
-
-    from colifrapy.tools.decorators import singleton
-
-    @singleton
-    class MySingleton():
-        pass
-
-    # Custom Exception Carrying data
-    from colifrapy import DataException
-    raise DataException(message, data)
+For full documentation see :ref:`cacher`.
