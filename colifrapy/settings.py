@@ -110,9 +110,9 @@ class Settings():
 
                 # Initializing cache
                 self._cache = possible_types[cache_type](
-                    cache_directory,
-                    cache_data.get('filename'),
-                    cache_data.get('auto_write')
+                    filename=cache_data.get('filename'),
+                    directory=cache_directory,
+                    auto_write=cache_data.get('auto_write')
                 )
 
 
