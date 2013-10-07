@@ -78,9 +78,9 @@ Standard
 ^^^^^^^^
 
 Standard program options are the following:
-    - version : Name and version of your program (outputted with -v/--version option)
-    - description : Short description of your program and what it does
-    - usage : how to use your program
+    - **version** : Name and version of your program (outputted with -v/--version option)
+    - **description** : Short description of your program and what it does
+    - **usage** : how to use your program
 
 Arguments
 ^^^^^^^^^
@@ -159,7 +159,7 @@ Cacher
 
 If needed, the Settings class can also handle the initialization of a cacher. Just provide a 'cache' key to the settings and populate it.
 
-For more precise information see Cacher. TODOLINK
+For more precise information see :ref:`cacher`.
 
 .. code-block:: yaml
 
@@ -174,7 +174,11 @@ For more precise information see Cacher. TODOLINK
 
         # Kind of cache
         # Default: 'line' (choose between line and yaml)
-        kind: 'yaml'
+        type: 'yaml'
+
+        # Auto Write
+        # Default: False
+        auto_write: True
 
 General
 ^^^^^^^
