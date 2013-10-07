@@ -2,7 +2,7 @@
 
 Cacher
 ======
-The Cacher class' aim is to save some data to files for long-term usage that would go beyond the execution of the program. One could see them as extra simplistic databases.
+The Cacher classes' aim is to save some data to files for long-term usage. One could see them as very simplistic databases.
 
 
 
@@ -51,7 +51,7 @@ Example of cache file content
 
 YAML Cacher
 ^^^^^^^^^^^
-The YAML Cacher is designed to store more complex states of data and organized in a key-value fashion. The readability of YAML also makes the cache file easy to manually modify if this is ever needed. This is also possible to create deep nested data structures that will be accessible by paths.
+The YAML Cacher is designed to store more complex states of data and organized in a key-value fashion. The readability of the YAML file format makes the cache file easy to manually modify if needed. This is also possible to create deep nested data structures that will be accessible by paths.
 
 Example of cache file content
 
