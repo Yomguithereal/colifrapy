@@ -7,7 +7,7 @@ structured command line tools very easily.
 
 Its logic is very similar to a MVC framework and is therefore easy to use.
 
-The fyull documentation for the last released version of colifrapy is available [there](http://yomguithereal.github.io/colifrapy/)
+The full documentation for the last released version of colifrapy is available [there](http://yomguithereal.github.io/colifrapy/)
 
 ##Installation
 It is recommanded to use colifrapy under a python virtualenv.
