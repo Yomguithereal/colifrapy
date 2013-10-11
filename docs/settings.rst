@@ -154,6 +154,8 @@ For more precise information about the logger's styles see :ref:`styles`.
         # Default: 'default'
         title_flavor: 'heavy'
 
+.. _cacherSettings:
+
 Cacher
 ^^^^^^
 
@@ -179,6 +181,31 @@ For more precise information see :ref:`cacher`.
         # Auto Write
         # Default: False
         auto_write: True
+
+If you need more than one cache instance, just pass an array to the cache key in your YAML settings file. In this case, don't forget to pass a name to your settings to access it. Else it will have an ugly and standardized name like *__cacheInstance0*.
+
+.. code-block:: yaml
+
+    cache
+        - name: 'infos'
+          filename: 'cache1.yml'
+          type: 'yaml'
+
+        - name: 'last_update'
+          filename: 'last_update.txt'
+          type: 'line'
+
+Then access your cache likewise.
+
+.. code-block:: python
+
+    from colifrapy import Model
+
+    class MyModel(Model):
+        def test(self):
+
+            print self.cache['infos']
+            print self.cache['last_update']
 
 General
 ^^^^^^^

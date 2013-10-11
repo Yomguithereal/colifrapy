@@ -10,6 +10,8 @@ Model Usage
 -----------
 As for the logger, if a cacher was initialized by the settings while running colifrapy, "cache" will be a reserved attribute of any of your models.
 
+It is possible to register more than one cache instance with the Settings class. To achieve this, see :ref:`cache settings <cacherSettings>`.
+
 .. code-block:: python
 
     from colifrapy import Model
@@ -34,7 +36,6 @@ You can also use the Cacher classes as standalones rather than within colifrapy'
     line_cache = LineCacher(options)
     yaml_cache = YAMLCacher(options)
 
-Note that cachers are also singletons.
 
 Modes
 -----
@@ -111,6 +112,9 @@ Line Cacher
         # N.B. : Useless if auto_write is set to True
         self.cache.write()
 
+        # Deleting cache
+        self.cache.delete()
+
 
         # Reading and writing filters
         # Example of a single date cached
@@ -134,17 +138,32 @@ YAML Cacher
             self.cache.set("two:deep", "blue")
 
             # Getting cache
-            self.cache.get("one")
+            print self.cache.get("one")
             >>> "red"
 
-            self.cache.get("two")
+            print self.cache.get("two")
             >>> {"deep" : "blue"}
 
-            self.cache.get("two:deep")
+            print self.cache.get("two:deep")
             >>> "blue"
 
-            self.cache.get()
-            >>> {"one" : "red", {"deep" : "blue"}}
+            print self.cache
+            >>> {"one" : "red", "two" : {"deep" : "blue"}}
+
+            # Unset path
+            self.cache.unset("two")
+            print self.cache
+            >>> {"one" : "red"}
+
+            # Overwriting cache
+            self.cache.overwrite({'other' : 'structure'})
+            print self.cache
+            >>> {'other' : 'structure'}
+
 
             # Writing to cache
+            # N.B. : Useless if auto_write is set to True
             self.cache.write()
+
+            # Deleting cache
+            self.cache.delete()

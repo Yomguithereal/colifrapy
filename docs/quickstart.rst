@@ -196,10 +196,10 @@ Minimalist example of a model usage
 
 
 Reserved attributes names are:
-    - cache (access to cache)
-    - log (access to the logger described right after)
-    - opts (access to the command line options)
-    - settings (access to the program's settings)
+    - **cache** (access to cache)
+    - **log** (access to the logger described right after)
+    - **opts** (access to the command line options)
+    - **settings** (access to the program's settings)
 
 
 Logger
