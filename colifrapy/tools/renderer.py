@@ -9,10 +9,7 @@
 # Dependencies
 #=============
 import re
-try:
-    unistring = unicode
-except NameError:
-    unistring = str
+from .utilities import *
 
 # Main Class
 #===========
@@ -30,7 +27,7 @@ class Renderer:
     def render(self, text, variables):
 
         # Integers
-        if isinstance(variables, int) | isinstance(variables, float):
+        if is_number(variables):
             variables = str(variables)
 
         # If vars are dict
@@ -38,16 +35,16 @@ class Renderer:
             return self.__applyDict(text, variables)
 
         # If vars are tuple or array
-        if isinstance(variables, tuple) | isinstance(variables, list):
+        if is_of_list(variables):
             return self.__applyList(text, variables)
 
         # If vars are strings
-        if isinstance(variables, str) | isinstance(variables, unistring):
+        if is_string(variables):
             return self.__applyString(text, variables)
 
         return text
 
-        
+
     def __applyDict(self, text, variables):
         for key, value in list(variables.items()):
             text = re.sub('\{\{'+key+'\}\}', str(value), text)
