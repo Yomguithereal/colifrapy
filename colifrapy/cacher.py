@@ -63,12 +63,21 @@ class Cacher:
     def exists(self):
         return os.path.exists(self.filepath)
 
+    # Deleting cache
+    def delete(self):
+        if self.exists():
+            os.remove(self.filepath)
+
     # Writing cache
     def checkDirectory(self):
 
         # Checking Directory
         if not os.path.exists(self.directory):
             os.makedirs(self.directory)
+
+    # Printing
+    def __repr__(self):
+        return str(self.get())
 
 
 # Line Cacher
@@ -181,3 +190,23 @@ class YAMLCacher(Cacher):
         # Auto-writing
         if self.auto_write:
             self.write()
+
+    # Unsetting cache
+    def unset(self, key):
+        self.lazyLoad()
+
+        # Setting according to path
+        path = key.split(self.delimiter)
+        json = self._cache
+
+        # Iterating through path
+        for step in path[0:-1]:
+            if json.get(step) is not None:
+                json = json[step]
+            else:
+                return False
+        del json[path[-1]]
+
+    # Overwrite cache
+    def overwrite(self, data):
+        self._cache = data
