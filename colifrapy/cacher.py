@@ -73,7 +73,6 @@ class Cacher:
 
 # Line Cacher
 #=============
-@singleton
 class LineCacher(Cacher):
     """ The Line Cacher is a standard mono-line cache. It can be read,
     overwritten and serves simple purposes. """
@@ -126,7 +125,6 @@ class LineCacher(Cacher):
 
 # YAML Cacher
 #=============
-@singleton
 class YAMLCacher(Cacher):
     """ The YAML Cacher is basically a small key-value file database
     that one may use to access organized data without having to
