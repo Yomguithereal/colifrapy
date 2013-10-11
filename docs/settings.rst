@@ -195,6 +195,16 @@ If you need any generic settings more, just provide a settings key to your yaml 
         to_index: ["books", "notes"]
         limit: 5
 
+If you need to divide your settings into several YAML files, colifrapy enables you to do so.
+
+.. code-block:: yaml
+    
+    # Syntax is 'include::path/to/file.yml'
+    # Warning, will only work on the first level (not on a nested one)
+    settings:
+        hello: 'world'
+        hello2: 'include::path/to/another_config_file.yml'
+
 N.B.
 ----
 
