@@ -31,7 +31,7 @@ class Model(object):
         commander = Commander()
         settings = Settings()
         cls.opts = commander.opts
-        cls.settings = settings
+        cls.settings = settings.accessSettingsDict()
         cls.log = Logger()
-        cls.cache = settings.cache
+        cls.cache = settings.accessCache()
         return object.__new__(cls)

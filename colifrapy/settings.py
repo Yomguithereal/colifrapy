@@ -17,6 +17,13 @@ from .commander import Commander
 from .tools.decorators import singleton
 from .cacher import LineCacher, YAMLCacher
 
+# Attr Dict
+#===========
+class AttrDict(dict):
+    def __init__(self, *args, **kwargs):
+        super(AttrDict, self).__init__(*args, **kwargs)
+        self.__dict__ = self
+
 # Main Class
 #=============
 @singleton
@@ -26,8 +33,8 @@ class Settings():
     the commander and the cacher. """
 
     # Standard Attributes
-    yaml_path = None
-    cache = None
+    __cache = None
+    __dictSettings = AttrDict()
 
     # Sibling Instances
     __commander = Commander()
@@ -42,11 +49,8 @@ class Settings():
         if '--settings' in sys.argv:
             yaml_path = sys.argv[sys.argv.index('--settings')+1]
 
-        # Path
-        self.yaml_path = yaml_path
-
         # Opening Settings Yaml File
-        with open(self.__getPath(self.yaml_path), 'r') as yf:
+        with open(self.__getPath(yaml_path), 'r') as yf:
             data = yaml.load(yf.read())
 
 
@@ -112,7 +116,7 @@ class Settings():
                     cache_directory = self.__getPath(cache_directory.rstrip('/'))
 
                 # Initializing cache
-                self.cache = possible_types[cache_type](
+                self.__cache = possible_types[cache_type](
                     filename=cache_data.get('filename'),
                     directory=cache_directory,
                     auto_write=cache_data.get('auto_write')
@@ -122,14 +126,19 @@ class Settings():
         # General Settings
         #-----------------
         if 'settings' in data:
-            for key in data['settings']:
-                setattr(self, key, data['settings'][key])
+            self.__dictSettings = AttrDict(data.get('settings', {}))
 
 
     # Helpers
     #--------------
     def __repr__(self):
-        return pprint.pformat(self.__dict__)
+        return pprint.pformat(self.__dictSettings)
+
+    def accessCache(self):
+        return self.__cache
+
+    def accessSettingsDict(self):
+        return self.__dictSettings
 
     def __getPath(self, path):
         if os.path.isabs(path):
