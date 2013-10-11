@@ -5,7 +5,7 @@ Colifrapy also gives access to internal functions and helpers that may prove use
 
 Colorization
 ------------
-A function used to style console output.
+A function used to style console output. Note that not every style work on every consoles.
 
 .. code-block:: python
 
@@ -18,7 +18,7 @@ A function used to style console output.
     # 4. style : a list or string of style(s)
 
     # Available colors : black, red, green, yellow, blue, magenta, cyan, white
-    # Available styles : reset, bold, dim, underline, blink, reverse, hidden
+    # Available styles : reset, bold, italic, dim, underline, blink-slow, blink-fast, reverse, hidden
 
     # Example
     print colorize('hello', fore_color='red', background_color='black', style='bold')
@@ -46,6 +46,31 @@ Custom exceptions carrying data.
     from colifrapy import DataException
 
     raise DataException(message, data)
+
+
+Helper Functions
+----------------
+Some functions that may prove useful
+
+.. code-block:: python
+
+    from colifrapy.tools.utilities import *
+
+    # Is the variable a number ?
+    is_number('test')
+    >>> False
+
+    # Is the variable a string (python 2/3 compatible) ?
+    is_string('test')
+    >>> True
+
+    # Is the variable a list or a tuple or a set ?
+    is_of_list(['red', 'blue'])
+    >>> True
+
+    # Get Index with fallback
+    get_index(['red', 'blue'], 'green', 5)
+    >>> 5
 
 
 Simplified Action Hub
