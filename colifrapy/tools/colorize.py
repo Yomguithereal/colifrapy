@@ -9,11 +9,8 @@
 """ The colorize module proposes a simple function to
 style and give some color to console output. """
 
-# Strings
-try:
-    unistring = unicode
-except NameError:
-    unistring = str
+# Dependencies
+from .utilities import *
 
 # Colors
 __colors = {
@@ -45,9 +42,9 @@ def colorize(string, color='black', background=None, style=None):
     background_option = '' if background is None else '4'+__colors.get(background, '0')+';'
 
     # Style
-    if isinstance(style, list) or isinstance(style, tuple):
+    if is_of_list(style):
         style_option = "".join([";"+__styles.get(i, '0') for i in style])
-    elif (isinstance(style, unistring)) | (isinstance(style, str)):
+    elif is_string(style):
         style_option = ";"+__styles.get(style, '0')
     else:
         style_option = ';22'
