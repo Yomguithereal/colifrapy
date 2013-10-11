@@ -15,6 +15,7 @@ from argparse import ArgumentParser
 from .logger import Logger
 from .commander import Commander
 from .tools.decorators import singleton
+from .tools.utilities import is_string
 from .cacher import LineCacher, YAMLCacher
 
 # Attr Dict
@@ -126,7 +127,18 @@ class Settings():
         # General Settings
         #-----------------
         if 'settings' in data:
-            self.__dictSettings = AttrDict(data.get('settings', {}))
+            general_settings = data.get('settings', {})
+
+            # Computing includes
+            for k, v in list(general_settings.items()):
+                if is_string(v):
+                    split = v.split('::')
+                    if split[0] == 'include':
+                        with open(self.__getPath(split[1]), 'r') as yf:
+                            general_settings[k] = yaml.load(yf.read())
+
+            # Final registration
+            self.__dictSettings = AttrDict(general_settings)
 
 
     # Helpers
