@@ -15,7 +15,7 @@ from argparse import ArgumentParser
 from .logger import Logger
 from .commander import Commander
 from .tools.decorators import singleton
-from .tools.utilities import is_string
+from .tools.utilities import is_string, is_of_list
 from .cacher import LineCacher, YAMLCacher
 
 # Attr Dict
@@ -34,8 +34,10 @@ class Settings():
     the commander and the cacher. """
 
     # Standard Attributes
-    __cache = None
+    __cache = {}
     __dictSettings = AttrDict()
+    __defaultCacheKey = '__cacheInstance'
+    __possibleCacheTypes = {'line' : LineCacher, 'yaml' : YAMLCacher}
 
     # Sibling Instances
     __commander = Commander()
@@ -103,25 +105,17 @@ class Settings():
         cache_data = data.get('cache')
         if cache_data is not None:
 
-            # Checking if type of cache is valid
-            possible_types = {'line' : LineCacher, 'yaml' : YAMLCacher}
-            cache_type = cache_data.get('type', 'line')
-            if cache_type not in possible_types:
-                self.__logger.write('Wrong type of cache supplied.', level='COLIFRAPY')
-                raise Exception('Colifrapy::Settings::WrongCacheType')
-            else:
+            # Registering all instances
+            if not is_of_list(cache_data):
+                cache_data = [cache_data]
+            
+            for c in cache_data:
+                self.__registerCache(c)
 
-                # Directory
-                cache_directory = cache_data.get('directory')
-                if cache_directory is not None:
-                    cache_directory = self.__getPath(cache_directory.rstrip('/'))
+            # Lone cache
+            if len(self.__cache) == 1:
+                self.__cache = self.__cache[self.__defaultCacheKey+'0']
 
-                # Initializing cache
-                self.__cache = possible_types[cache_type](
-                    filename=cache_data.get('filename'),
-                    directory=cache_directory,
-                    auto_write=cache_data.get('auto_write')
-                )
 
 
         # General Settings
@@ -151,6 +145,35 @@ class Settings():
 
     def accessSettingsDict(self):
         return self.__dictSettings
+
+
+    def __registerCache(self, cache_settings):
+
+        # Cache Instance Name
+        cache_name = cache_settings.get('name', '%s%s' % (self.__defaultCacheKey, len(self.__cache)))
+
+        # Checking Cache type
+        cache_type = cache_settings.get('type', 'line')
+        if cache_type not in self.__possibleCacheTypes:
+            self.__logger.write('Wrong type of cache supplied.', level='COLIFRAPY')
+            raise Exception('Colifrapy::Settings::WrongCacheType')
+        else:
+
+            # Directory
+            cache_directory = cache_settings.get('directory')
+            if cache_directory is not None:
+                cache_directory = self.__getPath(cache_directory.rstrip('/'))
+
+            # Initializing cache
+            cache_instance = self.__possibleCacheTypes[cache_type](
+                filename=cache_settings.get('filename'),
+                directory=cache_directory,
+                auto_write=cache_settings.get('auto_write')
+            )
+
+            self.__cache[cache_name] = cache_instance
+
+
 
     def __getPath(self, path):
         if os.path.isabs(path):
