@@ -25,25 +25,28 @@ class Settings():
     in order to set up the tool with Colifrapy utilities such as the logger,
     the commander and the cacher. """
 
+    # Standard Attributes
+    yaml_path = None
+    cache = None
+
     # Sibling Instances
     __commander = Commander()
     __logger = Logger()
-    cache = None
+
 
     # Configuration
     #--------------
-    def load(self, yaml_file=None):
+    def load(self, yaml_path='config/settings.yml'):
 
         # Settings override
         if '--settings' in sys.argv:
-            yaml_file = sys.argv[sys.argv.index('--settings')+1]
+            yaml_path = sys.argv[sys.argv.index('--settings')+1]
 
-        # Default value
-        if yaml_file is None:
-            yaml_file = 'config/settings.yml'
+        # Path
+        self.yaml_path = yaml_path
 
         # Opening Settings Yaml File
-        with open(self.__getPath(yaml_file), 'r') as yf:
+        with open(self.__getPath(self.yaml_path), 'r') as yf:
             data = yaml.load(yf.read())
 
 
