@@ -28,7 +28,7 @@ class Settings():
     # Sibling Instances
     __commander = Commander()
     __logger = Logger()
-    _cache = None
+    cache = None
 
     # Configuration
     #--------------
@@ -109,7 +109,7 @@ class Settings():
                     cache_directory = self.__getPath(cache_directory.rstrip('/'))
 
                 # Initializing cache
-                self._cache = possible_types[cache_type](
+                self.cache = possible_types[cache_type](
                     filename=cache_data.get('filename'),
                     directory=cache_directory,
                     auto_write=cache_data.get('auto_write')

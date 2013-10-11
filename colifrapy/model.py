@@ -33,5 +33,5 @@ class Model(object):
         cls.opts = commander.opts
         cls.settings = settings
         cls.log = Logger()
-        cls.cache = settings._cache
+        cls.cache = settings.cache
         return object.__new__(cls)

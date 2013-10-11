@@ -40,7 +40,7 @@ class Colifrapy:
         self.log = Logger()
 
         # Cache just in case
-        self.cache = self.settings._cache
+        self.cache = self.settings.cache
 
         # Loading Controller
         if controller is not None:
