@@ -27,11 +27,15 @@ class Model(object):
     # New Instance
     def __new__(cls, *args, **kwargs):
 
-    	# Loading every necessary piece
+    	# Getting Singletons back
         commander = Commander()
         settings = Settings()
+
+        # Setting reserved attributes
         cls.opts = commander.opts
         cls.settings = settings.accessSettingsDict()
         cls.log = Logger()
         cls.cache = settings.accessCache()
+
+        # Returning class
         return object.__new__(cls)
