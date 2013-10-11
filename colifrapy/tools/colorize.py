@@ -12,30 +12,11 @@ style and give some color to console output. """
 # Dependencies
 from .utilities import *
 
-# Colors
-__colors = {
-    'black':   '0',
-    'red':     '1',
-    'green':   '2',
-    'yellow':  '3',
-    'blue':    '4',
-    'magenta': '5',
-    'cyan':    '6',
-    'white':   '7'
-}
+# Possible Colors and Styles
+__colors = ['black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white']
+__styles = ['reset', 'bold', 'dim', 'italic', 'underline', 'blink-slow', 'blink-rapid', 'reverse', 'hidden']
 
-# Styles
-__styles = {
-    'reset' : '0',
-    'bold' : '1',
-    'dim' : '2',
-    'underline' : '4',
-    'blink' : '5',
-    'reverse' : '7',
-    'hidden' : '8'
-}
-
-# Color Printing
+# Colorization function
 def colorize(string, color='black', background=None, style=None):
 
     # Background
@@ -43,15 +24,15 @@ def colorize(string, color='black', background=None, style=None):
 
     # Style
     if is_of_list(style):
-        style_option = "".join([";"+__styles.get(i, '0') for i in style])
+        style_option = "".join([";"+str(get_index(__styles, i, 0)) for i in style])
     elif is_string(style):
-        style_option = ";"+__styles.get(style, '0')
+        style_option = ";"+str(get_index(__styles, style, 0))
     else:
         style_option = ';22'
 
     return "\033[%s3%s%sm%s\033[0m" % (
         background_option,
-        __colors.get(color, '0'),
+        str(get_index(__colors, color, 0)),
         style_option,
         str(string)
     )

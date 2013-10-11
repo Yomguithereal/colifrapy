@@ -28,3 +28,11 @@ def is_number(variable):
 # Is of list kind
 def is_of_list(variable):
     return True in [isinstance(variable, t) for t in [list, tuple, set]]
+
+# Get Index with Fallback
+def get_index(list, value, fallback):
+    try:
+        index = list.index(value)
+    except ValueError:
+        return fallback
+    return index
