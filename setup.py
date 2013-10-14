@@ -10,6 +10,11 @@ structured command line tools very easily.
 
 Its logic is very similar to a MVC framework and is therefore easy to use.
 
+The full documentation is available here_.
+
+.. _here: http://yomguithereal.github.io/colifrapy/
+
+
 Philosophy
 ==========
 As every framework, colifrapy aims at enable you to work immediately on critical and intersting parts of

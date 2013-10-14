@@ -26,7 +26,7 @@ class Colifrapy:
     settings = None
     cache = None
 
-    def __init__(self, controller=None, settings_path=None):
+    def __init__(self, controller=None, settings_path='config/settings.yml'):
 
         # Loading Settings
         settings_instance = Settings()
