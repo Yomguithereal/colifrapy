@@ -12,7 +12,7 @@ The full documentation for the last released version of colifrapy is available [
 ##Installation
 It is recommanded to use colifrapy under a python virtualenv.
 
-Install it with pip (version up to 0.4.0):
+Install it with pip (version up to 0.4.1):
 
 ```
 pip install colifrapy
