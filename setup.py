@@ -64,7 +64,7 @@ Colifrapy is under a MIT license.
 
 
 setup(name='colifrapy',
-      version='0.4.1',
+      version='0.4.2',
       description='Command Line Framework for Python',
       url='http://yomguithereal.github.io/colifrapy/',
       long_description=docstring,
