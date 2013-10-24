@@ -1,14 +1,16 @@
 # -------------------------------------------------------------------
-# Misc Decorators 
+# Misc Decorators
 # -------------------------------------------------------------------
 #
 #
 #   Author : PLIQUE Guillaume
 #   Version : 1.0
 
-# Singleton 
+
+# Singleton
 def singleton(class_):
     instances = {}
+
     def getinstance(*args, **kwargs):
         if class_ not in instances:
             instances[class_] = class_(*args, **kwargs)

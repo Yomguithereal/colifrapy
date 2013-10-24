@@ -25,20 +25,19 @@ except ImportError:
 import os
 from datetime import datetime
 import yaml
-from .tools.colorize import colorize
 from .tools.decorators import singleton
 from .tools.flavors import TextFlavor
 from .tools.flavors import TitleFlavor
 from .tools.renderer import Renderer
 
+
 # Main Class
 #===========
 @singleton
-class Logger:
+class Logger(object):
     """ The Logger class represents the voice of Colifrapy and has to
     inform the user. It therefore outputs to console and to file in order
     to keep the code flow clear. """
-
 
     # Properties
     #-----------
@@ -60,8 +59,10 @@ class Logger:
     output_filename = 'log.txt'
     possible_modes = set(['simple', 'overwrite', 'rotation'])
     output_mode = 'simple'
-    max_lines = 5000  
-    
+    max_lines = 5000
+    date_format = '%Y-%m-%d %H:%M:%S'
+    file_date_format = '%Y-%m-%d_%H:%M:%S'
+
     # Levels
     levels = [
         'INFO',
@@ -71,17 +72,15 @@ class Logger:
         'VERBOSE',
         'COLIFRAPY'
     ]
-    threshold = set(['INFO', 'DEBUG', 'WARNING', 'ERROR', 'VERBOSE', 'COLIFRAPY'])
+    threshold = set(levels)
     necessary_levels = set(['ERROR', 'COLIFRAPY'])
-    
-
 
     # Configuration
     #--------------
     def config(self, strings=None, output_directory=None,
-        threshold=None, triggers_exceptions=True,
-        flavor='default', title_flavor='default', activated=True, 
-        output_mode='simple', output_filename=None, max_lines=None):
+               threshold=None, triggers_exceptions=True,
+               flavor='default', title_flavor='default', activated=True,
+               output_mode='simple', output_filename=None, max_lines=None):
 
         # Flavor
         self.text_flavor = TextFlavor(flavor)
@@ -111,12 +110,12 @@ class Logger:
         self.activated = activated
 
         # Setting Output mode
-        self.output_mode = output_mode if output_mode in self.possible_modes else 'simple'
+        if output_mode in self.possible_modes:
+            self.output_mode = output_mode
 
         # Max Lines
         if max_lines is not None:
             self.max_lines = int(max_lines)
-
 
     # Setters
     #--------
@@ -125,12 +124,15 @@ class Logger:
             with open(strings, 'r') as sf:
                 self.strings = yaml.load(sf.read())
         except Exception as e:
-            self.write('The string file : {path} does not exist.', {'path' : strings}, 'COLIFRAPY')
+            self.write(
+                'The string file : {path} does not exist.',
+                {'path': strings},
+                'COLIFRAPY'
+            )
             raise e
 
     def load_threshold(self, threshold):
         self.threshold = (set(threshold) & self.threshold) | self.necessary_levels
-
 
     # Logging Method
     #---------------
@@ -180,7 +182,6 @@ class Logger:
         if level == 'ERROR' and self.triggers_exceptions:
             raise Exception(path)
 
-
     # Helper Methods
     def debug(self, message, v={}):
         self.write(message, level='DEBUG', variables=v)
@@ -197,7 +198,6 @@ class Logger:
     def verbose(self, message, v={}):
         self.write(message, level='VERBOSE', variables=v)
 
-
     # Header printing
     def header(self, message, color='yellow'):
 
@@ -209,7 +209,6 @@ class Logger:
 
         # To file
         self.__toFile(message, 'HEADER')
-
 
     # Confirmation asking method
     def confirm(self, message, default='y'):
@@ -252,7 +251,9 @@ class Logger:
             return False
 
         # Overwrite ?
-        write_mode = 'w' if self.output_mode == 'overwrite' and self.first_output else 'a+'
+        write_mode = 'w'
+        if self.output_mode == 'overwrite' and self.first_output:
+            write_mode = 'a+'
 
         # Writing to file
         if self.first_output:
@@ -262,7 +263,7 @@ class Logger:
             separator = ''
 
         # Opening File
-        with open(self.output_directory+'/'+self.output_filename, write_mode) as lf :
+        with open(self.output_directory+'/'+self.output_filename, write_mode) as lf:
 
             # Counting lines ?
             if self.output_mode == 'rotation':
@@ -272,22 +273,35 @@ class Logger:
                     self.line_count += 1
 
             # Do we have to perform rotation ?
-            if self.line_count >= self.max_lines and self.output_mode == 'rotation':
+            if (self.line_count >= self.max_lines and
+                    self.output_mode == 'rotation'):
                 self.__performRotation()
 
             # Writing
-            lf.write(separator+datetime.now().strftime("%Y-%m-%d %H:%M:%S")+' -- ['+level+'] :: '+str(message)+'\n')
-
+            lf.write(
+                '%s -- [%s] :: %s\n'
+                % (
+                    separator+datetime.now().strftime(self.date_format),
+                    level,
+                    str(message)
+                )
+            )
 
     # Rotate the log file
     def __performRotation(self):
-        
+
         filename, fileext = os.path.splitext(self.output_filename)
 
         # Renaming the file
         os.rename(
-            self.output_directory+'/'+self.output_filename, 
-            self.output_directory+'/'+filename+'_'+datetime.now().strftime("%Y-%m-%d_%H:%M:%S")+fileext
+            self.output_directory+'/'+self.output_filename,
+            '%s/%s_%s%s'
+            % (
+                self.output_directory,
+                filename,
+                datetime.now().strftime(self.file_date_format),
+                fileext
+            )
         )
 
         # Reinitialize line count

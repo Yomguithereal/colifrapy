@@ -8,15 +8,16 @@
 
 # Dependencies
 #=============
-import os, sys
+import os
+import sys
 import pprint
 import yaml
-from argparse import ArgumentParser
 from .logger import Logger
 from .commander import Commander
 from .tools.decorators import singleton
 from .tools.utilities import is_string, is_of_list
 from .cacher import LineCacher, YAMLCacher
+
 
 # Attr Dict
 #===========
@@ -25,24 +26,24 @@ class AttrDict(dict):
         super(AttrDict, self).__init__(*args, **kwargs)
         self.__dict__ = self
 
+
 # Main Class
 #=============
 @singleton
-class Settings():
-    """ The Settings Class' goal is to read the 'settings.yml' file of the project
-    in order to set up the tool with Colifrapy utilities such as the logger,
-    the commander and the cacher. """
+class Settings(object):
+    """ The Settings Class' goal is to read the 'settings.yml' file of the
+    project in order to set up the tool with Colifrapy utilities such as
+    the logger, the commander and the cacher. """
 
     # Standard Attributes
     __cache = {}
     __dictSettings = AttrDict()
     __defaultCacheKey = '__cacheInstance'
-    __possibleCacheTypes = {'line' : LineCacher, 'yaml' : YAMLCacher}
+    __possibleCacheTypes = {'line': LineCacher, 'yaml': YAMLCacher}
 
     # Sibling Instances
     __commander = Commander()
     __logger = Logger()
-
 
     # Configuration
     #--------------
@@ -56,24 +57,24 @@ class Settings():
         with open(self.__getPath(yaml_path), 'r') as yf:
             data = yaml.load(yf.read())
 
-
         # Setting Commander
         #------------------
         commander_settings = {
-            "version"     : data.get('version'),
-            "arguments"   : data.get('arguments'),
-            "description" : data.get('description'),
-            "usage"       : data.get('usage')
+            "version":     data.get('version'),
+            "arguments":   data.get('arguments'),
+            "description": data.get('description'),
+            "usage":       data.get('usage')
         }
         self.__commander.config(**commander_settings)
-
 
         # Setting Logger
         #---------------
         logger_data = data.get('logger', {})
 
         # Threshold
-        logger_threshold = None if self.__commander.opts.verbose else logger_data.get('threshold')
+        logger_threshold = None
+        if not self.__commander.opts.verbose:
+            logger_threshold = logger_data.get('threshold')
 
         # Strings
         logger_strings = logger_data.get('strings')
@@ -86,19 +87,18 @@ class Settings():
             logger_path = self.__getPath(logger_path.rstrip('/'))
 
         logger_settings = {
-            "activated"   : logger_data.get('activated', True),
-            "strings"     : logger_strings,
-            "output_directory" : logger_path,
-            "output_mode" : logger_data.get('mode'),
+            "activated": logger_data.get('activated', True),
+            "strings": logger_strings,
+            "output_directory": logger_path,
+            "output_mode": logger_data.get('mode'),
             "output_filename": logger_data.get('filename'),
             "max_lines": logger_data.get('max_lines'),
-            "threshold"   : logger_threshold,
-            "triggers_exceptions" : logger_data.get('exceptions', True),
-            "flavor" : logger_data.get('flavor', 'default'),
-            "title_flavor" : logger_data.get('title_flavor', 'default')
+            "threshold": logger_threshold,
+            "triggers_exceptions": logger_data.get('exceptions', True),
+            "flavor": logger_data.get('flavor', 'default'),
+            "title_flavor": logger_data.get('title_flavor', 'default')
         }
         self.__logger.config(**logger_settings)
-
 
         # Setting Cache
         #--------------
@@ -108,15 +108,13 @@ class Settings():
             # Registering all instances
             if not is_of_list(cache_data):
                 cache_data = [cache_data]
-            
+
             for c in cache_data:
                 self.__registerCache(c)
 
             # Lone cache
             if len(self.__cache) == 1:
                 self.__cache = self.__cache[self.__defaultCacheKey+'0']
-
-
 
         # General Settings
         #-----------------
@@ -134,7 +132,6 @@ class Settings():
             # Final registration
             self.__dictSettings = AttrDict(general_settings)
 
-
     # Helpers
     #--------------
     def __repr__(self):
@@ -146,16 +143,23 @@ class Settings():
     def accessSettingsDict(self):
         return self.__dictSettings
 
-
     def __registerCache(self, cache_settings):
 
         # Cache Instance Name
-        cache_name = cache_settings.get('name', '%s%s' % (self.__defaultCacheKey, len(self.__cache)))
+        cache_name = cache_settings.get(
+            'name',
+            '%s%s'
+            % (
+                self.__defaultCacheKey,
+                len(self.__cache)
+            )
+        )
 
         # Checking Cache type
         cache_type = cache_settings.get('type', 'line')
         if cache_type not in self.__possibleCacheTypes:
-            self.__logger.write('Wrong type of cache supplied.', level='COLIFRAPY')
+            self.__logger.write('Wrong type of cache supplied.',
+                                level='COLIFRAPY')
             raise Exception('Colifrapy::Settings::WrongCacheType')
         else:
 
@@ -172,8 +176,6 @@ class Settings():
             )
 
             self.__cache[cache_name] = cache_instance
-
-
 
     def __getPath(self, path):
         if os.path.isabs(path):

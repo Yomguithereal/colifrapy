@@ -6,6 +6,7 @@
 #   Author : PLIQUE Guillaume
 #   Version : 1.0
 
+
 # Main Class
 #=============
 class DataException(Exception):

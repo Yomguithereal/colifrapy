@@ -12,6 +12,7 @@ from .logger import Logger
 from .commander import Commander
 from .settings import Settings
 
+
 # Main Class
 #=============
 class Model(object):
@@ -27,7 +28,7 @@ class Model(object):
     # New Instance
     def __new__(cls, *args, **kwargs):
 
-    	# Getting Singletons back
+        # Getting Singletons back
         commander = Commander()
         settings = Settings()
 

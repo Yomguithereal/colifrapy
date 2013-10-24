@@ -25,8 +25,8 @@ file_path = os.path.split(os.path.abspath(__file__))[0]+'/templates/'
 # Main Class
 #===========
 class Scaffolder(Model):
-    """ The Scaffolder is the base class that creates projects, model and generate
-    necessary files to get going from the templates. """
+    """ The Scaffolder is the base class that creates projects,
+    model and generate necessary files to get going from the templates. """
 
     # Tools
     renderer = Renderer(ignore=False)
@@ -119,7 +119,11 @@ class Hub(Colifrapy):
         self.log.load_strings(file_path+'strings.yml')
         self.log.header('main:title')
 
-        self.controller.build(self.opts.project, self.opts.author, self.opts.organization)
+        self.controller.build(
+            self.opts.project,
+            self.opts.author,
+            self.opts.organization
+        )
 
 def main():
     hub = Hub(Scaffolder, file_path+'settings.yml')

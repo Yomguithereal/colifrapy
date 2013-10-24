@@ -9,6 +9,7 @@
 #=============
 from colifrapy import Model
 
+
 # Main Class
 #===========
 class ExampleModel(Model):

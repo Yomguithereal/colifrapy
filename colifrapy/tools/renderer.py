@@ -9,11 +9,12 @@
 # Dependencies
 #=============
 import re
-from .utilities import *
+from .utilities import is_of_list, is_number, is_string
+
 
 # Main Class
 #===========
-class Renderer:
+class Renderer(object):
     """ The Renderer take Mustache-styled strings and compute their
     variables. """
 
@@ -44,22 +45,25 @@ class Renderer:
 
         return text
 
-
     def __applyDict(self, text, variables):
         for key, value in list(variables.items()):
-            text = re.sub('\{\{'+key+'\}\}', str(value), text)
+            text = re.sub(r'\{\{%s\}\}' % key, str(value), text)
         if not self.ignore:
-            text = re.sub('\{\{[^}]+\}\}', '', text)
+            text = re.sub(r'\{\{[^}]+\}\}', '', text)
         return text
 
     def __applyList(self, text, variables):
-        search = re.findall('\{\{([^}]+)\}\}', text)
+        search = re.findall(r'\{\{([^}]+)\}\}', text)
         for i in range(0, len(variables)):
             try:
-                text = re.sub('\{\{'+search[i]+'\}\}', str(variables[i]), text)
+                text = re.sub(
+                    r'\{\{%s\}\}' % search[i],
+                    str(variables[i]),
+                    text
+                )
             except IndexError:
                 pass
         return text
 
     def __applyString(self, text, variable):
-        return re.sub('\{\{[^}]+\}\}', variable, text)
+        return re.sub(r'\{\{[^}]+\}\}', variable, text)

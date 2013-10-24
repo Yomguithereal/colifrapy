@@ -11,6 +11,7 @@
 from argparse import ArgumentParser
 from .tools.decorators import singleton
 
+
 # Main Class
 #===========
 @singleton
@@ -18,22 +19,22 @@ class Commander(ArgumentParser):
     """ The Commander class extends ArgumentParser and has to
     compute the arguments passed to the tool. """
 
-
     # Properties
     #-----------
     opts = None
     __hasVerbose = False
     __acceptableTypes = {'int': int, 'float': float, 'open': open}
 
-
     # Methods
     #--------
 
     # Configuration
-    def config(self, version='0.1', description='Description Here', arguments=None, usage=None):
+    def config(self, version='0.1', description='Description Here',
+               arguments=None, usage=None):
 
         # Calling Parent
-        ArgumentParser.__init__(self, version=version, description=description, usage=usage);
+        ArgumentParser.__init__(self, version=version,
+                                description=description, usage=usage)
 
         # Adding Options
         if arguments is not None and len(arguments) > 0:
@@ -73,11 +74,16 @@ class Commander(ArgumentParser):
 
         # Verbose is not overriden, we add it
         if not self.__hasVerbose:
-            self.add_argument(*['-V', '--verbose'], **{'action' : 'store_true', 'help' : 'verbose mode'})
-
+            self.add_argument(
+                *['-V', '--verbose'],
+                **{'action': 'store_true', 'help': 'verbose mode'}
+            )
 
         # Settings override
-        self.add_argument('--settings', **{'type': str, 'help': 'settings file override'})
+        self.add_argument(
+            '--settings',
+            **{'type': str, 'help': 'settings file override'}
+        )
 
     # Checking type
     def __checkType(self, typestr):

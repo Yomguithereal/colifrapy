@@ -12,13 +12,13 @@ from .settings import Settings
 from .commander import Commander
 from .logger import Logger
 
+
 # Main Class
 #=============
-class Colifrapy:
+class Colifrapy(object):
     """ The Colifrapy class is the main project hub. Its aim is to load
     the project's settings and analyze the arguments passed to it in order
     to call the relevant controller methods. """
-
 
     log = None
     opts = None

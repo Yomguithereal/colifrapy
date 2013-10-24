@@ -13,6 +13,7 @@
 from colifrapy import Colifrapy
 from model.controller import Controller
 
+
 # Hub
 #====
 class {{project}}(Colifrapy):
@@ -40,7 +41,8 @@ class {{project}}(Colifrapy):
 #===========
 if __name__ == '__main__':
 
-    # Pass a second argument to the constructor with the location of your settings.yml
+    # Pass a second argument to the constructor 
+    # with the location of your settings.yml
     # if you want it to load from anywhere else than config/settings.yml
     hub = {{project}}(Controller)
     hub.launch()

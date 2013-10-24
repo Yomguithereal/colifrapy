@@ -21,7 +21,7 @@ except ImportError:
 #=============
 class Cacher(object):
     """ The Cacher class is the main abstraction that rules
-    all the following ones. It contains therefore every general 
+    all the following ones. It contains therefore every general
     methods and properties that every child one could use. """
 
     # Generic properties
@@ -157,7 +157,8 @@ class YAMLCacher(Cacher):
 
         # To File
         with open(self.filepath, 'w') as cf:
-            cf.write(yaml.dump(self._cache, default_flow_style=False, indent=4))
+            cf.write(yaml.dump(self._cache,
+                               default_flow_style=False, indent=4))
 
     # Getting cache
     def get(self, key=None):
