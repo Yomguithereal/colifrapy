@@ -10,7 +10,6 @@
 #=============
 import os
 import yaml
-from .tools.decorators import singleton
 
 try:
     from functools import reduce
@@ -20,10 +19,10 @@ except ImportError:
 
 # Main Class
 #=============
-class Cacher:
-    """ The Cacher class is the main abstraction that rules all the following ones.
-    It contains therefore every general methods and properties that every child
-    one could use. """
+class Cacher(object):
+    """ The Cacher class is the main abstraction that rules
+    all the following ones. It contains therefore every general 
+    methods and properties that every child one could use. """
 
     # Generic properties
     _loaded = False
@@ -168,7 +167,8 @@ class YAMLCacher(Cacher):
             return self._cache
         else:
             try:
-                value = reduce(dict.__getitem__, key.split(self.delimiter), self._cache)
+                path = key.split(self.delimiter)
+                value = reduce(dict.__getitem__, path, self._cache)
             except KeyError:
                 return None
             return value
