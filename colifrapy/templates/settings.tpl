@@ -10,8 +10,8 @@ version: '{{project}} 0.1.0'
 description: 'Description of the program.'
 usage: 'How to deal with your program'
 arguments:
-- [ ['-t', '--test'], {'help' : 'Test', 'type' : 'int'} ]
-- [ ['positionnal'], {'choices' : ['test']}]
+- [ ['-t', '--test'], {'help': 'Test', 'type': 'int'} ]
+- [ ['positionnal'], {'choices': ['test']} ]
 
 # Logger Settings
 logger:
