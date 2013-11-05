@@ -15,7 +15,7 @@ import yaml
 from .logger import Logger
 from .commander import Commander
 from .tools.decorators import singleton
-from .tools.utilities import is_string, is_of_list
+from .tools.utilities import is_string, is_of_list, determine_path
 from .cacher import LineCacher, YAMLCacher
 
 
@@ -54,7 +54,7 @@ class Settings(object):
             yaml_path = sys.argv[sys.argv.index('--settings')+1]
 
         # Opening Settings Yaml File
-        with open(self.__getPath(yaml_path), 'r') as yf:
+        with open(determine_path(yaml_path), 'r') as yf:
             data = yaml.load(yf.read())
 
         # Setting Commander
@@ -79,12 +79,12 @@ class Settings(object):
         # Strings
         logger_strings = logger_data.get('strings')
         if logger_strings is not None:
-            logger_strings = self.__getPath(logger_strings)
+            logger_strings = determine_path(logger_strings)
 
         # Output path
         logger_path = logger_data.get('directory')
         if logger_path is not None:
-            logger_path = self.__getPath(logger_path.rstrip('/'))
+            logger_path = determine_path(logger_path.rstrip('/'))
 
         logger_settings = {
             "activated": logger_data.get('activated', True),
@@ -126,7 +126,7 @@ class Settings(object):
                 if is_string(v):
                     split = v.split('::')
                     if split[0] == 'include':
-                        with open(self.__getPath(split[1]), 'r') as yf:
+                        with open(determine_path(split[1]), 'r') as yf:
                             general_settings[k] = yaml.load(yf.read())
 
             # Final registration
@@ -166,7 +166,7 @@ class Settings(object):
             # Directory
             cache_directory = cache_settings.get('directory')
             if cache_directory is not None:
-                cache_directory = self.__getPath(cache_directory.rstrip('/'))
+                cache_directory = determine_path(cache_directory.rstrip('/'))
 
             # Initializing cache
             cache_instance = self.__possibleCacheTypes[cache_type](
@@ -176,13 +176,3 @@ class Settings(object):
             )
 
             self.__cache[cache_name] = cache_instance
-
-    def __getPath(self, path):
-        if os.path.isabs(path):
-            return path
-        else:
-            try:
-                sFile = os.path.abspath(sys.modules['__main__'].__file__)
-            except:
-                sFile = sys.executable
-            return os.path.dirname(sFile)+'/'+path

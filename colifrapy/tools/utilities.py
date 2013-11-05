@@ -8,6 +8,7 @@
 
 # Dependencies
 #=============
+import os
 import sys
 
 # Compatibility variables
@@ -39,3 +40,17 @@ def get_index(target, value, fallback):
     except ValueError:
         return fallback
     return index
+
+
+# Determine whether your path is relative or absolute
+# if it happens to be relative, the function will assume
+# it is relative to the file called (__main__)
+def determine_path(path):
+    if os.path.isabs(path):
+        return path
+    else:
+        try:
+            sFile = os.path.abspath(sys.modules['__main__'].__file__)
+        except:
+            sFile = sys.executable
+        return os.path.dirname(sFile)+'/'+path
