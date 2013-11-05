@@ -84,7 +84,7 @@ class Settings(object):
         # Output path
         logger_path = logger_data.get('directory')
         if logger_path is not None:
-            logger_path = normalize_path(logger_path)
+            logger_path = normalize_path(logger_path, True)
 
         logger_settings = {
             "activated": logger_data.get('activated', True),
@@ -166,7 +166,7 @@ class Settings(object):
             # Directory
             cache_directory = cache_settings.get('directory')
             if cache_directory is not None:
-                cache_directory = normalize_path(cache_directory)
+                cache_directory = normalize_path(cache_directory, True)
 
             # Initializing cache
             cache_instance = self.__possibleCacheTypes[cache_type](

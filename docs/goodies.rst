@@ -83,9 +83,18 @@ Some functions that may prove useful
     determine_path('/home/user/path/to/file.txt')
     >>> '/home/user/path/to/file.txt'
 
-    normalize_path('/resources/file.txt')
+    ('/resources/file.txt')
     >>> '/home/user/test/resources/file.txt'
 
+    # A second boolean argument can be passed to indicate the function if
+    # the path leads to a directory or a file.
+    # In case of a directory, the path will be returned with a correct trailing slash
+    # Default is False (file)
+    normalize_path('/resources/test_folder', False)
+    >>> '/home/user/test/resources/test_folder'
+
+    normalize_path('/resources/test_folder', True)
+    >>> '/home/user/test/resources/test_folder/'
 
 Simplified Action Hub
 ---------------------
