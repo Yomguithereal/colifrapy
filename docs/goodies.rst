@@ -53,7 +53,9 @@ Helper Functions
 Some functions that may prove useful
 
 .. code-block:: python
-
+    
+    # You would rather import only functions you need,
+    # but for the sake of the example I use '*'
     from colifrapy.tools.utilities import *
 
     # Is the variable a number ?
@@ -81,7 +83,7 @@ Some functions that may prove useful
     determine_path('/home/user/path/to/file.txt')
     >>> '/home/user/path/to/file.txt'
 
-    determine_path('/resources/file.txt')
+    normalize_path('/resources/file.txt')
     >>> '/home/user/test/resources/file.txt'
 
 

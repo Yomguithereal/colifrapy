@@ -15,7 +15,7 @@ import yaml
 from .logger import Logger
 from .commander import Commander
 from .tools.decorators import singleton
-from .tools.utilities import is_string, is_of_list, determine_path
+from .tools.utilities import is_string, is_of_list, normalize_path
 from .cacher import LineCacher, YAMLCacher
 
 
@@ -54,7 +54,7 @@ class Settings(object):
             yaml_path = sys.argv[sys.argv.index('--settings')+1]
 
         # Opening Settings Yaml File
-        with open(determine_path(yaml_path), 'r') as yf:
+        with open(normalize_path(yaml_path), 'r') as yf:
             data = yaml.load(yf.read())
 
         # Setting Commander
@@ -79,12 +79,12 @@ class Settings(object):
         # Strings
         logger_strings = logger_data.get('strings')
         if logger_strings is not None:
-            logger_strings = determine_path(logger_strings)
+            logger_strings = normalize_path(logger_strings)
 
         # Output path
         logger_path = logger_data.get('directory')
         if logger_path is not None:
-            logger_path = determine_path(logger_path.rstrip('/'))
+            logger_path = normalize_path(logger_path)
 
         logger_settings = {
             "activated": logger_data.get('activated', True),
@@ -126,7 +126,7 @@ class Settings(object):
                 if is_string(v):
                     split = v.split('::')
                     if split[0] == 'include':
-                        with open(determine_path(split[1]), 'r') as yf:
+                        with open(normalize_path(split[1]), 'r') as yf:
                             general_settings[k] = yaml.load(yf.read())
 
             # Final registration
@@ -166,7 +166,7 @@ class Settings(object):
             # Directory
             cache_directory = cache_settings.get('directory')
             if cache_directory is not None:
-                cache_directory = determine_path(cache_directory.rstrip('/'))
+                cache_directory = normalize_path(cache_directory)
 
             # Initializing cache
             cache_instance = self.__possibleCacheTypes[cache_type](

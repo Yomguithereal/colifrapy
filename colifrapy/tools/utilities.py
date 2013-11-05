@@ -45,12 +45,12 @@ def get_index(target, value, fallback):
 # Determine whether your path is relative or absolute
 # if it happens to be relative, the function will assume
 # it is relative to the file called (__main__)
-def determine_path(path):
-    if os.path.isabs(path):
-        return path
-    else:
+# the trailing slash given does not count but will return the path with it
+def normalize_path(path):
+    if not os.path.isabs(path):
         try:
             sFile = os.path.abspath(sys.modules['__main__'].__file__)
         except:
             sFile = sys.executable
-        return os.path.dirname(sFile)+'/'+path
+        path = os.path.dirname(sFile)+'/'+path
+    return path.rstrip('/')+'/'
