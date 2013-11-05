@@ -72,6 +72,18 @@ Some functions that may prove useful
     get_index(['red', 'blue'], 'green', 5)
     >>> 5
 
+    # Determine whether your path is relative or absolute
+    # if it happens to be relative, the function will assume
+    # it is relative to the file called (__main__)
+
+    # For those examples, we assume that the file called by the command
+    # line is /home/user/test/test.py
+    determine_path('/home/user/path/to/file.txt')
+    >>> '/home/user/path/to/file.txt'
+
+    determine_path('/resources/file.txt')
+    >>> '/home/user/test/resources/file.txt'
+
 
 Simplified Action Hub
 ---------------------
