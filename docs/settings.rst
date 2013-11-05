@@ -142,9 +142,9 @@ For more precise information about the logger's styles see :ref:`styles`.
         # Default: ['DEBUG', 'ERROR', 'INFO', 'WARNING', 'VERBOSE']
         threshold: ['ERROR', 'INFO']
 
-        # Triggers Exceptions
+        # Exceptions
         # Default: True, decides whether the ERROR level of log should trigger Exceptions
-        triggers_exceptions: False
+        exceptions: False
 
         # Flavor
         # Default: 'default'
