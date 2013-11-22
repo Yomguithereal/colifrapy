@@ -8,50 +8,48 @@
 
 # Dependencies
 #=============
-from .renderer import Renderer
 from .colorize import colorize
 
 
 # Logger Text
 #============
 class TextFlavor(object):
-    """ The TextFlavor class renders and style the logger's output """
+    """ The TextFlavor class renders and style the logger's output. """
 
     # Operational variables
     flavor = 'default'
     formats = None
-    renderer = Renderer()
 
     # Styles definitions
     styles = {
         'default': {
-            'tpl': '[{{level}}]',
+            'tpl': '[%s]',
             'separator': ' :: '
         },
         'flat': {
-            'tpl': '{{level}}',
+            'tpl': '%s',
             'separator': ' : ',
             'filters': [
                 lambda x: x.lower()
             ]
         },
         'reverse': {
-            'tpl': ' {{level}} ',
+            'tpl': ' %s ',
             'separator': ' :: ',
             'styles': 'reverse'
         },
         'colorblind': {
-            'tpl': '[{{level}}]',
+            'tpl': '[%s]',
             'separator': ' :: ',
             'styles': 'reset'
         },
         'underline': {
-            'tpl': '{{level}}',
+            'tpl': '%s',
             'separator': ' -- ',
             'styles': 'underline'
         },
         'elegant': {
-            'tpl': '{{level}}',
+            'tpl': '%s',
             'separator': ' - ',
             'filters': [
                 lambda x: x.title()
@@ -81,9 +79,7 @@ class TextFlavor(object):
         for level in self.level_colors:
 
             self.formats[level] = colorize(
-                self.renderer.render(
-                    self.styles[self.flavor]['tpl'],
-                    self.__options(level)),
+                    self.styles[self.flavor]['tpl'] % self.__options(level),
                 self.level_colors[level],
                 style=self.styles[self.flavor].get('styles')) + \
                         self.styles[self.flavor]['separator']
@@ -96,7 +92,7 @@ class TextFlavor(object):
 
     # Style formatting
     def format(self, string, level):
-        return self.formats[level]+string
+        return self.formats[level] + string
 
 
 # Logger Title
@@ -116,10 +112,10 @@ class TitleFlavor(object):
             self.flavor = flavor
 
     def format(self, message, color):
-        return getattr(self, '_'+self.flavor)(message, color)
+        return getattr(self, '_' + self.flavor)(message, color)
 
     def _default(self, message, color):
-        return colorize('\n'+message+'\n'+('-'*len(message)), color)
+        return colorize('\n' + message + '\n' + ('-' * len(message)), color)
 
     def _heavy(self, message, color):
         return colorize(

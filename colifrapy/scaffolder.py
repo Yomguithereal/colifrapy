@@ -17,7 +17,7 @@ import codecs
 from .tools.renderer import Renderer
 from .hub import Colifrapy
 from .model import Model
-from .tools.titler import titler
+from .tools.utilities import titler
 
 # Working Path
 file_path = os.path.split(os.path.abspath(__file__))[0]+'/templates/'

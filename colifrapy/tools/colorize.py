@@ -10,6 +10,7 @@
 style and give some color to console output. """
 
 # Dependencies
+import sys
 from .utilities import is_string, is_of_list, get_index
 
 # Possible Colors and Styles
@@ -19,9 +20,17 @@ COLORS = ['black', 'red', 'green', 'yellow',
 STYLES = ['reset', 'bold', 'dim', 'italic', 'underline', 'blink-slow',
           'blink-rapid', 'reverse', 'hidden']
 
+# Windows?
+ANSI = True
+if not hasattr(sys.stdout, "isatty") and not sys.stdout.isatty():
+    ANSI = False
+
 
 # Colorization function
 def colorize(string, color='black', background=None, style=None):
+
+    if not ANSI:
+        return string
 
     # Background
     if background is None:

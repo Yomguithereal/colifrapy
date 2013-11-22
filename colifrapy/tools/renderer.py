@@ -47,9 +47,10 @@ class Renderer(object):
 
     def __applyDict(self, text, variables):
         for key, value in list(variables.items()):
-            text = re.sub(r'\{\{%s\}\}' % key, str(value), text)
+            text = re.sub(r'\{\{%s\}\}' % key, '%(var)s', text) % \
+              {'var': value}
         if not self.ignore:
-            text = re.sub(r'\{\{(.*?)\}\}', '', text)
+            text = re.sub(r'\{\{(.*?)\}\}', r'', text)
         return text
 
     def __applyList(self, text, variables):
@@ -58,12 +59,12 @@ class Renderer(object):
             try:
                 text = re.sub(
                     r'\{\{%s\}\}' % search[i],
-                    str(variables[i]),
+                    r'%s',
                     text
-                )
-            except IndexError:
+                ) % variables[i]
+            except TypeError:
                 pass
         return text
 
     def __applyString(self, text, variable):
-        return re.sub(r'\{\{(.*?)\}\}', variable, text)
+        return re.sub(r'\{\{(.*?)\}\}', r'%(var)s', text) % {'var': variable}

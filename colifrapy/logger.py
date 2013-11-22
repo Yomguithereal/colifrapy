@@ -161,9 +161,8 @@ class Logger(object):
         # Rendering
         message = self.renderer.render(message, variables)
 
-        # Carriage returns and tabulations
+        # Carriage returns
         message = message.replace('\\n', '\n')
-        message = message.replace('\\t', '\t')
 
         # Flavoring
         output = self.text_flavor.format(message, level)
@@ -215,7 +214,7 @@ class Logger(object):
         text = ('Y/n') if default == 'y' else ('y/N')
 
         output = self.text_flavor.format(self.__getString(message), 'CONFIRM')
-        response = input(output+' '+text+'\n').lower()
+        response = input(output + ' ' + text + '\n').lower()
         response = default if response.strip() == '' else response
 
         return response == 'y'
@@ -223,7 +222,7 @@ class Logger(object):
     # Input taking method
     def input(self, message, filter_func=lambda x: x):
         output = self.text_flavor.format(self.__getString(message), 'INPUT')
-        return filter_func(input(output+'\n'))
+        return filter_func(input(output + '\n'))
 
     # Utilities
     #----------

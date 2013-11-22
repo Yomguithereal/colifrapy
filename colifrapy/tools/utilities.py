@@ -57,3 +57,17 @@ def normalize_path(path, isDir=False):
         return path.rstrip('/')+'/'
     else:
         return path
+
+
+# Small function to transform a basic string into an aesthetic title
+def titler(string):
+
+    # String cases
+    cases = [' ', '-', '_']
+
+    # Fixing
+    for case in cases:
+        if string.count(case) > 0:
+            string = "".join([i[0].upper()+i[1:] for i in string.split(case)])
+
+    return string[0].upper()+string[1:]
