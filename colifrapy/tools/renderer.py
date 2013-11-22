@@ -49,11 +49,11 @@ class Renderer(object):
         for key, value in list(variables.items()):
             text = re.sub(r'\{\{%s\}\}' % key, str(value), text)
         if not self.ignore:
-            text = re.sub(r'\{\{[^}]+\}\}', '', text)
+            text = re.sub(r'\{\{(.*?)\}\}', '', text)
         return text
 
     def __applyList(self, text, variables):
-        search = re.findall(r'\{\{([^}]+)\}\}', text)
+        search = re.findall(r'\{\{(.*?)\}\}', text)
         for i in range(0, len(variables)):
             try:
                 text = re.sub(
@@ -66,4 +66,4 @@ class Renderer(object):
         return text
 
     def __applyString(self, text, variable):
-        return re.sub(r'\{\{[^}]+\}\}', variable, text)
+        return re.sub(r'\{\{(.*?)\}\}', variable, text)
