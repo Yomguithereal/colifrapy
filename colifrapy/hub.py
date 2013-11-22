@@ -8,6 +8,7 @@
 
 # Dependencies
 #=============
+import os
 from .settings import Settings
 from .commander import Commander
 from .logger import Logger
@@ -26,7 +27,7 @@ class Colifrapy(object):
     settings = None
     cache = None
 
-    def __init__(self, controller=None, settings_path='config/settings.yml'):
+    def __init__(self, controller=None, settings_path='config' + os.sep + 'settings.yml'):
 
         # Loading Settings
         settings_instance = Settings()

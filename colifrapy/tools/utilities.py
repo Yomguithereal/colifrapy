@@ -52,9 +52,9 @@ def normalize_path(path, isDir=False):
             sFile = os.path.abspath(sys.modules['__main__'].__file__)
         except:
             sFile = sys.executable
-        path = os.path.dirname(sFile)+'/'+path
+        path = os.path.dirname(sFile) + os.sep + path
     if isDir:
-        return path.rstrip('/')+'/'
+        return path.rstrip(os.sep) + os.sep
     else:
         return path
 

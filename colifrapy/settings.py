@@ -47,7 +47,7 @@ class Settings(object):
 
     # Configuration
     #--------------
-    def load(self, yaml_path='config/settings.yml'):
+    def load(self, yaml_path='config' + os.sep + 'settings.yml'):
 
         # Settings override
         if '--settings' in sys.argv:
@@ -60,10 +60,10 @@ class Settings(object):
         # Setting Commander
         #------------------
         commander_settings = {
-            "version":     data.get('version'),
-            "arguments":   data.get('arguments'),
-            "description": data.get('description'),
-            "usage":       data.get('usage')
+            'version':     data.get('version'),
+            'arguments':   data.get('arguments'),
+            'description': data.get('description'),
+            'usage':       data.get('usage')
         }
         self.__commander.config(**commander_settings)
 
@@ -87,16 +87,16 @@ class Settings(object):
             logger_path = normalize_path(logger_path, True)
 
         logger_settings = {
-            "activated": logger_data.get('activated', True),
-            "strings": logger_strings,
-            "output_directory": logger_path,
-            "output_mode": logger_data.get('mode'),
-            "output_filename": logger_data.get('filename'),
-            "max_lines": logger_data.get('max_lines'),
-            "threshold": logger_threshold,
-            "triggers_exceptions": logger_data.get('exceptions', True),
-            "flavor": logger_data.get('flavor', 'default'),
-            "title_flavor": logger_data.get('title_flavor', 'default')
+            'activated': logger_data.get('activated', True),
+            'strings': logger_strings,
+            'output_directory': logger_path,
+            'output_mode': logger_data.get('mode'),
+            'output_filename': logger_data.get('filename'),
+            'max_lines': logger_data.get('max_lines'),
+            'threshold': logger_threshold,
+            'triggers_exceptions': logger_data.get('exceptions', True),
+            'flavor': logger_data.get('flavor', 'default'),
+            'title_flavor': logger_data.get('title_flavor', 'default')
         }
         self.__logger.config(**logger_settings)
 

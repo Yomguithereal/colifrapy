@@ -169,7 +169,7 @@ class Logger(object):
 
         # If Colifrapy Message
         if level == 'COLIFRAPY':
-            output = '\n'+output+'\n'
+            output = '\n%s\n' % output
 
         # Printing to console
         self.__toConsole(output)
