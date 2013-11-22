@@ -47,7 +47,7 @@ class Settings(object):
 
     # Configuration
     #--------------
-    def load(self, yaml_path='config/settings.yml'):
+    def load(self, yaml_path='config' + os.sep + 'settings.yml'):
 
         # Settings override
         if '--settings' in sys.argv:

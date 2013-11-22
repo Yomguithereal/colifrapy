@@ -35,14 +35,14 @@ class Cacher(object):
 
         # Registering directory
         if directory is not None:
-            self.directory = directory.rstrip('/')
+            self.directory = directory.rstrip(os.sep)
 
         # Setting filename
         if filename is not None:
             self.filename = filename
 
         # Setting filepath
-        self.filepath = self.directory+'/'+self.filename
+        self.filepath = self.directory + os.sep + self.filename
 
         # Auto writing
         self.auto_write = auto_write is True
@@ -87,19 +87,19 @@ class LineCacher(Cacher):
 
     # Properties
     filename = 'cache.txt'
-    _cache = None
-    __filters = [
+    filters = [
         lambda x: x,
         lambda x: x
     ]
+    _cache = None
 
     # Set reading filter
     def setReadingFilter(self, func):
-        self.__filters[0] = func
+        self.filters[0] = func
 
     # Set writing filter
     def setWritingFilter(self, func):
-        self.__filters[1] = func
+        self.filters[1] = func
 
     # Reading current cache
     def read(self):

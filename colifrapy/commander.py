@@ -22,8 +22,8 @@ class Commander(ArgumentParser):
     # Properties
     #-----------
     opts = None
-    __hasVerbose = False
-    __acceptableTypes = {'int': int, 'float': float, 'open': open}
+    verbose = False
+    types = {'int': int, 'float': float, 'open': open}
 
     # Methods
     #--------
@@ -60,7 +60,7 @@ class Commander(ArgumentParser):
             # Checking verbose
             if len(args) > 1:
                 if args[1] == '--verbose':
-                    self.__hasVerbose = True
+                    self.verbose = True
 
             # Associating type to pass yaml formatting
             if 'type' in kwargs:
@@ -73,7 +73,7 @@ class Commander(ArgumentParser):
     def __defaultArguments(self):
 
         # Verbose is not overriden, we add it
-        if not self.__hasVerbose:
+        if not self.verbose:
             self.add_argument(
                 *['-V', '--verbose'],
                 **{'action': 'store_true', 'help': 'verbose mode'}
@@ -87,4 +87,4 @@ class Commander(ArgumentParser):
 
     # Checking type
     def __checkType(self, typestr):
-        return self.__acceptableTypes.get(typestr, typestr)
+        return self.types.get(typestr, typestr)
