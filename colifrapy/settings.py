@@ -107,14 +107,10 @@ class Settings(object):
 
             # Registering all instances
             if not is_of_list(cache_data):
-                cache_data = [cache_data]
-
-            for c in cache_data:
-                self.__registerCache(c)
-
-            # Lone cache
-            if len(self.__cache) == 1:
-                self.__cache = self.__cache[self.__defaultCacheKey+'0']
+                self.__cache = self.__registerCache(c)
+            else:
+                for c in cache_data:
+                    self.__registerCache(c)
 
         # General Settings
         #-----------------

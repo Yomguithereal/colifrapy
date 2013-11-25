@@ -93,11 +93,11 @@ class Scaffolder(Model):
 
         # Creating directories
         self.log.write('main:directory', variables={'directory':project_path})
-        os.mkdir(project_path)
+        os.makedirs(project_path)
         self.module_init(project_path)
         for folder, module in list(self.folders.items()):
             self.log.write('main:directory', variables={'directory':project_path+'/'+folder})
-            os.mkdir(project_path+'/'+folder)
+            os.makedirs(project_path+'/'+folder)
 
             # Initializing python module
             if module:
