@@ -13,7 +13,7 @@ from colifrapy import Model
 # Main Class
 #===========
 class ExampleModel(Model):
-    
+
     # Example of model action
     def hello(self):
         self.log.write('main:model')
