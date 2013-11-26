@@ -27,6 +27,9 @@ class Renderer(object):
 
     def render(self, text, variables):
 
+        # Escaping percent sign
+        text = text.replace('%', '%%')
+
         # Integers
         if is_number(variables):
             variables = str(variables)
