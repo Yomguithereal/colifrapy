@@ -67,5 +67,5 @@ class Renderer(object):
         return text
 
     def __applyString(self, text, variable):
-        return re.sub(r'\{\{(.*?)\}\}', r'%(var)s', text) % 
+        return re.sub(r'\{\{(.*?)\}\}', r'%(var)s', text) % \
           {'var': variable.replace('%', '%%')}
