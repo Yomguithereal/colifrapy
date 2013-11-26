@@ -27,9 +27,6 @@ class Renderer(object):
 
     def render(self, text, variables):
 
-        # Escaping percent sign
-        text = text.replace('%', '%%')
-
         # Integers
         if is_number(variables):
             variables = str(variables)
@@ -51,7 +48,7 @@ class Renderer(object):
     def __applyDict(self, text, variables):
         for key, value in list(variables.items()):
             text = re.sub(r'\{\{%s\}\}' % key, '%(var)s', text) % \
-              {'var': value}
+              {'var': value.replace('%', '%%')}
         if not self.ignore:
             text = re.sub(r'\{\{(.*?)\}\}', r'', text)
         return text
@@ -64,10 +61,11 @@ class Renderer(object):
                     r'\{\{%s\}\}' % search[i],
                     r'%s',
                     text
-                ) % variables[i]
+                ) % variables[i].replace('%', '%%')
             except TypeError:
                 pass
         return text
 
     def __applyString(self, text, variable):
-        return re.sub(r'\{\{(.*?)\}\}', r'%(var)s', text) % {'var': variable}
+        return re.sub(r'\{\{(.*?)\}\}', r'%(var)s', text) % 
+          {'var': variable.replace('%', '%%')}
