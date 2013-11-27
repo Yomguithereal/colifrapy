@@ -20,7 +20,7 @@ from .cacher import LineCacher, YAMLCacher
 
 
 # Attr Dict
-#===========
+#==========
 class AttrDict(dict):
     def __init__(self, *args, **kwargs):
         super(AttrDict, self).__init__(*args, **kwargs)
@@ -28,7 +28,7 @@ class AttrDict(dict):
 
 
 # Main Class
-#=============
+#===========
 @singleton
 class Settings(object):
     """ The Settings Class' goal is to read the 'settings.yml' file of the
@@ -107,7 +107,7 @@ class Settings(object):
 
             # Registering all instances
             if not is_of_list(cache_data):
-                self.__registerCache(cache_data)
+                self.__registerCache(cache_data, True)
             else:
                 for c in cache_data:
                     self.__registerCache(c)
@@ -129,7 +129,7 @@ class Settings(object):
             self.__dictSettings = AttrDict(general_settings)
 
     # Helpers
-    #--------------
+    #--------
     def __repr__(self):
         return pprint.pformat(self.__dictSettings)
 
@@ -139,7 +139,7 @@ class Settings(object):
     def accessSettingsDict(self):
         return self.__dictSettings
 
-    def __registerCache(self, cache_settings):
+    def __registerCache(self, cache_settings, alone=False):
 
         # Cache Instance Name
         cache_name = cache_settings.get(
@@ -171,4 +171,7 @@ class Settings(object):
                 auto_write=cache_settings.get('auto_write')
             )
 
-            self.__cache[cache_name] = cache_instance
+            if alone and cache_settings.get('name') is None:
+                self.__cache = cache_instance
+            else:
+                self.__cache[cache_name] = cache_instance

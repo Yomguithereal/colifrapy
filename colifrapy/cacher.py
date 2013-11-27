@@ -19,7 +19,7 @@ except ImportError:
 # Decorators
 #===========
 def lazyLoad(func):
-    def _lazyLoad(self, *args):
+    def _lazyLoad(self, *args, **kwargs):
         if not self._loaded:
 
             # Reading if relevant
@@ -28,9 +28,10 @@ def lazyLoad(func):
 
             # Affecting object state
             self._loaded = True
-        return func(self, *args)
+        return func(self, *args, **kwargs)
 
     return _lazyLoad
+
 
 # Main Class
 #===========
@@ -39,13 +40,17 @@ class Cacher(object):
     all the following ones. It contains therefore every general
     methods and properties that every child one could use. """
 
-    def __init__(self, filename='cache', directory=None, auto_write=False):
+    def __init__(self, filename=None, directory=None,
+                 auto_write=False):
 
         # Generic properties
         self._loaded = False
         self.auto_write = auto_write is True
-        self.directory = directory.rstrip(os.sep) or 'cache'
-        self.filename = filename
+        self.filename = filename or 'cache.txt'
+
+        if directory is not None:
+            directory = directory.rstrip(os.sep)
+        self.directory = directory or 'cache'
 
         # Setting filepath
         self.filepath = self.directory + os.sep + self.filename
@@ -68,7 +73,13 @@ class Cacher(object):
 
     # Printing
     def __repr__(self):
-        return str(self.get())
+        return '<%s.%s object at %s> #{%s}' % \
+            (
+                self.__module__,
+                self.__class__.__name__,
+                id(self),
+                str(self.get())
+            )
 
 
 # Line Cacher
@@ -90,7 +101,7 @@ class LineCacher(Cacher):
             kwargs['filename'] = 'cache.txt'
 
         # Calling parent init
-        super(LineCacher, self).__init__(self, *args, **kwargs)
+        super(LineCacher, self).__init__(*args, **kwargs)
 
     # Set reading filter
     def setReadingFilter(self, func):
@@ -104,7 +115,7 @@ class LineCacher(Cacher):
     def read(self):
 
         with open(self.filepath, 'r') as cf:
-            self._cache = self.__filters[0](cf.read().strip())
+            self._cache = self.filters[0](cf.read().strip())
 
     # Writing cache
     def write(self):
@@ -114,7 +125,7 @@ class LineCacher(Cacher):
 
         # To file
         with open(self.filepath, 'w') as cf:
-            cf.write(self.__filters[1](self._cache))
+            cf.write(self.filters[1](self._cache))
 
     # Getting cache
     @lazyLoad
@@ -135,7 +146,7 @@ class LineCacher(Cacher):
 class YAMLCacher(Cacher):
     """ The YAML Cacher is basically a small key-value file database
     that one may use to access organized data without having to
-    deploy a server """
+    deploy a server. """
 
     def __init__(self, *args, **kwargs):
         self.delimiter = ':'
@@ -145,7 +156,7 @@ class YAMLCacher(Cacher):
             kwargs['filename'] = 'cache.txt'
 
         # Calling parent init
-        super(YAMLCacher, self).__init__(self, *args, **kwargs)
+        super(YAMLCacher, self).__init__(*args, **kwargs)
 
     # Reading current cache
     def read(self):
