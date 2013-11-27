@@ -16,39 +16,10 @@ try:
 except ImportError:
     pass
 
-
-# Main Class
-#=============
-class Cacher(object):
-    """ The Cacher class is the main abstraction that rules
-    all the following ones. It contains therefore every general
-    methods and properties that every child one could use. """
-
-    # Generic properties
-    _loaded = False
-
-    auto_write = False
-    directory = 'cache'
-    filepath = None
-
-    def __init__(self, filename=None, directory=None, auto_write=False):
-
-        # Registering directory
-        if directory is not None:
-            self.directory = directory.rstrip(os.sep)
-
-        # Setting filename
-        if filename is not None:
-            self.filename = filename
-
-        # Setting filepath
-        self.filepath = self.directory + os.sep + self.filename
-
-        # Auto writing
-        self.auto_write = auto_write is True
-
-    # Loading the cache only when we use it
-    def lazyLoad(self):
+# Decorators
+#===========
+def lazyLoad(func):
+    def _lazyLoad(self, *args):
         if not self._loaded:
 
             # Reading if relevant
@@ -57,6 +28,27 @@ class Cacher(object):
 
             # Affecting object state
             self._loaded = True
+        return func(self, *args)
+
+    return _lazyLoad
+
+# Main Class
+#===========
+class Cacher(object):
+    """ The Cacher class is the main abstraction that rules
+    all the following ones. It contains therefore every general
+    methods and properties that every child one could use. """
+
+    def __init__(self, filename='cache', directory=None, auto_write=False):
+
+        # Generic properties
+        self._loaded = False
+        self.auto_write = auto_write is True
+        self.directory = directory.rstrip(os.sep) or 'cache'
+        self.filename = filename
+
+        # Setting filepath
+        self.filepath = self.directory + os.sep + self.filename
 
     # Checking existence of cache file
     def exists(self):
@@ -80,18 +72,25 @@ class Cacher(object):
 
 
 # Line Cacher
-#=============
+#============
 class LineCacher(Cacher):
     """ The Line Cacher is a standard mono-line cache. It can be read,
     overwritten and serves simple purposes. """
 
-    # Properties
-    filename = 'cache.txt'
-    filters = [
-        lambda x: x,
-        lambda x: x
-    ]
-    _cache = None
+    def __init__(self, **kwargs):
+
+        # Default filters
+        self.filters = [
+            lambda x: x,
+            lambda x: x
+        ]
+        self._cache = None
+
+        if kwargs.get('filename') is None:
+            kwargs['filename'] = 'cache.txt'
+
+        # Calling parent init
+        super(LineCacher, self).__init__(self, **kwargs)
 
     # Set reading filter
     def setReadingFilter(self, func):
@@ -118,8 +117,8 @@ class LineCacher(Cacher):
             cf.write(self.__filters[1](self._cache))
 
     # Getting cache
+    @lazyLoad
     def get(self):
-        self.lazyLoad()
         return self._cache
 
     # Setting cache
@@ -132,16 +131,21 @@ class LineCacher(Cacher):
 
 
 # YAML Cacher
-#=============
+#============
 class YAMLCacher(Cacher):
     """ The YAML Cacher is basically a small key-value file database
     that one may use to access organized data without having to
     deploy a server """
 
-    # Properties
-    filename = "cache.yml"
-    delimiter = ":"
-    _cache = {}
+    def __init__(self, **kwargs):
+        self.delimiter = ':'
+        self._cache = {}
+
+        if kwargs.get('filename') is None:
+            kwargs['filename'] = 'cache.txt'
+
+        # Calling parent init
+        super(YAMLCacher, self).__init__(self, **kwargs)
 
     # Reading current cache
     def read(self):
@@ -161,8 +165,8 @@ class YAMLCacher(Cacher):
                                default_flow_style=False, indent=4))
 
     # Getting cache
+    @lazyLoad
     def get(self, key=None):
-        self.lazyLoad()
 
         if key is None:
             return self._cache
@@ -175,8 +179,8 @@ class YAMLCacher(Cacher):
             return value
 
     # Setting cache
+    @lazyLoad
     def set(self, key, value):
-        self.lazyLoad()
 
         # Setting according to path
         path = key.split(self.delimiter)
@@ -193,8 +197,8 @@ class YAMLCacher(Cacher):
             self.write()
 
     # Unsetting cache
+    @lazyLoad
     def unset(self, key):
-        self.lazyLoad()
 
         # Setting according to path
         path = key.split(self.delimiter)
