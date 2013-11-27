@@ -250,9 +250,9 @@ class Logger(object):
             return False
 
         # Overwrite ?
-        write_mode = 'w'
+        write_mode = 'a+'
         if self.output_mode == 'overwrite' and self.first_output:
-            write_mode = 'a+'
+            write_mode = 'w+'
 
         # Writing to file
         if self.first_output:
@@ -262,7 +262,8 @@ class Logger(object):
             separator = ''
 
         # Opening File
-        with open(self.output_directory+'/'+self.output_filename, write_mode) as lf:
+        with open(self.output_directory + os.sep + self.output_filename,
+                  write_mode) as lf:
 
             # Counting lines ?
             if self.output_mode == 'rotation':

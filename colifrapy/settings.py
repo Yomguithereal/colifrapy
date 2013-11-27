@@ -98,6 +98,7 @@ class Settings(object):
             'flavor': logger_data.get('flavor', 'default'),
             'title_flavor': logger_data.get('title_flavor', 'default')
         }
+
         self.__logger.config(**logger_settings)
 
         # Setting Cache
