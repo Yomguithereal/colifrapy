@@ -48,7 +48,7 @@ class Renderer(object):
     def __applyDict(self, text, variables):
         for key, value in list(variables.items()):
             text = re.sub(r'\{\{%s\}\}' % key, '%(var)s', text) % \
-              {'var': value.replace('%', '%%')}
+              {'var': str(value).replace('%', '%%')}
         if not self.ignore:
             text = re.sub(r'\{\{(.*?)\}\}', r'', text)
         return text
@@ -61,7 +61,7 @@ class Renderer(object):
                     r'\{\{%s\}\}' % search[i],
                     r'%s',
                     text
-                ) % variables[i].replace('%', '%%')
+                ) % str(variables[i]).replace('%', '%%')
             except TypeError:
                 pass
         return text
