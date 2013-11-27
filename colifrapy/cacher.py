@@ -77,7 +77,7 @@ class LineCacher(Cacher):
     """ The Line Cacher is a standard mono-line cache. It can be read,
     overwritten and serves simple purposes. """
 
-    def __init__(self, **kwargs):
+    def __init__(self, *args, **kwargs):
 
         # Default filters
         self.filters = [
@@ -90,7 +90,7 @@ class LineCacher(Cacher):
             kwargs['filename'] = 'cache.txt'
 
         # Calling parent init
-        super(LineCacher, self).__init__(self, **kwargs)
+        super(LineCacher, self).__init__(self, *args, **kwargs)
 
     # Set reading filter
     def setReadingFilter(self, func):
@@ -137,7 +137,7 @@ class YAMLCacher(Cacher):
     that one may use to access organized data without having to
     deploy a server """
 
-    def __init__(self, **kwargs):
+    def __init__(self, *args, **kwargs):
         self.delimiter = ':'
         self._cache = {}
 
@@ -145,7 +145,7 @@ class YAMLCacher(Cacher):
             kwargs['filename'] = 'cache.txt'
 
         # Calling parent init
-        super(YAMLCacher, self).__init__(self, **kwargs)
+        super(YAMLCacher, self).__init__(self, *args, **kwargs)
 
     # Reading current cache
     def read(self):
