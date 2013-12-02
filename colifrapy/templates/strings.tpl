@@ -3,8 +3,8 @@
 #-------------------------------------------------------------------
 #
 #{{author_line}}{{organization_line}}
-#   Version : 0.1.0
-#   Language : English
+#   Version: 0.1.0
+#   Language: English
 
 # Main Strings
 main:
