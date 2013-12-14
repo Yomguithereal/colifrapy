@@ -18,7 +18,7 @@ class TextFlavor(object):
 
     # Operational variables
     flavor = 'default'
-    formats = None
+    formats = {}
 
     # Styles definitions
     styles = {
@@ -75,7 +75,6 @@ class TextFlavor(object):
         if flavor in self.styles:
             self.flavor = flavor
 
-        self.formats = {}
         for level in self.level_colors:
 
             self.formats[level] = colorize(
