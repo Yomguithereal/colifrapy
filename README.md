@@ -9,6 +9,8 @@ Its logic is very similar to a MVC framework and is therefore easy to use.
 
 The full documentation for the last released version of colifrapy is available [here](http://yomguithereal.github.io/colifrapy/).
 
+The github repository is available [here](https://github.com/Yomguithereal/colifrapy).
+
 ##Installation
 It is recommanded to use colifrapy under a python virtualenv.
 

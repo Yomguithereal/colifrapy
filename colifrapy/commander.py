@@ -29,12 +29,18 @@ class Commander(ArgumentParser):
     #--------
 
     # Configuration
-    def config(self, version='0.1', description='Description Here',
+    # add prog kwarg
+    def config(self, version=None, description=None,
                arguments=None, usage=None):
 
+        self.version_str = version or '0.1.0'
+
         # Calling Parent
-        ArgumentParser.__init__(self, version=version,
-                                description=description, usage=usage)
+        ArgumentParser.__init__(
+            self,
+            description=description or '',
+            usage=usage or ''
+        )
 
         # Adding Options
         if arguments is not None and len(arguments) > 0:
@@ -71,6 +77,14 @@ class Commander(ArgumentParser):
 
     # Default Arguments
     def __defaultArguments(self):
+
+        # Version
+        self.add_argument(
+            '-v',
+            '--version',
+            action='version',
+            version=self.version_str
+        )
 
         # Verbose is not overriden, we add it
         if not self.verbose:
