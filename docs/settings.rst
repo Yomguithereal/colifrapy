@@ -80,7 +80,8 @@ Standard
 Standard program options are the following:
     - **version** : Name and version of your program (outputted with -v/--version option)
     - **description** : Short description of your program and what it does
-    - **usage** : how to use your program
+    - **usage** : How to use your program
+    - **prog** : Program's name to display along usage string.
 
 Arguments
 ^^^^^^^^^
@@ -225,7 +226,7 @@ If you need any generic settings more, just provide a settings key to your yaml 
 If you need to divide your settings into several YAML files, colifrapy enables you to do so.
 
 .. code-block:: yaml
-    
+
     # Syntax is 'include::path/to/file.yml'
     # Warning, will only work on the first level (not on a nested one)
     settings:

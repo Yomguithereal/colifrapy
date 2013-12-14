@@ -29,9 +29,8 @@ class Commander(ArgumentParser):
     #--------
 
     # Configuration
-    # add prog kwarg
     def config(self, version=None, description=None,
-               arguments=None, usage=None):
+               arguments=None, usage=None, prog=None):
 
         self.version_str = version or '0.1.0'
 
@@ -39,7 +38,8 @@ class Commander(ArgumentParser):
         ArgumentParser.__init__(
             self,
             description=description or '',
-            usage=usage or ''
+            usage=usage,
+            prog=prog
         )
 
         # Adding Options

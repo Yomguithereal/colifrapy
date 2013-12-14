@@ -63,7 +63,8 @@ class Settings(object):
             'version':     data.get('version'),
             'arguments':   data.get('arguments'),
             'description': data.get('description'),
-            'usage':       data.get('usage')
+            'usage':       data.get('usage'),
+            'prog':        data.get('prog')
         }
         self.__commander.config(**commander_settings)
 
