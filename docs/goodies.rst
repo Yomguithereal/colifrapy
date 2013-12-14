@@ -37,23 +37,12 @@ Most of colifrapy classes are actually meant to be singletons. To perform this, 
         pass
 
 
-Data Exceptions
----------------
-Custom exceptions carrying data.
-
-.. code-block:: python
-
-    from colifrapy import DataException
-
-    raise DataException(message, data)
-
-
 Helper Functions
 ----------------
 Some functions that may prove useful
 
 .. code-block:: python
-    
+
     # You would rather import only functions you need,
     # but for the sake of the example I use '*'
     from colifrapy.tools.utilities import *
@@ -80,10 +69,10 @@ Some functions that may prove useful
 
     # For those examples, we assume that the file called by the command
     # line is /home/user/test/test.py
-    determine_path('/home/user/path/to/file.txt')
+    normalize_path('/home/user/path/to/file.txt')
     >>> '/home/user/path/to/file.txt'
 
-    ('/resources/file.txt')
+    normalize_path('/resources/file.txt')
     >>> '/home/user/test/resources/file.txt'
 
     # A second boolean argument can be passed to indicate the function if
@@ -98,7 +87,7 @@ Some functions that may prove useful
 
 Simplified Action Hub
 ---------------------
-If your program is just simple as getting only one positionnal argument from the user in order to choose the action to perform, you might want to use colifrapy_action argument in you yaml setting file.
+If your program is as simple as parsing one positionnal argument given by the user in order to choose the action to perform, you might want to use colifrapy_action argument in you yaml setting file.
 
 Example::
 

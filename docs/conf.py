@@ -241,7 +241,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
   ('index', 'colifrapy', u'colifrapy Documentation',
-   u'Yomguithereal', 'colifrapy', 'One line description of project.',
+   u'Yomguithereal', 'colifrapy', 'Command Line Framework for Python',
    'Miscellaneous'),
 ]
 

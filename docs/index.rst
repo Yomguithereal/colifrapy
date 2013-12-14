@@ -9,6 +9,10 @@ structured command line tools very easily.
 
 Its logic is very similar to a MVC framework and is therefore easy to use.
 
+The github repository can be found there_.
+
+.. _there: https://github.com/Yomguithereal/colifrapy
+
 Summary
 =======
 
