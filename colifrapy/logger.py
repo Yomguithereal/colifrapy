@@ -10,7 +10,6 @@
 #=============
 
 # Back to the Future !
-from __future__ import print_function
 try:
     input = raw_input
 except NameError:
@@ -24,6 +23,7 @@ except ImportError:
 # Standard
 import os
 from datetime import datetime
+import logging
 import yaml
 from .tools.decorators import singleton
 from .tools.flavors import TextFlavor
@@ -42,11 +42,13 @@ class Logger(object):
     # Properties
     #-----------
 
+    # Hierarchical instance
+    _stream = logging.getLogger('colifrapy:stream')
+    _file = logging.getLogger('colifrapy:file')
+
     # State
     activated = True
     triggers_exceptions = True
-    first_output = True
-    line_count = 0
 
     # Rendering
     renderer = Renderer()
@@ -60,20 +62,30 @@ class Logger(object):
     possible_modes = set(['simple', 'overwrite', 'rotation'])
     output_mode = 'simple'
     max_lines = 5000
-    date_format = '%Y-%m-%d %H:%M:%S'
-    file_date_format = '%Y-%m-%d_%H:%M:%S'
 
     # Levels
-    levels = [
-        'INFO',
-        'ERROR',
-        'WARNING',
-        'DEBUG',
-        'VERBOSE',
-        'COLIFRAPY'
-    ]
+    levels = {
+        'VERBOSE': 1,
+        'DEBUG': 10,
+        'INFO': 20,
+        'WARNING': 30,
+        'ERROR': 40,
+        'CRITICAL': 50
+    }
     threshold = set(levels)
-    necessary_levels = set(['ERROR', 'COLIFRAPY'])
+    necessary_levels = set(['CRITICAL', 'ERROR'])
+
+    # Basic Logging Initialization
+    #-----------------------------
+    def __init__(self):
+
+        # Base level
+        # TODO: drop this debug line
+        self._stream.setLevel(1)
+        self._file.setLevel(1)
+
+        # Adding custom VERBOSE level
+        logging.addLevelName(self.levels['VERBOSE'], 'VERBOSE')
 
     # Configuration
     #--------------
@@ -81,6 +93,14 @@ class Logger(object):
                threshold=None, triggers_exceptions=True,
                flavor='default', title_flavor='default', activated=True,
                output_mode='simple', output_filename=None, max_lines=None):
+
+        activated = self.activated is True
+
+        # Stream logger
+        if self.activated:
+            self._stream.addHandler(logging.StreamHandler())
+        else:
+            self._stream.addHandler(logging.NullHandler())
 
         # Flavor
         self.text_flavor = TextFlavor(flavor)
@@ -91,23 +111,33 @@ class Logger(object):
             self.load_strings(strings)
 
         # Setting output path
+        self.output_filename = output_filename or 'program.log'
         if output_directory is not None:
+
+            # Enforcing directory existence
+            # TODO: make a lazy decorator?
             self.output_directory = output_directory.rstrip('/')
             if not os.path.exists(self.output_directory):
                 os.makedirs(self.output_directory)
 
-        if output_filename is not None:
-            self.output_filename = output_filename
+            # Adding an handler
+            log_path = self.output_directory + os.sep + self.output_filename
+            if output_mode != 'rotation':
+                mode = 'a' if output_mode == 'simple' else 'w'
+                fh = logging.FileHandler(log_path, mode=mode)
+            else:
+                fh = logging.RotatingFileHandler(log_path, maxBytes=1048576)
+
+            self._file.addHandler(fh)
+        else:
+            self._file.addHandler(logging.NullHandler())
 
         # Setting level
         if threshold is not None:
             self.load_threshold(threshold)
 
         # Exceptions ?
-        self.triggers_exceptions = triggers_exceptions
-
-        # Activated
-        self.activated = activated
+        self.triggers_exceptions = triggers_exceptions is True
 
         # Setting Output mode
         if output_mode in self.possible_modes:
@@ -120,16 +150,8 @@ class Logger(object):
     # Setters
     #--------
     def load_strings(self, strings):
-        try:
-            with open(strings, 'r') as sf:
-                self.strings = yaml.load(sf.read())
-        except Exception as e:
-            self.write(
-                'The string file : {path} does not exist.',
-                {'path': strings},
-                'COLIFRAPY'
-            )
-            raise e
+        with open(strings, 'r') as sf:
+            self.strings = yaml.load(sf.read())
 
     def load_threshold(self, threshold):
         self.threshold = (set(threshold) & self.threshold) | self.necessary_levels
@@ -140,7 +162,7 @@ class Logger(object):
         message = path
 
         # Checking log level
-        if level not in self.levels:
+        if self.levels.get(level) is None:
             level = 'DEBUG'
 
         # Retrieving message string
@@ -167,18 +189,11 @@ class Logger(object):
         # Flavoring
         output = self.text_flavor.format(message, level)
 
-        # If Colifrapy Message
-        if level == 'COLIFRAPY':
-            output = '\n%s\n' % output
+        # Sending to logging handlers
+        self.__toHandlers(output, level)
 
-        # Printing to console
-        self.__toConsole(output)
-
-        # Outputting to file if wanted
-        self.__toFile(message, level)
-
-        # Fatal Error
-        if level == 'ERROR' and self.triggers_exceptions:
+        # Critical Error
+        if level == 'CRITICAL' and self.triggers_exceptions:
             raise Exception(path)
 
     # Helper Methods
@@ -204,12 +219,9 @@ class Logger(object):
         message = self.__getString(message)
 
         # To terminal
-        self.__toConsole(self.title_flavor.format(message, color))
+        self.__toHandlers(self.title_flavor.format(message, color))
 
-        # To file
-        self.__toFile(message, 'HEADER')
-
-    # Confirmation asking method
+    # Confirmation from user
     def confirm(self, message, default='y'):
         text = ('Y/n') if default == 'y' else ('y/N')
 
@@ -219,7 +231,7 @@ class Logger(object):
 
         return response == 'y'
 
-    # Input taking method
+    # Input from user
     def input(self, message, filter_func=lambda x: x):
         output = self.text_flavor.format(self.__getString(message), 'INPUT')
         return filter_func(input(output + '\n'))
@@ -238,71 +250,11 @@ class Logger(object):
         return string
 
     # Outputting to console
-    def __toConsole(self, message):
+    def __toHandlers(self, message, level):
         if self.activated:
-            print(message)
-
-    # Writing to log file
-    def __toFile(self, message, level):
-
-        # Not writing to file if we do not want to
-        if self.output_directory is None:
-            return False
-
-        # Overwrite ?
-        write_mode = 'a+'
-        if self.output_mode == 'overwrite' and self.first_output:
-            write_mode = 'w+'
-
-        # Writing to file
-        if self.first_output:
-            separator = '\n\nSTART\n'
-            self.first_output = False
-        else:
-            separator = ''
-
-        # Opening File
-        with open(self.output_directory + os.sep + self.output_filename,
-                  write_mode) as lf:
-
-            # Counting lines ?
-            if self.output_mode == 'rotation':
-                if self.line_count == 0:
-                    self.line_count = len(lf.readlines())
-                else:
-                    self.line_count += 1
-
-            # Do we have to perform rotation ?
-            if (self.line_count >= self.max_lines and
-                    self.output_mode == 'rotation'):
-                self.__performRotation()
-
-            # Writing
-            lf.write(
-                '%s -- [%s] :: %s\n'
-                % (
-                    separator+datetime.now().strftime(self.date_format),
-                    level,
-                    str(message)
-                )
-            )
-
-    # Rotate the log file
-    def __performRotation(self):
-
-        filename, fileext = os.path.splitext(self.output_filename)
-
-        # Renaming the file
-        os.rename(
-            self.output_directory+'/'+self.output_filename,
-            '%s/%s_%s%s'
-            % (
-                self.output_directory,
-                filename,
-                datetime.now().strftime(self.file_date_format),
-                fileext
-            )
-        )
-
-        # Reinitialize line count
-        self.line_count = 0
+            if level == 'VERBOSE':
+                self._stream.log(self.levels['VERBOSE'], message)
+                self._file.log(self.levels['VERBOSE'], message)
+            else:
+                getattr(self._stream, level.lower())(message)
+                getattr(self._file, level.lower())(message)

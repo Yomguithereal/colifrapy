@@ -64,6 +64,7 @@ class TextFlavor(object):
         'WARNING':   'yellow',
         'DEBUG':     'blue',
         'VERBOSE':   'cyan',
+        'CRITICAL':  'magenta',
         'COLIFRAPY': 'magenta',
         'CONFIRM':   'magenta',
         'INPUT':     'magenta'
