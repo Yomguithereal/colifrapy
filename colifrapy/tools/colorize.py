@@ -27,7 +27,7 @@ if not hasattr(sys.stdout, "isatty") and not sys.stdout.isatty():
 
 
 # Colorization function
-def colorize(string, fore_color='black', background=None, style=['bold']):
+def colorize(string, fore_color='black', background=None, style=None):
 
     if not ANSI:
         return string

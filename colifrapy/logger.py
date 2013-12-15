@@ -109,6 +109,7 @@ class Logger(object):
                       formatter='%(colored_levelname)s %(msg)s'):
 
         self.flavor = flavor
+        self.__resetHandler('console')
 
         self.formatters['console'] = CustomFormatter(
             formatter,
@@ -146,6 +147,8 @@ class Logger(object):
                    max_bytes=1048576, mode='simple',
                    formatter='%(asctime)s %(levelname)s %(msg)s'):
 
+        self.__resetHandler('file')
+
         # Directory setting
         if activated is True:
             directory = directory.rstrip('/')
@@ -180,6 +183,10 @@ class Logger(object):
             threshold = 'VERBOSE'
         self._handlers['file'].setLevel(self.levels[threshold])
 
+    def __resetHandler(self, target):
+        if self._handlers[target] is not None:
+            self._logger.removeHandler(self._handlers[target])
+            self._handlers[target] = None
 
     # Setters
     #--------
