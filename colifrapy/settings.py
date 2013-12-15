@@ -95,7 +95,7 @@ class Settings(object):
             'output_filename': logger_data.get('filename'),
             'max_lines': logger_data.get('max_lines'),
             'threshold': logger_threshold,
-            'triggers_exceptions': logger_data.get('exceptions', True),
+            'exceptions': logger_data.get('exceptions', True),
             'flavor': logger_data.get('flavor', 'default'),
             'title_flavor': logger_data.get('title_flavor', 'default')
         }

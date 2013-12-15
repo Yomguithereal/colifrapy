@@ -207,8 +207,8 @@ Writing
             # Helper methods
             #---------------
 
-            # Printing a header (yellow color by default)
-            self.log.header('main:title', [optional]color='yellow')
+            # Printing a header
+            self.log.header('main:title', [optional]flavor='default|heavy')
             >>> Colifrapy
             >>> ---------
 

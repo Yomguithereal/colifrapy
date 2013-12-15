@@ -10,6 +10,7 @@ test.py
 test.yml
 test2.yml
 cache/
+*.log
 
 # Documentation
 docs/_build

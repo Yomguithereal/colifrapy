@@ -8,52 +8,45 @@
 
 # Dependencies
 #=============
+import logging
 from .colorize import colorize
 
 
-# Logger Text
-#============
-class TextFlavor(object):
+# Text Flavors
+#=============
+class LevelFlavor(object):
     """ The TextFlavor class renders and style the logger's output. """
 
-    # Operational variables
-    flavor = 'default'
-    formats = {}
-
     # Styles definitions
-    styles = {
+    flavors = {
         'default': {
             'tpl': '[%s]',
-            'separator': ' :: '
+            'sep': ' ::'
         },
         'flat': {
             'tpl': '%s',
-            'separator': ' : ',
-            'filters': [
-                lambda x: x.lower()
-            ]
+            'sep': ' :',
+            'filters': lambda x: x.lower()
         },
         'reverse': {
             'tpl': ' %s ',
-            'separator': ' :: ',
+            'sep': ' ::',
             'styles': 'reverse'
         },
         'colorblind': {
             'tpl': '[%s]',
-            'separator': ' :: ',
+            'sep': ' ::',
             'styles': 'reset'
         },
         'underline': {
             'tpl': '%s',
-            'separator': ' -- ',
+            'sep': ' --',
             'styles': 'underline'
         },
         'elegant': {
             'tpl': '%s',
-            'separator': ' - ',
-            'filters': [
-                lambda x: x.title()
-            ]
+            'sep': ' -',
+            'filters': lambda x: x.title()
         },
     }
 
@@ -63,67 +56,82 @@ class TextFlavor(object):
         'ERROR':     'red',
         'WARNING':   'yellow',
         'DEBUG':     'blue',
-        'VERBOSE':   'cyan',
-        'CRITICAL':  'magenta',
-        'COLIFRAPY': 'magenta',
-        'CONFIRM':   'magenta',
-        'INPUT':     'magenta'
+        'VERBOSE':   'cyan'
     }
 
-    def __init__(self, flavor):
+    def __call__(self, level, flavor='default'):
+        fmt = self.flavors.get(flavor)
 
-        # Keeping trace of flavor
-        if flavor in self.styles:
-            self.flavor = flavor
+        if fmt is None:
+            raise Exception('Colifrapy::Invalid text flavor (%s)' % flavor)
 
-        for level in self.level_colors:
-
-            self.formats[level] = colorize(
-                    self.styles[self.flavor]['tpl'] % self.__options(level),
-                self.level_colors[level],
-                style=self.styles[self.flavor].get('styles')) + \
-                        self.styles[self.flavor]['separator']
-
-    # Option application
-    def __options(self, level):
-        for func in self.styles[self.flavor].get('filters', []):
-            level = func(level)
-        return level
-
-    # Style formatting
-    def format(self, string, level):
-        return self.formats[level] + string
+        return colorize(
+            fmt['tpl'] % fmt.get('filters', lambda x: x)(level),
+            fore_color=self.level_colors.get(level, 'magenta'),
+            style=fmt.get('styles')
+        ) + fmt['sep']
 
 
-# Logger Title
+# Title Flavor
 #=============
 class TitleFlavor(object):
     """ The TitleFlavor class provides an abstraction use to output
-    some elegant headers """
+    some elegant headers. """
 
-    flavor = 'default'
-    styles = [
+    flavors = [
         'default',
         'heavy'
     ]
 
-    def __init__(self, flavor):
-        if flavor in self.styles:
-            self.flavor = flavor
+    def __call__(self, message, flavor='default'):
+        if flavor not in self.flavors:
+            raise Exception('Colifrapy::Invalid title flavor (%s)' % flavor)
 
-    def format(self, message, color):
-        return getattr(self, '_' + self.flavor)(message, color)
 
-    def _default(self, message, color):
-        return colorize('\n' + message + '\n' + ('-' * len(message)), color)
+        return getattr(self, '_' + flavor)(message)
 
-    def _heavy(self, message, color):
-        return colorize(
-            '\n%s\n# %s #\n%s'
+    def _default(self, message):
+        return '\n' + message + '\n' + ('-' * len(message))
+
+    def _heavy(self, message):
+        return '\n%s\n# %s #\n%s' \
             % (
                 ('#' * (len(message)+4)),
                 message,
                 ('#' * (len(message)+4))
-            ),
-            color
+            )
+
+
+# Custom Logging Formatters
+#==========================
+class CustomFormatter(logging.Formatter):
+
+    level_flavor = LevelFlavor()
+
+    # Init override
+    def __init__(self, msg, flavor='default', fake_lvl=None):
+        logging.Formatter.__init__(self, msg)
+        self.flavor = flavor
+        self.fake_lvl = fake_lvl
+
+    # Format method override
+    def format(self, record):
+
+        # Adding our colored_levelname
+        record.colored_levelname = self.level_flavor(
+            self.fake_lvl or record.levelname,
+            self.flavor
         )
+        return logging.Formatter.format(self, record)
+
+class ColoredHeaderFormatter(logging.Formatter):
+
+    # Init override
+    def __init__(self, msg):
+        logging.Formatter.__init__(self, msg)
+
+    def format(self, record):
+
+        # Adding colored_header
+        record.colored_header = colorize(record.msg, 'yellow')
+        return logging.Formatter.format(self, record)

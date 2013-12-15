@@ -27,7 +27,7 @@ if not hasattr(sys.stdout, "isatty") and not sys.stdout.isatty():
 
 
 # Colorization function
-def colorize(string, color='black', background=None, style=None):
+def colorize(string, fore_color='black', background=None, style=['bold']):
 
     if not ANSI:
         return string
@@ -49,7 +49,7 @@ def colorize(string, color='black', background=None, style=None):
 
     return "\033[%s3%s%sm%s\033[0m" % (
         background_option,
-        str(get_index(COLORS, color, 0)),
+        str(get_index(COLORS, fore_color, 0)),
         style_option,
         str(string)
     )

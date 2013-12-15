@@ -26,9 +26,20 @@ from datetime import datetime
 import logging
 import yaml
 from .tools.decorators import singleton
-from .tools.flavors import TextFlavor
-from .tools.flavors import TitleFlavor
+from .tools.flavors import CustomFormatter, ColoredHeaderFormatter
+from .tools.flavors import LevelFlavor, TitleFlavor
 from .tools.renderer import Renderer
+
+# Custom Logging Implementation
+#==============================
+
+# Adding verbose
+VERBOSE_LVL = 1
+logging.addLevelName(VERBOSE_LVL, 'VERBOSE')
+
+def verbose(self, message, *args, **kwargs):
+    self._log(VERBOSE_LVL, message, args, **kwargs)
+logging.Logger.verbose = verbose
 
 
 # Main Class
@@ -43,109 +54,132 @@ class Logger(object):
     #-----------
 
     # Hierarchical instance
-    _stream = logging.getLogger('colifrapy:stream')
-    _file = logging.getLogger('colifrapy:file')
+    _logger = logging.getLogger('colifrapy')
+    _handlers = {
+        'console': None,
+        'file': None
+    }
 
     # State
-    activated = True
-    triggers_exceptions = True
+    exceptions = True
 
     # Rendering
+    flavor = None
+    title_flavor = TitleFlavor()
+    level_flavor = LevelFlavor()
     renderer = Renderer()
     strings = None
-    text_flavor = None
-    title_flavor = None
 
-    # Output
-    output_directory = None
-    output_filename = 'log.txt'
-    possible_modes = set(['simple', 'overwrite', 'rotation'])
-    output_mode = 'simple'
-    max_lines = 5000
+    # Modes
+    possible_modes = ['simple', 'overwrite', 'rotation']
 
     # Levels
     levels = {
-        'VERBOSE': 1,
+        'VERBOSE': VERBOSE_LVL,
         'DEBUG': 10,
         'INFO': 20,
         'WARNING': 30,
         'ERROR': 40,
         'CRITICAL': 50
     }
-    threshold = set(levels)
-    necessary_levels = set(['CRITICAL', 'ERROR'])
 
-    # Basic Logging Initialization
-    #-----------------------------
-    def __init__(self):
-
-        # Base level
-        # TODO: drop this debug line
-        self._stream.setLevel(1)
-        self._file.setLevel(1)
-
-        # Adding custom VERBOSE level
-        logging.addLevelName(self.levels['VERBOSE'], 'VERBOSE')
+    # Formats
+    formatters = {
+        'console': None,
+        'file': None
+    }
 
     # Configuration
     #--------------
-    def config(self, strings=None, output_directory=None,
-               threshold=None, triggers_exceptions=True,
-               flavor='default', title_flavor='default', activated=True,
-               output_mode='simple', output_filename=None, max_lines=None):
 
-        activated = self.activated is True
+    def __init__(self):
 
-        # Stream logger
-        if self.activated:
-            self._stream.addHandler(logging.StreamHandler())
+        # Setting the logger base level to minimum in order to set it
+        # at handler level
+        self._logger.setLevel(VERBOSE_LVL)
+
+    # Generic configuration
+    def config(self, console_opts={}, file_opts={}):
+        self.configConsole(**console_opts)
+        self.configFile(**file_opts)
+
+    # Console configuration
+    def configConsole(self, activated=True, threshold='VERBOSE',
+                      exceptions=True, strings=None, flavor='default',
+                      formatter='%(colored_levelname)s %(msg)s'):
+
+        self.flavor = flavor
+
+        self.formatters['console'] = CustomFormatter(
+            formatter,
+            self.flavor
+        )
+
+        # Activation
+        if activated is True:
+
+            # Loading Custom formatter
+            handler = logging.StreamHandler()
+            handler.setFormatter(self.formatters['console'])
         else:
-            self._stream.addHandler(logging.NullHandler())
+            handler = logging.NullHandler()
 
-        # Flavor
-        self.text_flavor = TextFlavor(flavor)
-        self.title_flavor = TitleFlavor(title_flavor)
+        # Adding handler
+        self._handlers['console'] = handler
+        self._logger.addHandler(handler)
+
+        # Threshold
+        if self.levels.get(threshold) is None:
+            threshold = 'VERBOSE'
+        self._handlers['console'].setLevel(self.levels[threshold])
+
+        # Triggering Exceptions?
+        self.exceptions = exceptions is True
 
         # Loading strings
         if strings is not None:
             self.load_strings(strings)
 
-        # Setting output path
-        self.output_filename = output_filename or 'program.log'
-        if output_directory is not None:
+    # File output configuration
+    def configFile(self, activated=False, threshold='VERBOSE',
+                   directory='.', filename='program.log',
+                   max_bytes=1048576, mode='simple',
+                   formatter='%(asctime)s %(levelname)s %(msg)s'):
 
-            # Enforcing directory existence
-            # TODO: make a lazy decorator?
-            self.output_directory = output_directory.rstrip('/')
-            if not os.path.exists(self.output_directory):
-                os.makedirs(self.output_directory)
+        # Directory setting
+        if activated is True:
+            directory = directory.rstrip('/')
+            if not os.path.exists(directory):
+                os.makedirs(directory)
+            log_path = directory + os.sep + filename
 
-            # Adding an handler
-            log_path = self.output_directory + os.sep + self.output_filename
-            if output_mode != 'rotation':
-                mode = 'a' if output_mode == 'simple' else 'w'
-                fh = logging.FileHandler(log_path, mode=mode)
+            # Mode ?
+            if mode not in self.possible_modes:
+                raise Exception('Colifrapy::Wrong logger mode (%s)' % mode)
+
+            # Registering correct handler
+            if mode != 'rotation':
+                write_mode = 'a' if mode == 'simple' else 'w'
+                handler = logging.FileHandler(log_path, mode=write_mode)
             else:
-                fh = logging.RotatingFileHandler(log_path, maxBytes=1048576)
-
-            self._file.addHandler(fh)
+                handler = logging.RotatingFileHandler(
+                    log_path,
+                    maxBytes=max_bytes
+                )
         else:
-            self._file.addHandler(logging.NullHandler())
+            handler = logging.NullHandler()
 
-        # Setting level
-        if threshold is not None:
-            self.load_threshold(threshold)
+        # Adding handler
+        self.formatters['file'] = logging.Formatter(formatter)
+        handler.setFormatter(self.formatters['file'])
+        self._handlers['file'] = handler
+        self._logger.addHandler(handler)
 
-        # Exceptions ?
-        self.triggers_exceptions = triggers_exceptions is True
+        # Threshold
+        if self.levels.get(threshold) is None:
+            threshold = 'VERBOSE'
+        self._handlers['file'].setLevel(self.levels[threshold])
 
-        # Setting Output mode
-        if output_mode in self.possible_modes:
-            self.output_mode = output_mode
-
-        # Max Lines
-        if max_lines is not None:
-            self.max_lines = int(max_lines)
 
     # Setters
     #--------
@@ -153,12 +187,9 @@ class Logger(object):
         with open(strings, 'r') as sf:
             self.strings = yaml.load(sf.read())
 
-    def load_threshold(self, threshold):
-        self.threshold = (set(threshold) & self.threshold) | self.necessary_levels
-
-    # Logging Method
-    #---------------
-    def write(self, path, variables={}, level=None):
+    # Logging Methods
+    #----------------
+    def write(self, path, variables=None, level=None):
         message = path
 
         # Checking log level
@@ -176,56 +207,67 @@ class Logger(object):
                 if len(string) > 1:
                     level = string[1]
 
-        # Do we need to log?
-        if level not in self.threshold:
-            return False
-
         # Rendering
-        message = self.renderer.render(message, variables)
+        if variables is not None:
+            message = self.renderer.render(message, variables)
 
         # Carriage returns
         message = message.replace('\\n', '\n')
 
-        # Flavoring
-        output = self.text_flavor.format(message, level)
-
         # Sending to logging handlers
-        self.__toHandlers(output, level)
+        self.__toHandlers(message, level)
 
         # Critical Error
-        if level == 'CRITICAL' and self.triggers_exceptions:
-            raise Exception(path)
+        if level == 'CRITICAL' and self.exceptions:
+            raise Exception('Logger:: %s' % path)
 
     # Helper Methods
-    def debug(self, message, v={}):
-        self.write(message, level='DEBUG', variables=v)
-
-    def info(self, message, v={}):
-        self.write(message, level='INFO', variables=v)
-
-    def warning(self, message, v={}):
-        self.write(message, level='WARNING', variables=v)
-
-    def error(self, message, v={}):
-        self.write(message, level='ERROR', variables=v)
-
-    def verbose(self, message, v={}):
+    def verbose(self, message, v=None):
         self.write(message, level='VERBOSE', variables=v)
 
+    def debug(self, message, v=None):
+        self.write(message, level='DEBUG', variables=v)
+
+    def info(self, message, v=None):
+        self.write(message, level='INFO', variables=v)
+
+    def warning(self, message, v=None):
+        self.write(message, level='WARNING', variables=v)
+
+    def error(self, message, v=None):
+        self.write(message, level='ERROR', variables=v)
+
+    def critical(self, message, v=None):
+        self.write(message, level='CRITICAL', variables=v)
+
     # Header printing
-    def header(self, message, color='yellow'):
+    def header(self, message, flavor='default'):
+
+        # Setting formatters
+        self._handlers['console'].setFormatter(
+            ColoredHeaderFormatter('%(colored_header)s')
+        )
+        self._handlers['file'].setFormatter(logging.Formatter('%(msg)s'))
 
         # Getting String
         message = self.__getString(message)
 
-        # To terminal
-        self.__toHandlers(self.title_flavor.format(message, color))
+        # Printing
+        self.__toHandlers(self.title_flavor(message, flavor))
+
+        # Resetting formatters
+        self._handlers['console'].setFormatter(self.formatters['console'])
+        self._handlers['file'].setFormatter(self.formatters['file'])
 
     # Confirmation from user
     def confirm(self, message, default='y'):
+
         text = ('Y/n') if default == 'y' else ('y/N')
 
-        output = self.text_flavor.format(self.__getString(message), 'CONFIRM')
+        output = self.level_flavor(
+            'CONFIRM',
+            self.flavor
+        ) + self.__getString(message)
         response = input(output + ' ' + text + '\n').lower()
         response = default if response.strip() == '' else response
 
@@ -233,7 +275,10 @@ class Logger(object):
 
     # Input from user
     def input(self, message, filter_func=lambda x: x):
-        output = self.text_flavor.format(self.__getString(message), 'INPUT')
+        output = self.level_flavor(
+            'INPUT',
+            self.flavor
+        ) + self.__getString(message)
         return filter_func(input(output + '\n'))
 
     # Utilities
@@ -250,11 +295,5 @@ class Logger(object):
         return string
 
     # Outputting to console
-    def __toHandlers(self, message, level):
-        if self.activated:
-            if level == 'VERBOSE':
-                self._stream.log(self.levels['VERBOSE'], message)
-                self._file.log(self.levels['VERBOSE'], message)
-            else:
-                getattr(self._stream, level.lower())(message)
-                getattr(self._file, level.lower())(message)
+    def __toHandlers(self, message, level='INFO'):
+        getattr(self._logger, level.lower())(message)
