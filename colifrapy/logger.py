@@ -99,10 +99,11 @@ class Logger(object):
 
     # Generic configuration
     def config(self, console_kwargs={}, file_kwargs={},
-               exceptions=True, strings=None):
+               exceptions=True, strings=None, flavor='default'):
 
         # Generic options
-        self.exceptions = exceptions is True
+        self.flavor = flavor
+        self.exceptions = exceptions
 
         if strings is not None:
             self.load_strings(strings)
@@ -112,10 +113,9 @@ class Logger(object):
 
     # Console configuration
     def configConsole(self, activated=True,
-                      threshold='VERBOSE', flavor='default',
-                      formatter='%(colored_levelname)s %(msg)s'):
+                      threshold='VERBOSE',
+                      formatter='%(flavored_levelname)s %(msg)s'):
 
-        self.flavor = flavor
         self.__resetHandler('console')
 
         self.formatters['console'] = CustomFormatter(
@@ -124,7 +124,7 @@ class Logger(object):
         )
 
         # Activation
-        if activated is True:
+        if activated:
 
             # Loading Custom formatter
             handler = logging.StreamHandler()
@@ -149,8 +149,15 @@ class Logger(object):
 
         self.__resetHandler('file')
 
+        # Formatter
+        self.formatters['file'] = CustomFormatter(
+            formatter,
+            self.flavor,
+            colors=False
+        )
+
         # Directory setting
-        if activated is True:
+        if activated:
             directory = directory.rstrip('/')
             if not os.path.exists(directory):
                 os.makedirs(directory)
@@ -174,7 +181,6 @@ class Logger(object):
             handler = logging.NullHandler()
 
         # Adding handler
-        self.formatters['file'] = logging.Formatter(formatter)
         handler.setFormatter(self.formatters['file'])
         self._handlers['file'] = handler
         self._logger.addHandler(handler)

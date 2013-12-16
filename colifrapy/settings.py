@@ -83,13 +83,13 @@ class Settings(object):
                 'strings',
                 'activated',
                 'threshold',
-                'formatter'
+                'formatter',
+                'flavor'
             ],
             'console': [
                 'activated',
                 'threshold',
-                'formatter',
-                'flavor'
+                'formatter'
             ],
             'file': [
                 'activated',
@@ -98,7 +98,7 @@ class Settings(object):
                 'directory',
                 'filename',
                 'max_bytes',
-                'backup_count'
+                'mode'
             ]
         }
 

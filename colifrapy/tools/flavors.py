@@ -20,32 +20,26 @@ class LevelFlavor(object):
     # Styles definitions
     flavors = {
         'default': {
-            'tpl': '[%s]',
-            'sep': ' ::'
+            'tpl': '[%s]'
         },
         'flat': {
             'tpl': '%s',
-            'sep': ' :',
             'filters': lambda x: x.lower()
         },
         'reverse': {
             'tpl': ' %s ',
-            'sep': ' ::',
             'styles': 'reverse'
         },
         'colorblind': {
             'tpl': '[%s]',
-            'sep': ' ::',
             'styles': 'reset'
         },
         'underline': {
             'tpl': '%s',
-            'sep': ' --',
             'styles': 'underline'
         },
         'elegant': {
             'tpl': '%s',
-            'sep': ' -',
             'filters': lambda x: x.title()
         },
     }
@@ -59,17 +53,20 @@ class LevelFlavor(object):
         'VERBOSE':   'cyan'
     }
 
-    def __call__(self, level, flavor='default'):
+    def __call__(self, level, flavor='default', colors=True):
         fmt = self.flavors.get(flavor)
 
         if fmt is None:
             raise Exception('Colifrapy::Invalid text flavor (%s)' % flavor)
 
+        level_str = fmt['tpl'] % fmt.get('filters', lambda x: x)(level)
+
         return colorize(
-            fmt['tpl'] % fmt.get('filters', lambda x: x)(level),
+            level_str,
             fore_color=self.level_colors.get(level, 'magenta'),
             style=fmt.get('styles')
-        ) + fmt['sep']
+        ) if colors else level_str
+
 
 
 # Title Flavor
@@ -109,18 +106,19 @@ class CustomFormatter(logging.Formatter):
     level_flavor = LevelFlavor()
 
     # Init override
-    def __init__(self, msg, flavor='default', fake_lvl=None):
+    def __init__(self, msg, flavor='default', colors=True):
         logging.Formatter.__init__(self, msg)
         self.flavor = flavor
-        self.fake_lvl = fake_lvl
+        self.colors = colors is True
 
     # Format method override
     def format(self, record):
 
         # Adding our colored_levelname
-        record.colored_levelname = self.level_flavor(
-            self.fake_lvl or record.levelname,
-            self.flavor
+        record.flavored_levelname = self.level_flavor(
+            record.levelname,
+            self.flavor,
+            colors=self.colors
         )
         return logging.Formatter.format(self, record)
 
