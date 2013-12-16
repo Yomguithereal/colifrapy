@@ -80,10 +80,8 @@ class Commander(ArgumentParser):
 
         # Version
         self.add_argument(
-            '-v',
-            '--version',
-            action='version',
-            version=self.version_str
+            *['-v', '--version'],
+            **{'action': 'version', 'version': self.version_str}
         )
 
         # Verbose is not overriden, we add it
