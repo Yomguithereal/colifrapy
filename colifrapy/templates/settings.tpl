@@ -9,6 +9,7 @@
 version: '{{project}} 0.1.0'
 description: 'Description of the program.'
 usage: 'How to deal with your program'
+prog: {{project}}
 arguments:
 - [ ['-t', '--test'], {'help': 'Test', 'type': 'int'} ]
 - [ ['positionnal'], {'choices': ['test']} ]
@@ -17,14 +18,6 @@ arguments:
 logger:
     strings: 'config/strings.yml'
     flavor: 'default'
-    title_flavor: 'default'
-    # Delete the path line not to write the log to a file
-    directory: 'logs'
-    # Log filename, defaults to 'log.txt'
-    filename: 'archive.log'
-    # Logging mode to file (simple, overwrite or rotation)
-    mode: 'simple'
-    threshold: ['DEBUG', 'ERROR', 'INFO', 'WARNING', 'VERBOSE']
 
 # Generic Settings
 settings:

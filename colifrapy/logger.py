@@ -114,7 +114,7 @@ class Logger(object):
     # Console configuration
     def configConsole(self, activated=True,
                       threshold='VERBOSE',
-                      formatter='%(flavored_levelname)s %(msg)s'):
+                      formatter='%(flavored_levelname)s :: %(msg)s'):
 
         self.__resetHandler('console')
 
@@ -145,7 +145,7 @@ class Logger(object):
     def configFile(self, activated=False, threshold='VERBOSE',
                    directory='.', filename='program.log',
                    max_bytes=1048576, mode='simple', backup_count=5,
-                   formatter='%(asctime)s %(levelname)s %(msg)s'):
+                   formatter='%(asctime)s %(levelname)s :: %(msg)s'):
 
         self.__resetHandler('file')
 
