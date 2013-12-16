@@ -71,36 +71,62 @@ class Settings(object):
         # Setting Logger
         #---------------
         logger_data = data.get('logger', {})
-
-        # Threshold
-        logger_threshold = None
-        if not self.__commander.opts.verbose:
-            logger_threshold = logger_data.get('threshold')
-
-        # Strings
-        logger_strings = logger_data.get('strings')
-        if logger_strings is not None:
-            logger_strings = normalize_path(logger_strings)
-
-        # Output path
-        logger_path = logger_data.get('directory')
-        if logger_path is not None:
-            logger_path = normalize_path(logger_path, True)
-
-        logger_settings = {
-            'activated': logger_data.get('activated', True),
-            'strings': logger_strings,
-            'output_directory': logger_path,
-            'output_mode': logger_data.get('mode'),
-            'output_filename': logger_data.get('filename'),
-            'max_lines': logger_data.get('max_lines'),
-            'threshold': logger_threshold,
-            'exceptions': logger_data.get('exceptions', True),
-            'flavor': logger_data.get('flavor', 'default'),
-            'title_flavor': logger_data.get('title_flavor', 'default')
+        logger_specific_data = {
+            'console': logger_data.get('console', {}),
+            'file': logger_data.get('file', {})
         }
 
-        self.__logger.config(**logger_settings)
+        logger_opts = {}
+        possible_opts = {
+            'generic': [
+                'exceptions',
+                'strings',
+                'activated',
+                'threshold',
+                'formatter'
+            ],
+            'console': [
+                'activated',
+                'threshold',
+                'formatter',
+                'flavor'
+            ],
+            'file': [
+                'activated',
+                'threshold',
+                'formatter',
+                'directory',
+                'filename',
+                'max_bytes',
+                'backup_count'
+            ]
+        }
+
+        # Getting generic options
+        for i in possible_opts['generic']:
+            if i in logger_data:
+                logger_opts[i] = logger_data[i]
+
+        # Getting special options
+        for kind in ['console', 'file']:
+            logger_opts[kind + '_kwargs'] = {}
+
+            for i in possible_opts[kind]:
+                    if i not in logger_opts:
+                        if i in logger_specific_data[kind]:
+                            logger_opts[kind + '_kwargs'][i] = \
+                              logger_specific_data[kind][i]
+                    else:
+                        logger_opts[kind + '_kwargs'][i] = \
+                          logger_opts[i]
+
+        # Regularization
+        for i in ['activated', 'threshold', 'formatter']:
+            if i in logger_opts:
+                del logger_opts[i]
+
+        # Actually loading logger settings
+        self.__logger.config(**logger_opts)
 
         # Setting Cache
         #--------------
