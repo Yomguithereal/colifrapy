@@ -66,7 +66,6 @@ class Logger(object):
     # Rendering
     flavor = None
     title_flavor = TitleFlavor()
-    level_flavor = LevelFlavor()
     renderer = Renderer()
     strings = None
 
@@ -99,13 +98,21 @@ class Logger(object):
         self._logger.setLevel(VERBOSE_LVL)
 
     # Generic configuration
-    def config(self, console_opts={}, file_opts={}):
-        self.configConsole(**console_opts)
-        self.configFile(**file_opts)
+    def config(self, console_args={}, file_args={},
+               exceptions=True, strings=None):
+
+        # Generic options
+        self.exceptions = exceptions is True
+
+        if strings is not None:
+            self.load_strings(strings)
+
+        self.configConsole(**console_args)
+        self.configFile(**file_args)
 
     # Console configuration
-    def configConsole(self, activated=True, threshold='VERBOSE',
-                      exceptions=True, strings=None, flavor='default',
+    def configConsole(self, activated=True,
+                      threshold='VERBOSE', flavor='default',
                       formatter='%(colored_levelname)s %(msg)s'):
 
         self.flavor = flavor
@@ -134,17 +141,10 @@ class Logger(object):
             threshold = 'VERBOSE'
         self._handlers['console'].setLevel(self.levels[threshold])
 
-        # Triggering Exceptions?
-        self.exceptions = exceptions is True
-
-        # Loading strings
-        if strings is not None:
-            self.load_strings(strings)
-
     # File output configuration
     def configFile(self, activated=False, threshold='VERBOSE',
                    directory='.', filename='program.log',
-                   max_bytes=1048576, mode='simple',
+                   max_bytes=1048576, mode='simple', backup_count=5,
                    formatter='%(asctime)s %(levelname)s %(msg)s'):
 
         self.__resetHandler('file')
@@ -167,7 +167,8 @@ class Logger(object):
             else:
                 handler = logging.RotatingFileHandler(
                     log_path,
-                    maxBytes=max_bytes
+                    maxBytes=max_bytes,
+                    backupCount=backup_count
                 )
         else:
             handler = logging.NullHandler()
@@ -271,10 +272,7 @@ class Logger(object):
 
         text = ('Y/n') if default == 'y' else ('y/N')
 
-        output = self.level_flavor(
-            'CONFIRM',
-            self.flavor
-        ) + self.__getString(message)
+        output = self.__getString(message)
         response = input(output + ' ' + text + '\n').lower()
         response = default if response.strip() == '' else response
 
@@ -282,10 +280,7 @@ class Logger(object):
 
     # Input from user
     def input(self, message, filter_func=lambda x: x):
-        output = self.level_flavor(
-            'INPUT',
-            self.flavor
-        ) + self.__getString(message)
+        output = self.__getString(message)
         return filter_func(input(output + '\n'))
 
     # Utilities
