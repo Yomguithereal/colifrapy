@@ -5,7 +5,7 @@ Logger
 
 Class
 -----
-The Logger class is the voice of colifrapy. Its aim is to display feedback from your program into the console and to write it if necessary to a file for archive purposes. It may also feed on externalized strings written in a YAML file.
+The Logger class is the voice of colifrapy. Its aim is to display feedback from your program into the console and to write it to a file if necessary. It may also feed on externalized strings written in a YAML file.
 
 
 Model Usage
@@ -106,13 +106,14 @@ Note that if you want to change one of those options on the fly you can always r
 
 Levels
 ------
-The logger accepts five levels :
+The logger accepts five levels (ordered by importance):
 
-    - INFO (green output)
     - VERBOSE (cyan output)
     - DEBUG (blue output)
+    - INFO (green output)
     - WARNING (yellow ouput)
-    - ERROR (red output) --> will throw an exception for you to catch or not
+    - ERROR (red output)
+    - CRITICAL (violet output)  --> will throw an exception for you to catch or not
 
 By default, if no level is specified for a message, DEBUG will always be taken.
 
@@ -208,12 +209,18 @@ Writing
             #---------------
 
             # Printing a header
-            self.log.header('main:title', [optional]flavor='default|heavy')
+            self.log.header('main:title', [optional]flavor='default')
             >>> Colifrapy
             >>> ---------
 
+            # You can also pass a function as the title flavor rather
+            # than a predetermined one.
+            self.log.header('main:title', flavor=lambda msg: msg.upper())
+            >>> COLIFRAPY
+
             # Write methods shorteners
-            self.log.error(message, vars)
+            self.log.critical(message, vars)
+            self.log.error(...)
             self.log.warning(...)
             self.log.info(...)
             self.log.debug(...)
@@ -235,11 +242,11 @@ Confirmation
             # 'y' will be taken by default in arg 2
             # will return True for y and False for n
             response = self.log.confirm('Are you sure you want to continue?')
-            >>> '[CONFIRM] :: Are you sure you want to continue? (Y/n)'
+            >>> 'Are you sure you want to continue? (Y/n)'
             >>> y --> True
 
             response = self.log.confirm('Are you sure you want to continue?', 'n')
-            >>> '[CONFIRM] :: Are you sure you want to continue? (y/N)'
+            >>> 'Are you sure you want to continue? (y/N)'
             >>> n --> False
 
 
@@ -256,14 +263,16 @@ User Input
             #---------------
 
             response = self.log.input('What up ?')
-            >>> '[INPUT] :: What up ?'
-            >>> 'feeling fine' --> 'feeling fine'
+            >>> 'What up ?'
+            >>> 'feeling fine
+            >>> 'feeling fine'
 
             # You can also provide a lambda to the function as second argument
             # This lambda will affect the input given
             response = self.log.input('What up ?', lambda x: x.upper())
-            >>> '[INPUT] :: What up ?'
-            >>> 'feeling fine' --> 'FEELING FINE'
+            >>> 'What up ?'
+            >>> 'feeling fine'
+            >>> 'FEELING FINE'
 
 
 .. _styles:
@@ -291,6 +300,20 @@ Title Flavors
     # Title #
     #########
 
+**elegant**
+
+.. code-block:: bash
+
+    # Title
+    #-------
+
+**bold**
+
+.. code-block:: bash
+
+    # Title
+    #=======
+
 Flavors
 ^^^^^^^
 
@@ -298,37 +321,30 @@ Flavors
 
 .. code-block:: bash
 
-    [DEBUG] :: text
+    [DEBUG]
 
 **flat**
 
 .. code-block:: bash
 
-    debug : text
-
-**colorblind**
-
-.. code-block:: bash
-
-    # Without colors
-    [DEBUG] :: text
+    debug
 
 **reverse**
 
 .. code-block:: bash
 
     # With reverse colors
-    DEBUG  :: text
+    DEBUG
 
 **elegant**
 
 .. code-block:: bash
 
-    Debug - text
+    Debug
 
 **underline**
 
 .. code-block:: bash
 
-    DEBUG -- text
+    DEBUG
     -----

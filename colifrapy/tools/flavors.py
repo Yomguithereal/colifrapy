@@ -10,6 +10,7 @@
 #=============
 import logging
 from .colorize import colorize
+from .utilities import is_func
 
 
 # Text Flavors
@@ -29,10 +30,6 @@ class LevelFlavor(object):
         'reverse': {
             'tpl': ' %s ',
             'styles': 'reverse'
-        },
-        'colorblind': {
-            'tpl': '[%s]',
-            'styles': 'reset'
         },
         'underline': {
             'tpl': '%s',
@@ -75,20 +72,27 @@ class TitleFlavor(object):
     """ The TitleFlavor class provides an abstraction use to output
     some elegant headers. """
 
-    flavors = [
-        'default',
-        'heavy'
-    ]
-
     def __call__(self, message, flavor='default'):
-        if flavor not in self.flavors:
+
+        # Passing a function
+        if is_func(flavor):
+            return flavor(message)
+
+        try:
+            func = getattr(self, '_' + flavor)
+        except AttributeError as e:
             raise Exception('Colifrapy::Invalid title flavor (%s)' % flavor)
 
-
-        return getattr(self, '_' + flavor)(message)
+        return func(message)
 
     def _default(self, message):
         return '\n' + message + '\n' + ('-' * len(message))
+
+    def _elegant(self, message):
+        return '\n# ' + message + '\n#' + ('-' * (len(message) + 2))
+
+    def _bold(self, message):
+        return '\n# ' + message + '\n#' + ('=' * (len(message) + 2))
 
     def _heavy(self, message):
         return '\n%s\n# %s #\n%s' \

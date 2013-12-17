@@ -59,6 +59,10 @@ Some functions that may prove useful
     is_of_list(['red', 'blue'])
     >>> True
 
+    # Is the variable a function
+    is_func(lambda x: x.lower())
+    >>> True
+
     # Get Index with fallback
     get_index(['red', 'blue'], 'green', 5)
     >>> 5

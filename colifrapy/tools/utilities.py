@@ -33,6 +33,11 @@ def is_of_list(variable):
     return True in [isinstance(variable, t) for t in [list, tuple, set]]
 
 
+# Is a function
+def is_func(variable):
+    return hasattr(variable, '__call__')
+
+
 # Get Index with Fallback
 def get_index(target, value, fallback):
     try:

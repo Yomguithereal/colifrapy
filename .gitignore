@@ -15,3 +15,4 @@ cache/
 # Documentation
 docs/_build
 docs/_examples
+docs/_static
