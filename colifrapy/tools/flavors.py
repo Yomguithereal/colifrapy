@@ -20,25 +20,11 @@ class LevelFlavor(object):
 
     # Styles definitions
     flavors = {
-        'default': {
-            'tpl': '[%s]'
-        },
-        'flat': {
-            'tpl': '%s',
-            'filters': lambda x: x.lower()
-        },
-        'reverse': {
-            'tpl': ' %s ',
-            'styles': 'reverse'
-        },
-        'underline': {
-            'tpl': '%s',
-            'styles': 'underline'
-        },
-        'elegant': {
-            'tpl': '%s',
-            'filters': lambda x: x.title()
-        },
+        'default': lambda lvl: '[%s]' % lvl,
+        'flat': lambda lvl: lvl.lower(),
+        'reverse': lambda lvl: ' %s %s' % (lvl, '//reverse'),
+        'underline': lambda lvl: lvl + '//underline',
+        'elegant': lambda lvl: lvl.title()
     }
 
     # Colors
@@ -51,17 +37,20 @@ class LevelFlavor(object):
     }
 
     def __call__(self, level, flavor='default', colors=True):
-        fmt = self.flavors.get(flavor)
+        fmt = flavor if is_func(flavor) else self.flavors.get(flavor)
 
         if fmt is None:
             raise Exception('Colifrapy::Invalid text flavor (%s)' % flavor)
 
-        level_str = fmt['tpl'] % fmt.get('filters', lambda x: x)(level)
+        (level_str, style) = (fmt(level), None)
+        check = level_str.split('//')
+        if len(check) > 1:
+            (level_str, style) = (check[0], check[1])
 
         return colorize(
             level_str,
             fore_color=self.level_colors.get(level, 'magenta'),
-            style=fmt.get('styles')
+            style=style
         ) if colors else level_str
 
 

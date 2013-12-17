@@ -35,10 +35,19 @@ If you want to use the colifrapy Logger without messing with the whole framework
     from colifrapy import Logger
 
     logger_instance = Logger()
+
+    # Run the configuration method at least one to initialize the logger
     logger_instance.config(options)
 
     logger_instance.write('Hello World!')
     >>> '[DEBUG] :: Hello World!'
+
+    # To change the logger's configuration, just rerun the config method
+    logger_instance.config(options)
+
+    # Or for specific options
+    logger_instance.configConsole(options)
+    logger_instance.configFile(options)
 
 
 Options
@@ -48,7 +57,16 @@ Options
 
    <br />
 
-The options you may pass to the constructor of the logger (those options are automatically taken care of when the logger is loaded by the Settings class) are the following:
+Generic Options
+^^^^^^^^^^^^^^^
+
+// Generic
+// Console
+// File
+// Redo settings
+
+
+The options you may pass to the configurator of the logger (those options are automatically taken care of when the logger is loaded by the Settings class) are the following:
 
     - **strings**
         (string) |br|

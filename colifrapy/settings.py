@@ -16,6 +16,7 @@ from .logger import Logger
 from .commander import Commander
 from .tools.decorators import singleton
 from .tools.utilities import is_string, is_of_list, normalize_path
+from .tools.utilities import parse_lambda
 from .cacher import LineCacher, YAMLCacher
 
 
@@ -59,13 +60,9 @@ class Settings(object):
 
         # Setting Commander
         #------------------
-        commander_settings = {
-            'version':     data.get('version'),
-            'arguments':   data.get('arguments'),
-            'description': data.get('description'),
-            'usage':       data.get('usage'),
-            'prog':        data.get('prog')
-        }
+        commander_settings = {}
+        for i in ('version', 'arguments', 'description', 'usage', 'prog'):
+            commander_settings[i] = data.get(i)
         self.__commander.config(**commander_settings)
 
         # Setting Logger
@@ -108,7 +105,7 @@ class Settings(object):
                 logger_opts[i] = logger_data[i]
 
         # Getting special options
-        for kind in ['console', 'file']:
+        for kind in ('console', 'file'):
             logger_opts[kind + '_kwargs'] = {}
 
             for i in possible_opts[kind]:
@@ -121,9 +118,18 @@ class Settings(object):
                           logger_opts[i]
 
         # Regularization
-        for i in ['activated', 'threshold', 'formatter']:
+        for i in ('activated', 'threshold', 'formatter'):
             if i in logger_opts:
                 del logger_opts[i]
+
+        # Parsing lambdas in flavor
+        for i in ('generic', 'console_kwargs', 'file_kwargs'):
+            target = logger_opts[i] if i != 'generic' else logger_opts
+            if 'flavor' in target:
+                if 'lambda' in target['flavor']:
+                    target['flavor'] = parse_lambda(
+                        target['flavor']
+                    )
 
         # Actually loading logger settings
         self.__logger.config(**logger_opts)

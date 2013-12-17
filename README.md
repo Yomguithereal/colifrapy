@@ -1,15 +1,13 @@
 #Colifrapy
 
 ##Description
-Colifrapy is a **Command Line Framework for Python**.
-Its aim is to provide several tools to build robust and
-structured command line tools very easily.
+Colifrapy is a **Command Line Framework for Python**. Its aim is to provide several tools to build robust and structured command line tools very easily.
 
 Its logic is very similar to a MVC framework and is therefore easy to use.
 
-The full documentation for the last released version of colifrapy is available [here](http://yomguithereal.github.io/colifrapy/).
+The full documentation for the last released version of colifrapy is available [there](http://yomguithereal.github.io/colifrapy/).
 
-The github repository is available [here](https://github.com/Yomguithereal/colifrapy).
+The github repository is available [there](https://github.com/Yomguithereal/colifrapy).
 
 ##Installation
 It is recommanded to use colifrapy under a python virtualenv.
@@ -27,12 +25,9 @@ pip install git+https://github.com/Yomguithereal/colifrapy.git
 ```
 
 ##Philosophy
-As every framework, colifrapy aims at enable you to work immediately on critical and intersting parts of
-your code that will tackle the problems you need to solve instead of battling with petty
-things such as the console output, your settings and the arguments passed to your tool.
+As every framework, colifrapy enables you to work immediately on critical and intersting parts of your code that will tackle the problems you need to solve instead of battling with petty things such as the console output, your settings and the arguments passed to your tool.
 
-However, colifrapy is not a tyrant and does not force you to go its way. As such, every part of colifrapy can
-be used on its own and you will remain free to code however you want to.
+However, colifrapy is not a tyrant and does not force you to go its way. As such, every part of colifrapy can be used on its own and you will remain free to code however you want to.
 
 ##Concept
 When using colifrapy, your tool is called through a command line hub which acts more or less like a router which will call upon a controller using one or several models to perform the job.

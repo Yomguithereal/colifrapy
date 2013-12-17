@@ -7,10 +7,11 @@
 #   Version: 1.0
 
 # Basic Informations
-version: 'Colifrapy Scaffolder 0.4'
-description: 'The Colifrapy Scaffolder is designed to create a new project.'
+version: 'Colifrapy Scaffolder 0.5'
+description: 'The Colifrapy Scaffolder is designed to create new projects and generate templates of code.'
+prog: 'coliftrapy'
 arguments:
 - [ ['-a', '--author'], {'help' : "Author's name."} ]
 - [ ['-o', '--organization'], {'help' : "Organization's name."} ]
-- [ ['action'], {'choices' : ['new']}]
-- [ ['project'] ]
+- [ ['colifrapy_action'], {'choices' : ['new', 'generate']}]
+- [ ['target'] ]

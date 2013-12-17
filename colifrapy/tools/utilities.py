@@ -22,7 +22,7 @@ def is_string(variable):
     else:
         return isinstance(variable, str)
 
-
+# TODO: Optimize, can be written to be faster but less concise
 # Is a number?
 def is_number(variable):
     return True in [isinstance(variable, t) for t in [int, float]]
@@ -38,13 +38,19 @@ def is_func(variable):
     return hasattr(variable, '__call__')
 
 
+# Parse a lambda string
+# UNSAFE: use only from settings
+def parse_lambda(string):
+    func = eval(string)
+    return func if is_func(func) else None
+
+
 # Get Index with Fallback
 def get_index(target, value, fallback):
     try:
-        index = target.index(value)
+        return target.index(value)
     except ValueError:
         return fallback
-    return index
 
 
 # Determine whether your path is relative or absolute

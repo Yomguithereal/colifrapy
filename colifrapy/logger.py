@@ -98,7 +98,7 @@ class Logger(object):
         self._logger.setLevel(VERBOSE_LVL)
 
     # Generic configuration
-    def config(self, console_kwargs={}, file_kwargs={},
+    def config(self, console_kwargs=None, file_kwargs=None,
                exceptions=True, strings=None, flavor='default'):
 
         # Generic options
@@ -108,8 +108,11 @@ class Logger(object):
         if strings is not None:
             self.load_strings(strings)
 
-        self.configConsole(**console_kwargs)
-        self.configFile(**file_kwargs)
+        if console_kwargs is not None:
+            self.configConsole(**console_kwargs)
+
+        if file_kwargs is not None:
+            self.configFile(**file_kwargs)
 
     # Console configuration
     def configConsole(self, activated=True,
