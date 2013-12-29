@@ -19,115 +19,126 @@ from .hub import Colifrapy
 from .model import Model
 from .tools.utilities import titler
 
-# Working Path
-file_path = os.path.split(os.path.abspath(__file__))[0]+'/templates/'
+# Template Directory
+TEMPLATE_DIRECTORY = os.path.join(
+    os.path.split(os.path.abspath(__file__))[0],
+    'templates' + os.sep
+)
+
+""" 
+TODO:
+- generate project (add a simple hub opt)
+- code generator for model
+"""
 
 # Main Class
 #===========
 class Scaffolder(Model):
     """ The Scaffolder is the base class that creates projects,
-    model and generate necessary files to get going from the templates. """
+    model and generate necessary files from the templates. """
 
     # Tools
     renderer = Renderer(ignore=False)
-    project_name = False
-    files = {
-        'main' : False,
-        'controller': 'model/controller.py',
-        'model' : 'model/example_model.py',
-        'settings' : 'config/settings.yml',
-        'strings'  : 'config/strings.yml',
-        'readme'   : 'README.md',
-        'gitignore': '.gitignore',
-        'requirements' : 'requirements.txt'
-    }
 
-    folders = {
-        'model' : True,
-        'config' : False
-    }
+    # Logger bootstrap
+    def __init__(self):
+        self.log.loadStrings(TEMPLATE_DIRECTORY + 'strings.yml')
 
-    template_path = file_path
-    template_vars = None
+    # Controller actions
+    def new(self):
 
-    # New Project
-    def build(self, project, author=None, organization=None):
-        self.log.write('main:start', variables={'project':project})
+        # Folders to create
+        folders = {
+            'model' : True,
+            'config' : False
+        }
 
-        self.files['main'] = project+'.py'
-        self.project_name = project
-
-        # Variables Assessment
-        self.template_vars = {
-            'project' : titler(project),
-            'var' : '{{var}}'
+        # Files tp create
+        files = {
+            'main' : False,
+            'controller': 'model/controller.py',
+            'model' : 'model/example_model.py',
+            'settings' : 'config/settings.yml',
+            'strings'  : 'config/strings.yml',
+            'readme'   : 'README.md',
+            'gitignore': '.gitignore',
+            'requirements' : 'requirements.txt'
         }
 
         # Options
+        project_name = self.opts.target
+        author = self.opts.author
+        organization = self.opts.organization
+        files['main'] = project_name + '.py'
+
+        # Template variables
+        template_vars = {
+            'project' : titler(project_name),
+            'var' : '{{var}}'
+        }
+
         if author is not None:
-            self.template_vars['author_line'] = '\n#   Author : '+author
+            template_vars['author_line'] = '\n#   Author: %s' % author
         if organization is not None:
-            self.template_vars['organization_line'] = '\n#   Organization : '+organization
+            template_vars['organization_line'] = '\n#   Organization: %s' % (
+                organization)
 
-        self.new_project()
+        if self.opts.basic:
+            files['basic'] = files.pop('main')
 
-        self.log.write('main:end', variables={'project':project})
-
-    # Utilities
-    def render(self, tpl):
-        with codecs.open(self.template_path+tpl+'.tpl', 'r', 'utf-8') as tplf:
-            return self.renderer.render(tplf.read(), self.template_vars)
-
-    # Create __init__.py files
-    def module_init(self, path):
-        with codecs.open(path+'/__init__.py', 'w+', 'utf-8') as i:
-            self.log.write('main:init', variables={'path':path})
-
-    # File generation
-    def new_project(self):
+        # Announcing
+        self.log.write('main:project', project_name)
 
         # Current Directory
-        project_path = os.getcwd()+'/'+self.project_name
+        project_path = os.path.join(os.getcwd(), project_name + os.sep)
         if os.path.isdir(project_path):
             self.log.write('errors:existing')
 
         # Creating directories
-        self.log.write('main:directory', variables={'directory':project_path})
+        self.log.write('main:directory', project_path)
         os.makedirs(project_path)
-        self.module_init(project_path)
-        for folder, module in list(self.folders.items()):
-            self.log.write('main:directory', variables={'directory':project_path+'/'+folder})
-            os.makedirs(project_path+'/'+folder)
+
+        self.__moduleInit(project_path)
+        for folder, module in list(folders.items()):
+            self.log.write('main:directory', project_path + folder)
+            os.makedirs(project_path + folder)
 
             # Initializing python module
             if module:
-                self.module_init(project_path+'/'+folder)
+                self.__moduleInit(project_path + folder + os.sep)
 
         # Creating files
-        for template, filename in list(self.files.items()):
-            with codecs.open(project_path+'/'+filename, 'w+', 'utf-8') as f:
-                self.log.write('main:file', variables={'file':project_path+'/'+filename})
-                f.write(self.render(template))
+        for template, filename in list(files.items()):
+            with codecs.open(project_path + filename, 'w+', 'utf-8') as f:
+                self.log.write('main:file', project_path + filename)
+                f.write(self.__render(template, template_vars))
+
+        # Announcing the end
+        self.log.write('main:end', project_name)
+
+    def generate(self):
+        
+        # Options
+        model_name = self.opts.target
+
+    # Helpers
+    def __moduleInit(self, path):
+        with codecs.open(path + '__init__.py', 'w+', 'utf-8') as i:
+            self.log.write('main:init', path)
+
+    def __render(self, tpl, variables):
+        with codecs.open(TEMPLATE_DIRECTORY + tpl + '.tpl', 'r', 'utf-8') \
+              as tplf:
+            return self.renderer.render(tplf.read(), variables)
 
 
-# Command Line Execution
-#=======================
+# CLI Execution
+# =============
 class Hub(Colifrapy):
-
-    # Launching Scaffolder
-    def launch(self):
-        self.log.load_strings(file_path+'strings.yml')
-        self.log.header('main:title')
-
-        self.controller.build(
-            self.opts.project,
-            self.opts.author,
-            self.opts.organization
-        )
+    pass
 
 def main():
-    hub = Hub(Scaffolder, file_path+'settings.yml')
-    hub.launch()
+    hub = Hub(Scaffolder, TEMPLATE_DIRECTORY + 'settings.yml')
 
 if __name__ == '__main__':
     main()

@@ -13,5 +13,6 @@ prog: 'coliftrapy'
 arguments:
 - [ ['-a', '--author'], {'help' : "Author's name."} ]
 - [ ['-o', '--organization'], {'help' : "Organization's name."} ]
+- [ ['-b', '--basic'], {'help': "Basic Hub", 'action': 'store_true'} ]
 - [ ['colifrapy_action'], {'choices' : ['new', 'generate']}]
 - [ ['target'] ]

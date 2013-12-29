@@ -5,12 +5,11 @@
 # Main Strings
 main:
     title: 'Colifrapy Scaffolder'
-    start: 'Creating project *{{project}}*//INFO'
-    directory: 'Creating directory : {{directory}}//DEBUG'
-    file: 'Writing file : {{file}}//DEBUG'
-    init: 'Initializing python module : {{path}}//DEBUG'
-    end: 'The project *{{project}}* is now set up.\n//INFO'
+    project: 'Creating project *{{project}}*//INFO'
+    directory: 'Creating directory : {{directory}}//VERBOSE'
+    file: 'Writing file : {{file}}//VERBOSE'
+    init: 'Initializing python module : {{path}}//VERBOSE'
+    end: 'The project *{{project}}* is now set up\n//INFO'
 
 errors:
-    action: 'Wrong action supplied (usage : colifrapy new [project-name] (-a [author])//ERROR'
-    existing: 'A folder with the same name as your project already exists//ERROR'
+    existing: 'A folder with the same name as your project already exists//CRITICAL'

@@ -106,7 +106,7 @@ class Logger(object):
         self.exceptions = exceptions
 
         if strings is not None:
-            self.load_strings(strings)
+            self.loadStrings(strings)
 
         if console_kwargs is not None:
             self.configConsole(**console_kwargs)
@@ -200,7 +200,7 @@ class Logger(object):
 
     # Setters
     #--------
-    def load_strings(self, strings):
+    def loadStrings(self, strings):
         with open(strings, 'r') as sf:
             self.strings = yaml.load(sf.read())
 

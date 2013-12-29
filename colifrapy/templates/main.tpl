@@ -26,7 +26,7 @@ class {{project}}(Colifrapy):
 
     # If you really want to use a constructor for this class,
     # do not forget to call the parent's one
-    # Colifrapy.__init__() with your controller if you want one.
+    # Colifrapy.__init__()
 
     def launch(self):
 
@@ -38,7 +38,7 @@ class {{project}}(Colifrapy):
         self.controller.test()
 
 # Launching
-#===========
+#==========
 if __name__ == '__main__':
 
     # Pass a second argument to the constructor 
