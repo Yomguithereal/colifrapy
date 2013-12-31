@@ -127,9 +127,7 @@ class Settings(object):
             target = logger_opts[i] if i != 'generic' else logger_opts
             if 'flavor' in target:
                 if 'lambda' in target['flavor']:
-                    target['flavor'] = parse_lambda(
-                        target['flavor']
-                    )
+                    target['flavor'] = parse_lambda(target['flavor'])
 
         # Actually loading logger settings
         self.__logger.config(**logger_opts)

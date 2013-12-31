@@ -19,10 +19,12 @@ This will generate a standard colifrapy project containing the following files :
     - .gitignore (exluded files for git)
     - requirements.txt (base pip dependencies)
     - README.md (project documentation)
-    - a command line hub
-    - config/settings.yml (standard settings for your project)
-    - config/strings.yml (externalized strings)
-    - model/controller.py (basic controller)
-    - model/example_model.py (basic model)
+    - [name-of-project].py (command line hub)
+    - config/
+        - settings.yml (standard settings for your project)
+        - strings.yml (externalized strings)
+    - model/
+        - controller.py (basic controller)
+        - example_model.py (basic model)
 
 Every relevant folder will of course come along with its __init__.py file.

@@ -300,11 +300,10 @@ class Logger(object):
         if self.strings is None:
             return path
         try:
-            string = reduce(dict.__getitem__, path.split(':'), self.strings)
+            return reduce(dict.__getitem__, path.split(':'), self.strings)
         except KeyError:
             return path
-        return string
 
-    # Outputting to console
+    # Outputting
     def __toHandlers(self, message, level='INFO'):
         getattr(self._logger, level.lower())(message)
