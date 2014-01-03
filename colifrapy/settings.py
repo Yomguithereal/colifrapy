@@ -61,7 +61,16 @@ class Settings(object):
         # Setting Commander
         #------------------
         commander_settings = {}
-        for i in ('version', 'arguments', 'description', 'usage', 'prog'):
+        commander_opts = (
+            'version',
+            'arguments',
+            'description',
+            'usage',
+            'prog',
+            'epilog'
+        )
+
+        for i in commander_opts:
             commander_settings[i] = data.get(i)
         self.__commander.config(**commander_settings)
 

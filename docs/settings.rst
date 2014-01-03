@@ -82,6 +82,7 @@ Standard program options are the following:
     - **description** : Short description of your program and what it does
     - **usage** : How to use your program
     - **prog** : Program's name to display along usage string.
+    - **epilog** : A final string to output when help is displayed.
 
 Arguments
 ^^^^^^^^^

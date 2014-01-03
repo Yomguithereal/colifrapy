@@ -30,7 +30,7 @@ class Commander(ArgumentParser):
 
     # Configuration
     def config(self, version=None, description=None,
-               arguments=None, usage=None, prog=None):
+               arguments=None, usage=None, prog=None, epilog=None):
 
         self.version_str = version or '0.1.0'
 
@@ -39,7 +39,8 @@ class Commander(ArgumentParser):
             self,
             description=description or '',
             usage=usage,
-            prog=prog
+            prog=prog,
+            epilog=epilog
         )
 
         # Adding Options
