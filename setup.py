@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='colifrapy',
-      version='0.4.2',
+      version='0.5.0',
       description='Command Line Framework for Python',
       url='http://yomguithereal.github.io/colifrapy/',
       long_description=open('README.md', 'r').read(),
