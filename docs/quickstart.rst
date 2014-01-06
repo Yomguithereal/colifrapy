@@ -16,7 +16,7 @@ To test your new project, enter your project's directory and type::
 
     python [name-of-project].py test
 
-It should launch it and output a header and some strings in the console to tell you everything is going to be OK.
+It should launch it and output a header and some strings in the console telling you everything is going to be OK.
 
 
 Command Line Hub
@@ -85,10 +85,6 @@ The Settings class is the first class loaded by colifrapy to perform its magic. 
     logger:
         strings: 'config/strings.yml'
         flavor: 'default'
-        title_flavor: 'default'
-        # Delete the path line not to write the log to a file
-        directory: 'logs'
-        threshold: ['DEBUG', 'ERROR', 'INFO', 'WARNING', 'VERBOSE']
 
     # Generic Settings needed by your program
     settings:

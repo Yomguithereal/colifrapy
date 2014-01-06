@@ -119,48 +119,66 @@ For more precise information see :ref:`logger`.
 For more precise information about the logger's styles see :ref:`styles`.
 
 .. code-block:: yaml
-
+    
     logger:
+        # {string} [None] YAML string file.
+        strings: 'example_strings.yml'
 
-        # Must the logger be activated ?
-        # Default: True
-        activated: False
-
-        # Strings supplied
-        # Default: the logger won't use an externalized string file
-        strings: 'config/'
-
-        # Output Log Directory
-        # Default: None (if None is supplied, the logger won't write to file)
-        directory: 'logs'
-
-        # Output filename
-        # Default: 'log.txt'
-        filename: 'project.log'
-
-        # Output mode
-        # Default: simple (available: simple, overwrite, rotation)
-        mode: 'rotation'
-
-        # Max Lines before log rotation
-        # Default: 5000
-        max_lines: 1000
-
-        # Logger threshold
-        # Default: ['DEBUG', 'ERROR', 'INFO', 'WARNING', 'VERBOSE']
-        threshold: ['ERROR', 'INFO']
-
-        # Exceptions
-        # Default: True, decides whether the ERROR level of log should trigger Exceptions
+        # {boolean} [True] Should the CRITICAL level trigger exceptions?
         exceptions: False
 
-        # Flavor
-        # Default: 'default'
+        # {boolean} [True] Should we activate both logger's handlers?
+        activated: True
+
+        # {string} ['VERBOSE'] Threshold for both logger's handlers.
+        threshold: 'INFO'
+
+        # {string} The log message formatter for both logger's handlers.
+        formatter: '%(msg)s -- %(asctime)'
+
+        # {string|lambda} The flavor for colored levelname.
         flavor: 'elegant'
 
-        # Title Flavor
-        # Default: 'default'
-        title_flavor: 'heavy'
+        # Console specific options
+        console:
+
+            # {boolean} [True] Should the console handler be activated?
+            activated: True
+
+            # {string} ['VERBOSE'] Threshold.
+            threshold: 'DEBUG'
+
+            # {string} ['%(flavored_levelname)s :: %(msg)s'] Formatter.
+            formatter: '%(msg)s'
+
+        # File specific options:
+
+            # {boolean} [False] Should the file handler be activated?
+            activated: False
+
+            # {string} ['VERBOSE'] Threshold.
+            threshold: 'ERROR'
+
+            # {string} ['%(asctime)s %(levelname)s :: %(msg)s'] Formatter.
+            formatter: '%(msg)s'
+
+            # {string} ['.'] Directory where the file handler will write.
+            directory: 'logs'
+
+            # {string} ['program.log'] Filename for the log file.
+            filename: 'current.log'
+
+            # {string} ['simple'] File logging mode
+            mode: 'rotation'
+
+            # Rotation mode options
+            # {int} [1048576] Max bytes for a current log file.
+            max_bytes: 2097152
+
+            # {int} [5] Max number of log files
+            backup_count: 4
+
+**N.B.**: Options passed at the **logger** level such as *activated* or *threshold* override the **console** and **file** one and apply to both.
 
 .. _cacherSettings:
 
@@ -190,7 +208,7 @@ For more precise information see :ref:`cacher`.
         # Default: False
         auto_write: True
 
-If you need more than one cache instance, just pass an array to the cache key in your YAML settings file. In this case, don't forget to pass a name to your settings to access it. Else it will have an ugly and standardized name like *__cacheInstance0*.
+If you need more than one cache instance, just pass an array to the cache key in your YAML settings file. In this case, don't forget to pass a name to your settings to access it. Else it will earn a standardized name like *__cacheInstance0*.
 
 .. code-block:: yaml
 
@@ -218,7 +236,7 @@ Then access your cache likewise.
 General
 ^^^^^^^
 
-If you need any generic settings more, just provide a settings key to your yaml file and populate it as in the following example.
+If you need any other settings you feel necessary, just provide a settings key to your yaml file and populate it as in the following example.
 
 .. code-block:: yaml
 
@@ -230,7 +248,7 @@ If you need any generic settings more, just provide a settings key to your yaml 
         to_index: ["books", "notes"]
         limit: 5
 
-If you need to divide your settings into several YAML files, colifrapy enables you to do so.
+It is also possible to include other yaml files into those generic settings by following this procedure.
 
 .. code-block:: yaml
 
@@ -246,4 +264,4 @@ N.B.
 For every path given, colifrapy will try and decide whether it is absolute or relative (unix-style)::
 
     '/usr/local/settings.yml' is an absolute path
-    'config/settings.yml' is a relative path
+    'config/settings.yml' is a relative path (relative to the colifrapy hub file)

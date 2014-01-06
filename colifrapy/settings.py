@@ -104,6 +104,7 @@ class Settings(object):
                 'directory',
                 'filename',
                 'max_bytes',
+                'backup_count',
                 'mode'
             ]
         }

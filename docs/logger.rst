@@ -43,7 +43,7 @@ If you want to use the colifrapy Logger without messing with the whole framework
     >>> '[DEBUG] :: Hello World!'
 
     # To change the logger's configuration, just rerun the config method
-    logger_instance.config(options)
+    logger_instance.config(**options)
 
     # Or for specific options
     logger_instance.configConsole(options)
@@ -64,7 +64,9 @@ Generic Options
 // Console
 // File
 // Redo settings
-
+// Formatters and flavors dans style
+// links to file handler opts
+// the different configuration methods
 
 The options you may pass to the configurator of the logger (those options are automatically taken care of when the logger is loaded by the Settings class) are the following:
 
