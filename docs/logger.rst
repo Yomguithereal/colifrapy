@@ -37,7 +37,7 @@ If you want to use the colifrapy Logger without messing with the whole framework
     logger_instance = Logger()
 
     # Run the configuration method at least one to initialize the logger
-    logger_instance.config(options)
+    logger_instance.config(**options)
 
     logger_instance.write('Hello World!')
     >>> '[DEBUG] :: Hello World!'
@@ -57,8 +57,59 @@ Options
 
    <br />
 
+Colifrapy's logger has three different configuration methods, each one dealing with a particular end. You can therefore configure the logger as a whole or rather one of both its handlers (console and file).
+
+Note that if you want to change one of those options on the fly you can always run the config method one more time with the changed options.
+
 Generic Options
 ^^^^^^^^^^^^^^^
+
+The generic options you may pass to the logger's config method (those options are automatically taken care of when the logger is loaded by the Settings class) are the following:
+
+    - **strings**
+      {string} |br|
+      Path leading to your externalized YAML strings |br|
+      *default*: None (the logger won't use externalized strings)
+
+    - **exceptions**
+      {boolean} |br|
+      Should the CRITICAL level trigger exceptions |br|
+      *default*: True
+
+    - **flavor**
+      {string|lambda} |br|
+      The flavor to use to format %(flavored_levelname)s |br|
+      *default*: 'default'
+
+    - **console_kwargs**
+      {dict} |br|
+      A configuration dict to be run into the configConsole method. |br|
+      *default*: None (the configConsole method will be called with its defaults)
+
+    - **file_kwargs**
+      {dict} |br|
+      A configuration dict to be run into the configFile method. |br|
+      *default*: None (the configFile method will be called with its defaults)
+
+For a list of flavors, see :ref:`styles`. If none of the proposed flavors suit you and you need to create your own, please note that you can pass a lambda taking the levelname variable to the flavor option 
+
+Usage example
+
+.. code-block:: python
+
+    from colifrapy import Logger
+
+    logger_instance = Logger()
+    logger_instance.config(string='example_string.yml', exceptions=False)
+
+Console Options
+^^^^^^^^^^^^^^^
+
+File Options
+^^^^^^^^^^^^
+
+
+
 
 // Generic
 // Console
@@ -121,8 +172,6 @@ The options you may pass to the configurator of the logger (those options are au
         (integer) |br|
         when in rotation mode, number of lines before changing the log file. |br|
         *default*: 5000
-
-Note that if you want to change one of those options on the fly you can always run the config method one more time with the changed options.
 
 Levels
 ------
