@@ -32,7 +32,7 @@ class Colifrapy(object):
         # Loading Settings
         settings_instance = Settings()
         settings_instance.load(settings_path)
-        self.settings = settings_instance.accessSettingsDict()
+        self.settings = settings_instance.getDict()
 
         # Loading Opts
         command = Commander()
@@ -42,7 +42,7 @@ class Colifrapy(object):
         self.log = Logger()
 
         # Cache just in case
-        self.cache = settings_instance.accessCache()
+        self.cache = settings_instance.getCache()
 
         # Loading Controller
         if controller is not None:

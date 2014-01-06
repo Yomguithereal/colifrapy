@@ -25,11 +25,6 @@ TEMPLATE_DIRECTORY = os.path.join(
     'templates' + os.sep
 )
 
-""" 
-TODO:
-- generate project (add a simple hub opt)
-- code generator for model
-"""
 
 # Main Class
 #===========

@@ -174,10 +174,10 @@ class Settings(object):
     def __repr__(self):
         return pprint.pformat(self.__dictSettings)
 
-    def accessCache(self):
+    def getCache(self):
         return self.__cache
 
-    def accessSettingsDict(self):
+    def getDict(self):
         return self.__dictSettings
 
     def __registerCache(self, cache_settings, alone=False):

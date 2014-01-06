@@ -63,13 +63,19 @@ As every colifrapy class, it is possible to use the Settings one as a standalone
 
     from colifrapy import Settings
 
+    # Loading the YAML file
     s = Settings()
     s.load('path/to/settings.yml')
 
-    print s.hello
+    # Accessing the generic settings
+    d = s.getDict()
+    print d.hello
     >>> "world"
 
-Once loaded, you can use it anywhere in your code and even reinstanciate it if convenient and it will keep the same state.
+    # Accessing cache
+    c = s.getCache()
+
+Once loaded, you can use it anywhere in your code and even reinstanciate it if convenient with it keeping the same state.
 
 Options
 -------

@@ -34,9 +34,9 @@ class Model(object):
 
         # Setting reserved attributes
         cls.opts = commander.opts
-        cls.settings = settings.accessSettingsDict()
+        cls.settings = settings.getDict()
         cls.log = Logger()
-        cls.cache = settings.accessCache()
+        cls.cache = settings.getCache()
 
         # Returning class
         return object.__new__(cls)

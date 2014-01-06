@@ -13,6 +13,4 @@ cache/
 *.log
 
 # Documentation
-docs/_build
-docs/_examples
-docs/_static
+docs/_*
