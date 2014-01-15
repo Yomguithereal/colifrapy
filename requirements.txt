@@ -1,0 +1,4 @@
+# Colifrapy dev deps
+nose
+rednose
+Sphinx

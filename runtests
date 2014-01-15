@@ -1,0 +1,4 @@
+echo "
+Colifrapy Unit Tests
+===================="
+nosetests -sv --rednose

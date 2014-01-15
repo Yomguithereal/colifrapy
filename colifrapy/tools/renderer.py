@@ -18,9 +18,6 @@ class Renderer(object):
     """ The Renderer take Mustache-styled strings and compute their
     variables. """
 
-    # Properties
-    ignore = True
-
     # Methods
     def __init__(self, ignore=True):
         self.ignore = bool(ignore)
