@@ -63,6 +63,11 @@ Some functions that may prove useful
     is_func(lambda x: x.lower())
     >>> True
 
+    # Parsing a string into a lambda
+    # WARNING: This isn't very safe
+    parse_lambda('lambda x: x.upper()')
+    >>> lambda x: x.upper()
+
     # Get Index with fallback
     get_index(['red', 'blue'], 'green', 5)
     >>> 5

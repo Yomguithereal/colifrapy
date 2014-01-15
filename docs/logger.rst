@@ -7,6 +7,10 @@ Class
 -----
 The Logger class is the voice of colifrapy. Its aim is to display feedback from your program into the console and to write it to a file if necessary. It may also feed on externalized strings written in a YAML file.
 
+N.B.: this custom logger is built around the python logging_ module and spawn a logging instance named "colifrapy".
+
+.. _logging: http://docs.python.org/2/library/logging.html
+
 
 Model Usage
 -----------
@@ -49,6 +53,18 @@ If you want to use the colifrapy Logger without messing with the whole framework
     logger_instance.configConsole(options)
     logger_instance.configFile(options)
 
+Levels
+------
+The logger accepts five levels (ordered by importance):
+
+    - VERBOSE (cyan output)
+    - DEBUG (blue output)
+    - INFO (green output)
+    - WARNING (yellow ouput)
+    - ERROR (red output)
+    - CRITICAL (violet output)  --> will throw an exception for you to catch or not
+
+By default, if no level is specified for a message, DEBUG will always be taken.
 
 Options
 -------
@@ -64,21 +80,21 @@ Note that if you want to change one of those options on the fly you can always r
 Generic Options
 ^^^^^^^^^^^^^^^
 
-The generic options you may pass to the logger's config method (those options are automatically taken care of when the logger is loaded by the Settings class) are the following:
+The generic options you may pass to the logger's *config* method (those options are automatically taken care of when the logger is loaded by the Settings class) are the following:
 
     - **strings**
       {string} |br|
-      Path leading to your externalized YAML strings |br|
+      Path leading to your externalized YAML strings. |br|
       *default*: None (the logger won't use externalized strings)
 
     - **exceptions**
       {boolean} |br|
-      Should the CRITICAL level trigger exceptions |br|
+      Should the CRITICAL level trigger exceptions. |br|
       *default*: True
 
     - **flavor**
       {string|lambda} |br|
-      The flavor to use to format %(flavored_levelname)s |br|
+      The flavor to use to format %(flavored_levelname)s. |br|
       *default*: 'default'
 
     - **console_kwargs**
@@ -93,98 +109,99 @@ The generic options you may pass to the logger's config method (those options ar
 
 For a list of flavors, see :ref:`styles`. If none of the proposed flavors suit you and you need to create your own, please note that you can pass a lambda taking the levelname variable to the flavor option 
 
-Usage example
+**Usage example**
 
 .. code-block:: python
 
     from colifrapy import Logger
 
     logger_instance = Logger()
-    logger_instance.config(string='example_string.yml', exceptions=False)
+    logger_instance.config(strings='example_string.yml', exceptions=False)
 
 Console Options
 ^^^^^^^^^^^^^^^
 
+The console options you may pass to the logger's *configConsole* method (those options are automatically taken care of when the logger is loaded by the Settings class under logger:console) are the following:
+
+    - **activated**
+      {boolean} |br|
+      Whether the console handler should be activated or not. |br|
+      *default*: True
+
+    - **threshold**
+      {string} |br|
+      Threshold for the console handler. |br|
+      *default*: 'VERBOSE'
+
+    - **formatter**
+      {string} |br|
+      Formatter for the console handler. |br|
+      *default*: '%(flavored_levelname)s :\: %(msg)s'
+
+**Usage example**
+
+.. code-block:: python
+
+    from colifrapy import Logger
+
+    logger_instance = Logger()
+    logger_instance.configConsole(threshold='WARNING', activated=True)
+
 File Options
 ^^^^^^^^^^^^
 
-
-
-
-// Generic
-// Console
-// File
-// Redo settings
-// Formatters and flavors dans style
-// links to file handler opts
-// the different configuration methods
-
-The options you may pass to the configurator of the logger (those options are automatically taken care of when the logger is loaded by the Settings class) are the following:
-
-    - **strings**
-        (string) |br|
-        path to your externalized YAML string |br|
-        *default*: None (the logger won't use externalized strings)
-
-    - **output_directory**
-        (string) |br|
-        path to your output logging directory |br|
-        *default*: None (the logger won't output to file)
-
-    - **output_filename**
-        (string) |br|
-        name of the log file |br|
-        *default*: "log.txt"
-
-    - **output_mode**
-        (string) |br|
-        choices: simple/overwrite/rotation |br|
-        mode of file logging, for more information see :ref:`modes` |br|
-        *default*: "simple"
-
-    - **threshold**
-        (list) |br|
-        a list containing values from ["INFO", "DEBUG", "ERROR", "WARNING", "VERBOSE"] |br|
-        list of level you want the logger to express. Note that if you drop ERROR it will still be automatically added for obvious reasons. |br|
-        *default*: all of the above list
-
-    - **triggers_exceptions**
-        (boolean) |br|
-        whether the ERROR level should trigger exceptions. |br|
-        *default*: True
-
-    - **flavor**
-        (string) |br|
-        the style of log to adopt, for a list of those see :ref:`styles`. |br|
-        *default*: "default"
-
-    - **title_flavor**
-        (string) |br|
-        the title style to adopt, for a list of those see :ref:`styles`. |br|
-        *default*: "default"
+The console options you may pass to the logger's *configFile* method (those options are automatically taken care of when the logger is loaded by the Settings class under logger:file) are the following:
 
     - **activated**
-        (boolean) |br|
-        whether the logger should function or not. (Useful to disable it if needed). |br|
-        *default*: True
+      {boolean} |br|
+      Whether the file handler should be activated or not. |br|
+      *default*: False
 
-    - **max_lines**
-        (integer) |br|
-        when in rotation mode, number of lines before changing the log file. |br|
-        *default*: 5000
+    - **threshold**
+      {string} |br|
+      Threshold for the file handler. |br|
+      *default*: 'VERBOSE'
 
-Levels
-------
-The logger accepts five levels (ordered by importance):
+    - **formatter**
+      {string} |br|
+      Formatter for the console handler |br|
+      *default*: '%(asctime)s %(levelname)s :: %(msg)s'.
 
-    - VERBOSE (cyan output)
-    - DEBUG (blue output)
-    - INFO (green output)
-    - WARNING (yellow ouput)
-    - ERROR (red output)
-    - CRITICAL (violet output)  --> will throw an exception for you to catch or not
+    - **directory**
+      {string} |br|
+      Directory where the file handler is supposed to write its logs. |br|
+      *default*: '.'
 
-By default, if no level is specified for a message, DEBUG will always be taken.
+    - **filename**
+      {string} |br|
+      Name of the log files. |br|
+      *default*: 'program.log'
+
+    - **mode**
+      {string} |br|
+      File logging mode. See :ref:`modes`. |br|
+      *default*: 'simple'
+
+    - **max_bytes**
+      {integer} |br|
+      When in rotation mode, maximum of bytes for a log file before rotating. |br|
+      *default*: 1048576
+
+    - **backup_count**
+      {integer} |br|
+      When in rotation mode, maximum number of archived log files. |br|
+      *default*: 5
+
+Note that the file handler is not activated by default.
+
+**Usage example**
+
+.. code-block:: python
+
+    from colifrapy import Logger
+
+    logger_instance = Logger()
+    logger_instance.configFile(threshold='ERROR', activated=True, mode='overwrite')
 
 
 Strings
@@ -226,6 +243,9 @@ The Logger comes with three different outputting modes:
     - **overwrite**: the log will be completely overwritten each time you launch the program.
     - **rotation**: each time your log file overcomes a specified number of lines, it will create a new file and archive the old one. E.g. it functions like the apache log.
 
+For more information about file rotation, you can read the python logging module's RotatingFileHandler documentation_.
+
+.. _documentation: http://docs.python.org/2/library/logging.handlers.html#rotatingfilehandler
 
 Methods
 -------
@@ -250,8 +270,6 @@ Writing
             self.log.write('main:process:end', level='INFO')
             >>> '[INFO] :: Exiting'
 
-
-
             # Passing variables
             self.log.write('main:protocol:start', {'path' : 'test'})
             >>> '[INFO] :: Starting corpus analysis (path : test)'
@@ -273,6 +291,8 @@ Writing
             # Named arguments of write
             # variables --> mixed
             # level --> log level
+
+
 
             # Helper methods
             #---------------
@@ -349,7 +369,27 @@ User Input
 Styles
 ------
 
-The colifrapy logger comes with several visual alternatives that you may choose from. Those are called flavors and are available for title and standard messages.
+Colifrapy's logger comes with several visual alternatives that you may choose from. Those are called flavors and are available for title and standard messages.
+
+
+Formatters
+^^^^^^^^^^
+
+Colifrapy's logger accepts a format string the same way as the python logging module, so you can customize your logging output. It also add a custom variable named *flavored_levelname* which is in fact the level name colored and stylized.
+
+.. code-block:: python
+
+    # Default formatter for console
+    '%(flavored_levelname)s :: %(msg)s'
+    >>> [DEBUG] :: message to log
+
+    # Default formatter for file
+    '%(asctime)s %(levelname)s :: %(msg)s'
+    >>> 2014-01-15 13:56:09,798 DEBUG :: message to log
+
+For the full documentation about the variables usable by the formatter, see this page_.
+
+.. _page: http://docs.python.org/2/library/logging.html#logrecord-attributes
 
 Title Flavors
 ^^^^^^^^^^^^^
