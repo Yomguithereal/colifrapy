@@ -15,7 +15,7 @@ from .utilities import is_of_list, is_number, is_string
 # Main Class
 #===========
 class Renderer(object):
-    """ The Renderer take Mustache-styled strings and compute their
+    """ The Renderer take Mustache-styled strings and render their
     variables. """
 
     # Methods

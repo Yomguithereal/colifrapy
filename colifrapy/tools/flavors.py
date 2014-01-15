@@ -115,6 +115,7 @@ class CustomFormatter(logging.Formatter):
         )
         return logging.Formatter.format(self, record)
 
+
 class ColoredHeaderFormatter(logging.Formatter):
 
     # Init override

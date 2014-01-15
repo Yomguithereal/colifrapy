@@ -36,14 +36,14 @@ def colorize(string, fore_color='black', background=None, style=None):
     if background is None:
         background_option = ''
     else:
-        background_option = '4'+COLORS.get(background, '0')+';'
+        background_option = '4' + COLORS.get(background, '0') + ';'
 
     # Style
     if is_of_list(style):
         style_option = "".join(
-            [";"+str(get_index(STYLES, i, 0)) for i in style])
+            [";" + str(get_index(STYLES, i, 0)) for i in style])
     elif is_string(style):
-        style_option = ";"+str(get_index(STYLES, style, 0))
+        style_option = ";" + str(get_index(STYLES, style, 0))
     else:
         style_option = ';22'
 

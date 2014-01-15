@@ -22,6 +22,7 @@ def is_string(variable):
     else:
         return isinstance(variable, str)
 
+
 # TODO: Optimize, can be written to be faster but less concise
 # Is a number?
 def is_number(variable):
@@ -81,4 +82,4 @@ def titler(string):
         if string.count(case) > 0:
             string = "".join([i[0].upper()+i[1:] for i in string.split(case)])
 
-    return string[0].upper()+string[1:]
+    return string[0].upper() + string[1:]
