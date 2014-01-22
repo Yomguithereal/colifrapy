@@ -55,7 +55,7 @@ Some functions that may prove useful
     is_string('test')
     >>> True
 
-    # Is the variable a list or a tuple or a set ?
+    # Is the variable a list or a tuple?
     is_of_list(['red', 'blue'])
     >>> True
 

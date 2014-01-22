@@ -11,6 +11,9 @@
 import re
 from .utilities import is_of_list, is_number, is_string
 
+# Constants
+#==========
+VAR_RE = r'\{\{(.*?)\}\}'
 
 # Main Class
 #===========
@@ -42,6 +45,29 @@ class Renderer(object):
 
         return text
 
+    def __applyString(self, text, variable):
+        return re.sub(
+            VAR_RE,
+            variable,
+            text,
+            0 if self.ignore else 1
+        )
+
+    def __applyList(self, text, variables):
+        search = re.findall(VAR_RE, text)
+        for i in range(0, len(variables)):
+            try:
+                text = re.sub(
+                    re.compile('\{\{' + search[i] + '\}\}'),
+                    variables[i],
+                    text
+                )
+            except Exception:
+                pass
+        return text
+
+
+
     def __applyDict(self, text, variables):
         for key, value in list(variables.items()):
             text = re.sub(r'\{\{%s\}\}' % key, '%(var)s', text) % \
@@ -50,19 +76,15 @@ class Renderer(object):
             text = re.sub(r'\{\{(.*?)\}\}', r'', text)
         return text
 
-    def __applyList(self, text, variables):
-        search = re.findall(r'\{\{(.*?)\}\}', text)
-        for i in range(0, len(variables)):
-            try:
-                text = re.sub(
-                    r'\{\{%s\}\}' % search[i],
-                    r'%s',
-                    text
-                ) % str(variables[i])
-            except Exception:
-                pass
-        return text
-
-    def __applyString(self, text, variable):
-        return re.sub(r'\{\{(.*?)\}\}', r'%(var)s', text) % \
-          {'var': variable}
+    # def __applyList(self, text, variables):
+    #     search = re.findall(r'\{\{(.*?)\}\}', text)
+    #     for i in range(0, len(variables)):
+    #         try:
+    #             text = re.sub(
+    #                 r'\{\{%s\}\}' % search[i],
+    #                 r'%s',
+    #                 text
+    #             ) % str(variables[i])
+    #         except Exception:
+    #             pass
+    #     return text

@@ -26,12 +26,14 @@ def is_string(variable):
 # TODO: Optimize, can be written to be faster but less concise
 # Is a number?
 def is_number(variable):
+    if isinstance(variable, bool):
+        return False
     return True in [isinstance(variable, t) for t in [int, float]]
 
 
 # Is of list kind
 def is_of_list(variable):
-    return True in [isinstance(variable, t) for t in [list, tuple, set]]
+    return True in [isinstance(variable, t) for t in [list, tuple]]
 
 
 # Is a function
