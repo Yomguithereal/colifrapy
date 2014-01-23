@@ -33,7 +33,7 @@ class RendererTest(unittest.TestCase):
         )
 
         self.assertEqual(
-            'this is a test and a second test',
+            'this is a test and a second ',
             self.renderer.render(
                 'this is a {{var1}} and a second {{var2}}',
                 'test'
@@ -65,7 +65,13 @@ class RendererTest(unittest.TestCase):
         )
 
     def test_dict(self):
-        pass
+        self.assertEqual(
+            'bananas are good',
+            self.renderer.render(
+                '{{var1}} are {{var2}}',
+                {'var1': 'bananas', 'var2': 'good'}
+            )
+        )
 
     def test_escaping(self):
 
@@ -76,7 +82,7 @@ class RendererTest(unittest.TestCase):
         )
 
         self.assertEqual(
-            'escaped %2C url and second also %2C',
+            'escaped %2C url and second also ',
             self.renderer.render(
                 'escaped {{var}} url and second also {{var}}',
                 '%2C'

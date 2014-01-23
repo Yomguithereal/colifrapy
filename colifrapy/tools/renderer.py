@@ -11,9 +11,22 @@
 import re
 from .utilities import is_of_list, is_number, is_string
 
+
 # Constants
 #==========
 VAR_RE = r'\{\{(.*?)\}\}'
+
+
+# Decorators
+#===========
+def ignoring(func):
+    def _ignoring(self, *args, **kwargs):
+        text = func(self, *args, **kwargs)
+        return re.sub(VAR_RE, '', text) if self.ignore else text
+
+    return _ignoring
+
+
 
 # Main Class
 #===========
@@ -43,48 +56,37 @@ class Renderer(object):
         if is_string(variables):
             return self.__applyString(text, variables)
 
-        return text
+        return self.__ignoring(text)
 
+    @ignoring
     def __applyString(self, text, variable):
         return re.sub(
             VAR_RE,
             variable,
             text,
-            0 if self.ignore else 1
+            1
         )
 
+    @ignoring
     def __applyList(self, text, variables):
         search = re.findall(VAR_RE, text)
-        for i in range(0, len(variables)):
-            try:
+        try:
+            for i in range(0, len(variables)):
                 text = re.sub(
                     re.compile('\{\{' + search[i] + '\}\}'),
                     variables[i],
                     text
                 )
-            except Exception:
-                pass
+        except IndexError:
+            pass
         return text
 
-
-
+    @ignoring
     def __applyDict(self, text, variables):
-        for key, value in list(variables.items()):
-            text = re.sub(r'\{\{%s\}\}' % key, '%(var)s', text) % \
-              {'var': str(value)}
-        if not self.ignore:
-            text = re.sub(r'\{\{(.*?)\}\}', r'', text)
+        for k, v in list(variables.items()):
+            text = re.sub(
+                re.compile('\{\{' + k + '\}\}'),
+                v,
+                text
+            )
         return text
-
-    # def __applyList(self, text, variables):
-    #     search = re.findall(r'\{\{(.*?)\}\}', text)
-    #     for i in range(0, len(variables)):
-    #         try:
-    #             text = re.sub(
-    #                 r'\{\{%s\}\}' % search[i],
-    #                 r'%s',
-    #                 text
-    #             ) % str(variables[i])
-    #         except Exception:
-    #             pass
-    #     return text
