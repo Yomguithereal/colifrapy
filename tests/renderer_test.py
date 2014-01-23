@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # -------------------------------------------------------------------
 # Colifrapy Renderer Tests
 # -------------------------------------------------------------------
@@ -44,6 +45,11 @@ class RendererTest(unittest.TestCase):
             self.renderer.render('this is a {{var}} string', u'unicode')
         )
 
+        self.assertEqual(
+            u'this is a accentuated dépression',
+            self.renderer.render('this is a accentuated {{var}}', u'dépression')
+        )
+
     def test_list(self):
 
         # List
@@ -76,17 +82,3 @@ class RendererTest(unittest.TestCase):
                 '%2C'
             )
         )
-
-        # With dictionaries
-        # self.assertEqual(
-        #     'escaped %2C url',
-        #     self.renderer.render('escaped {{var}} url', {'var': '%2C'})
-        # )
-
-        # self.assertEqual(
-        #     'escaped %2C url and second also %2C',
-        #     self.renderer.render(
-        #         'escaped {{var1}} url and second also {{var2}}',
-        #         {'var1': '%2C', 'var2': '%2C'}
-        #     )
-        # )

@@ -49,7 +49,7 @@ def parse_lambda(string):
 
 
 # Get Index with Fallback
-def get_index(target, value, fallback):
+def get_index(target, value, fallback=None):
     try:
         return target.index(value)
     except ValueError:
