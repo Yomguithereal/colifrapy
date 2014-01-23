@@ -39,6 +39,11 @@ class RendererTest(unittest.TestCase):
             )
         )
 
+        self.assertEqual(
+            'this is a unicode string',
+            self.renderer.render('this is a {{var}} string', u'unicode')
+        )
+
     def test_list(self):
 
         # List
