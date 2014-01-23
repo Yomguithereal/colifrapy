@@ -1,0 +1,15 @@
+# -------------------------------------------------------------------
+# Subparsers Settings
+# -------------------------------------------------------------------
+#
+#
+#   Author: PLIQUE Guillaume
+#   Version: 1.0
+
+# Basic Informations
+version: 'Subparsers Tests'
+arguments:
+    first:
+        - [ ['action'] ]
+    second:
+        - [ ['action'] ]

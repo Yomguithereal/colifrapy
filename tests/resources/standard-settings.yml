@@ -1,0 +1,12 @@
+# -------------------------------------------------------------------
+# Standard Settings
+# -------------------------------------------------------------------
+#
+#
+#   Author: PLIQUE Guillaume
+#   Version: 1.0
+
+# Basic Informations
+version: 'Functional Tests'
+arguments:
+- [ ['-t', '--test'] ]

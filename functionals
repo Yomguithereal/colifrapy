@@ -1,0 +1,47 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# -------------------------------------------------------------------
+# Colifrapy Functional Tests Runner
+# -------------------------------------------------------------------
+#
+#
+#   Author : Guillaume PLIQUE
+#   Version : 0.1.0
+import sys
+
+# Utilities
+TESTS = [
+    {
+        'name': 'logger',
+        'import': 'logger_functional'
+    },
+    {
+        'name': 'subparsers',
+        'import': 'subparsers_functional'
+    }
+]
+
+def run_test(instance):
+    print 'Running %s functional tests...' % instance['name']
+    __import__('tests.%s' % instance['import'])
+
+# Running tests
+if __name__ == '__main__':
+    print '\nColifrapy Functional Tests\n==========================\n'
+
+    try:
+        done = False
+        for i in TESTS:
+            if i['name'] == sys.argv[1]:
+                run_test(i)
+                done = True
+                break
+        
+        if not done:
+            print 'Inexistant test.'
+        print ''
+
+    except IndexError:
+        for t in TESTS:
+            run_test(t)
+            print ''

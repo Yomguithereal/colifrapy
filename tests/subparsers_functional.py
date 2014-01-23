@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # -------------------------------------------------------------------
-# Colifrapy Logger Functional Tests
+# Colifrapy Subparsers Functional Tests
 # -------------------------------------------------------------------
 #
 #
 #   Author : Guillaume PLIQUE
 #   Version : 0.1.0
-print 'placeholder'
+print 'sub'
