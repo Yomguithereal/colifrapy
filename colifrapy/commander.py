@@ -52,10 +52,6 @@ class Commander(ArgumentParser):
             # If arguments is array
             if isinstance(arguments, list):
                 self.__addArguments(arguments)
-                self.__defaultArguments()
-
-                # Parsing
-                self.opts = self.parse_args()
 
             # If arguments is dict
             elif isinstance(arguments, dict):
@@ -73,11 +69,9 @@ class Commander(ArgumentParser):
                     else:
                         self.__addSubparser(k, v)
 
-                self.__defaultArguments()
-
-                # Parsing
-                self.opts = {}
-                self.opts['default'] = self.parse_args()
+            # Parsing
+            self.__defaultArguments()
+            self.opts = self.parse_args()
 
     # Add a subparser
     def __addSubparser(self, name, arguments):
