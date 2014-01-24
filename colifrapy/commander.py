@@ -76,7 +76,7 @@ class Commander(ArgumentParser):
     # Add a subparser
     def __addSubparser(self, name, arguments):
 
-        self.subparsers[name] = self.subinstance.add_parser(name, help=name + ' help')
+        self.subparsers[name] = self.subinstance.add_parser(name)
         self.__addArguments(arguments, self.subparsers[name])
 
     # Batch adding arguments
