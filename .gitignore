@@ -5,7 +5,7 @@ dist/
 *.egg-info
 build/
 logs/
-TODO.txt
+Notes.md
 test.py
 test.yml
 test2.yml

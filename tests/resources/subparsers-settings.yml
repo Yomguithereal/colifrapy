@@ -10,6 +10,6 @@
 version: 'Subparsers Tests'
 arguments:
     first:
-        - [ ['action'] ]
+        - [['-a', '--action']]
     second:
-        - [ ['action'] ]
+        - [['-a', '--action']]

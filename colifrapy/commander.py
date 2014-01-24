@@ -24,12 +24,15 @@ class Commander(ArgumentParser):
     opts = None
     verbose = False
     types = {'int': int, 'float': float, 'open': open}
+    subinstance = None
+    subparsers = {}
+
 
     # Methods
     #--------
 
     # Configuration
-    def config(self, version=None, description=None,
+    def config(self, version=None, description=None, subhelp=None,
                arguments=None, usage=None, prog=None, epilog=None):
 
         self.version_str = version or '0.1.0'
@@ -45,16 +48,51 @@ class Commander(ArgumentParser):
 
         # Adding Options
         if arguments is not None and len(arguments) > 0:
-            self.__addArguments(arguments)
 
-        # Default Arguments
-        self.__defaultArguments()
+            # If arguments is array
+            if isinstance(arguments, list):
+                self.__addArguments(arguments)
+                self.__defaultArguments()
 
-        # Parsing
-        self.opts = self.parse_args()
+                # Parsing
+                self.opts = self.parse_args()
+
+            # If arguments is dict
+            elif isinstance(arguments, dict):
+
+                # Creating subparsers instance
+                if self.subinstance is None:
+                    self.subinstance = self.add_subparsers(help=subhelp)
+
+                # Creating subcommands
+                for k, v in list(arguments.items()):
+
+                    # Default?
+                    if k == 'default':
+                        self.__addArguments(v)
+                    else:
+                        self.__addSubparser(k, v)
+
+                self.__defaultArguments()
+
+                # Parsing
+                self.opts = {}
+                self.opts['default'] = self.parse_args()
+
+    # Add a subparser
+    def __addSubparser(self, name, arguments):
+
+        self.subparsers[name] = self.subinstance.add_parser(name, help=name + ' help')
+        self.__addArguments(arguments, self.subparsers[name])
 
     # Batch adding arguments
-    def __addArguments(self, arguments):
+    def __addArguments(self, arguments, target=None):
+
+        # Target
+        type(target)
+        target = target or self
+
+        # Registering arguments
         for argument in arguments:
 
             # Dispatching
@@ -74,7 +112,7 @@ class Commander(ArgumentParser):
                 kwargs['type'] = self.__checkType(kwargs['type'])
 
             # Adding arguments
-            self.add_argument(*args, **kwargs)
+            target.add_argument(*args, **kwargs)
 
     # Default Arguments
     def __defaultArguments(self):
