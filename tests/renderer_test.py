@@ -12,6 +12,7 @@
 import unittest
 from colifrapy.tools.renderer import Renderer
 
+
 # Main Test
 #==========
 class RendererTest(unittest.TestCase):
@@ -90,14 +91,6 @@ class RendererTest(unittest.TestCase):
         )
 
         self.assertEqual(
-            'escaped aztec.test',
-            self.renderer.render('escaped {{re_escaping}}', 'aztec.test')
-        )
-
-        self.assertEqual(
-            'escaped aztec.foo and aztec.bar',
-            self.ignore_renderer.render(
-                'escaped {{re1}} and {{re2}}',
-                ('aztec.foo', 'aztec.bar')
-            )
+            '1 and 2',
+            self.renderer.render('{{var1}} and {{var2}}', (1, 2))
         )

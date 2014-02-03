@@ -44,6 +44,10 @@ class Renderer(object):
         if is_number(variables):
             variables = str(variables)
 
+        # If vars are strings
+        if is_string(variables):
+            return self.__applyString(text, variables)
+
         # If vars are dict
         if isinstance(variables, dict):
             return self.__applyDict(text, variables)
@@ -51,10 +55,6 @@ class Renderer(object):
         # If vars are tuple or array
         if is_of_list(variables):
             return self.__applyList(text, variables)
-
-        # If vars are strings
-        if is_string(variables):
-            return self.__applyString(text, variables)
 
         return self.__ignoring(text)
 
@@ -73,8 +73,8 @@ class Renderer(object):
         try:
             for i in range(0, len(variables)):
                 text = re.sub(
-                    re.compile('\{\{' + re.escape(search[i]) + '\}\}'),
-                    variables[i],
+                    re.compile('\{\{' + search[i] + '\}\}'),
+                    str(variables[i]),
                     text
                 )
         except IndexError:
@@ -85,8 +85,8 @@ class Renderer(object):
     def __applyDict(self, text, variables):
         for k, v in list(variables.items()):
             text = re.sub(
-                re.compile('\{\{' + re.escape(k) + '\}\}'),
-                v,
+                re.compile('\{\{' + k + '\}\}'),
+                str(v),
                 text
             )
         return text
