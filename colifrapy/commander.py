@@ -58,7 +58,9 @@ class Commander(ArgumentParser):
 
                 # Creating subparsers instance
                 if self.subinstance is None:
-                    self.subinstance = self.add_subparsers(help=subhelp)
+                    self.subinstance = self.add_subparsers(
+                        help=subhelp,
+                        dest='subcommand')
 
                 # Creating subcommands
                 for k, v in list(arguments.items()):
