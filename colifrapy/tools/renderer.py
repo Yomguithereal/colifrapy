@@ -73,7 +73,7 @@ class Renderer(object):
         try:
             for i in range(0, len(variables)):
                 text = re.sub(
-                    re.compile('\{\{' + search[i] + '\}\}'),
+                    re.compile('\{\{' + re.escape(search[i]) + '\}\}'),
                     variables[i],
                     text
                 )
@@ -85,7 +85,7 @@ class Renderer(object):
     def __applyDict(self, text, variables):
         for k, v in list(variables.items()):
             text = re.sub(
-                re.compile('\{\{' + k + '\}\}'),
+                re.compile('\{\{' + re.escape(k) + '\}\}'),
                 v,
                 text
             )

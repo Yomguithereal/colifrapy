@@ -88,3 +88,16 @@ class RendererTest(unittest.TestCase):
                 '%2C'
             )
         )
+
+        self.assertEqual(
+            'escaped aztec.test',
+            self.renderer.render('escaped {{re_escaping}}', 'aztec.test')
+        )
+
+        self.assertEqual(
+            'escaped aztec.foo and aztec.bar',
+            self.ignore_renderer.render(
+                'escaped {{re1}} and {{re2}}',
+                ('aztec.foo', 'aztec.bar')
+            )
+        )
