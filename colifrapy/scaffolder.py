@@ -33,7 +33,7 @@ class Scaffolder(Model):
     model and generate necessary files from the templates. """
 
     # Tools
-    renderer = Renderer(ignore=False)
+    renderer = Renderer(ignore=True)
 
     # Logger bootstrap
     def __init__(self):
@@ -67,10 +67,7 @@ class Scaffolder(Model):
         files['main'] = project_name + '.py'
 
         # Template variables
-        template_vars = {
-            'project' : titler(project_name),
-            'var' : '{{var}}'
-        }
+        template_vars = {'project': titler(project_name)}
 
         if author is not None:
             template_vars['author_line'] = '\n#   Author: %s' % author
