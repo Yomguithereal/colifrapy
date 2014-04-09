@@ -17,7 +17,7 @@ Installation
 ------------
 It is recommanded to use colifrapy under a python virtualenv. (Use the excellent virtualenvwrapper to spare you some painful operations with classic virtualenvs).
 
-Install colifrapy with pip (version up to 0.4.1)::
+Install colifrapy with pip::
 
     pip install colifrapy
 
