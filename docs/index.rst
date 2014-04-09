@@ -4,8 +4,8 @@ Colifrapy
 =========
 
 Colifrapy is a **Command Line Framework for Python**.
-Its aim is to provide several tools to build robust and
-structured command line tools very easily.
+
+Its aim is to provide several tools to build robust and structured command line tools very easily.
 
 Its logic is very similar to a MVC framework and is therefore easy to use.
 
@@ -53,14 +53,11 @@ Concept
 =======
 When using colifrapy, your tool is called through a command line hub which acts more or less like a router which will call upon a controller using one or several models to perform the job.
 
-Your hub has therefore the task to load a yaml configuration file containing your command line
-arguments, name, version and other contextual settings.
+Your hub has therefore the task to load a yaml configuration file containing your command line arguments, name, version and other contextual settings.
 
-Once those settings are loaded, every part of your application will remain able to access critical
-utilities such as argv opts, settings and make use of colifrapy's logger to ouptut nicely to the console and to log files.
+Once those settings are loaded, every part of your application will remain able to access critical utilities such as argv opts, settings and make use of colifrapy's logger to ouptut nicely to the console and to log files.
 
-So, schematically colifrapy is a YAML configuration file loaded by a command line hub that will call upon
-a controller and other models.
+So, schematically colifrapy is a YAML configuration file loaded by a command line hub that will call upon a controller and other models.
 
 Every bit of colifrapy can be used as a standalone.
 

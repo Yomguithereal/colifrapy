@@ -1,7 +1,9 @@
 #Colifrapy
 
 ##Description
-Colifrapy is a **Command Line Framework for Python**. Its aim is to provide several tools to build robust and structured command line tools very easily.
+Colifrapy is a **Command Line Framework for Python**.
+
+Its aim is to provide several tools to build robust and structured command line tools very easily.
 
 Its logic is very similar to a MVC framework and is therefore easy to use.
 
