@@ -38,6 +38,7 @@ class Scaffolder(Model):
     # Logger bootstrap
     def __init__(self):
         self.log.loadStrings(TEMPLATE_DIRECTORY + 'strings.yml')
+        self.log.header('main:title')
 
     # Controller actions
     def new(self):
