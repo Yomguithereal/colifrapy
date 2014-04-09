@@ -49,7 +49,7 @@ Every bit of colifrapy can be used as a standalone.
 * **Cacher** (saves data to file)
 
 ##Examples
-My project [furuikeya](https://github.com/Yomguithereal/furuikeya) is a good usage example of colifrapy since colifrapy was originally designed to help me doing it.
+The project [furuikeya](https://github.com/Yomguithereal/furuikeya) is a good usage example of colifrapy since colifrapy was originally designed to help me doing it.
 
 ##Dependencies
 

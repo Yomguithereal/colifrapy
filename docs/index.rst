@@ -71,7 +71,7 @@ Every bit of colifrapy can be used as a standalone.
 
 Examples
 ========
-My project furuikeya_ is a good example of the usage
+The project furuikeya_ is a good example of the usage
 of colifrapy since the framework was originally designed for it.
 
 .. _furuikeya: https://github.com/Yomguithereal/furuikeya
