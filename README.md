@@ -5,7 +5,7 @@ Colifrapy is a **Command Line Framework for Python**. Its aim is to provide seve
 
 Its logic is very similar to a MVC framework and is therefore easy to use.
 
-The full documentation for the last released version of colifrapy is available [there](http://yomguithereal.github.io/colifrapy/).
+The full documentation for the last released version of colifrapy is available [there](http://colifrapy.readthedocs.org/).
 
 The github repository is available [there](https://github.com/Yomguithereal/colifrapy).
 
