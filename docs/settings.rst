@@ -236,7 +236,7 @@ Then access your cache likewise.
 General
 ^^^^^^^
 
-If you need any other settings you feel necessary, just provide a settings key to your yaml file and populate it as in the following example.
+If you need any other settings you consider necessary, just provide a settings key to your yaml file and populate it as in the following example.
 
 .. code-block:: yaml
 
